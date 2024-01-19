@@ -1,6 +1,6 @@
 from geopy import Nominatim
 
-from update_coordinates import is_in_biblical_geo_square
+from PreProcessing.update_coordinates import is_in_biblical_geo_square
 
 
 def queryOneLat(name):
