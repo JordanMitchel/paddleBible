@@ -2,7 +2,7 @@ ESV Name,KMZ Name,Lat,Lon,Passages,Comment
 Abana,,33.545097,36.224661,2 Kgs 5:12,Now Barada River
 Abarim,Mount Nebo,,"Num 27:12, Num 33:47, Num 33:48, Deut 32:49, Jer 22:20",
 Abdon,,33.047808,35.146201,"Josh 21:30, 1 Chr 6:74",
-Abel,,Abel-beth-maacah,,"2 Sam 20:14, 2 Sam 20:15, 2 Sam 20:18",
+Abel,Abel-beth-maacah,,,"2 Sam 20:14, 2 Sam 20:15, 2 Sam 20:18",
 Abel-beth-maacah,Abel-Beth-Maacah,33.257,35.580,"1 Kgs 15:20, 2 Kgs 15:29",
 Abel-keramim,,32.02425,35.82352,Judg 11:33,
 Abel-maim,,Abel-beth-maacah,,2 Chr 16:4,
@@ -654,6 +654,7 @@ Jordan,,Jordan Valley,,"Gen 32:10, Gen 50:10, Gen 50:11, Num 13:29, Num 22:1, Nu
 Jordan Valley,,32.309099,35.559900,"Gen 13:10, Gen 13:11",
 Jotbah,,Jotbathah,,2 Kgs 21:19,
 Jotbathah,,Abronah,,"Num 33:33, Num 33:34, Deut 10:7",
+Judah, Judah,,,
 Judea,,Jerusalem,,"Ezra 9:9, Matt 2:1, Matt 2:5, Matt 2:22, Matt 3:1, Matt 3:5, Matt 4:25, Matt 19:1, Matt 24:16, Mark 1:5, Mark 3:7, Mark 10:1, Mark 13:14, Luke 1:5, Luke 1:65, Luke 2:4, Luke 3:1, Luke 4:44, Luke 5:17, Luke 6:17, Luke 7:17, Luke 21:21, Luke 23:5, John 4:3, John 4:47, John 4:54, John 7:1, John 7:3, John 11:7, Acts 1:8, Acts 2:9, Acts 2:14, Acts 8:1, Acts 9:31, Acts 10:37, Acts 11:1, Acts 11:29, Acts 12:19, Acts 15:1, Acts 21:10, Acts 26:20, Acts 28:21, Rom 15:31, 2 Cor 1:16, Gal 1:22, 1 Thes 2:14",region
 Judean,,Judea,,John 3:22,
 Juttah,,31.450000,35.083333,"Josh 15:55, Josh 21:16",; now Yatta

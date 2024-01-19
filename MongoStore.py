@@ -7,7 +7,7 @@ import json
 from Data.ScriptureResult import Place, Coordinates, Scripture
 
 
-def mongoimport(csv_path, db_name, coll_name, db_url='localhost', db_port=27017):
+def mongoimport(csv_path, db_name, coll_name, db_url='localhost', db_port=27018):
     """ Imports a csv file at path csv_name to a mongo colection
     returns: count of the documants in the new collection
     """
@@ -26,7 +26,7 @@ def mongoimport(csv_path, db_name, coll_name, db_url='localhost', db_port=27017)
 
 def search_scripture(db_name,bible_version,book_num,chapter,verse_num) -> Scripture:
     db_url = 'localhost'
-    db_port = 27017
+    db_port = 27018
     username = "root"
     password = "rootpassword"
     client = MongoClient(host=db_url, port=db_port, username=username,password=password)
@@ -41,7 +41,7 @@ def search_scripture(db_name,bible_version,book_num,chapter,verse_num) -> Script
 
 def search_coordinates(locations: List[Place], db_name="bibleData", collection="LonLats", ):
     db_url = 'localhost'
-    db_port = 27017
+    db_port = 27018
     username = "root"
     password = "rootpassword"
     client = MongoClient(host=db_url, port=db_port, username=username,password=password)
@@ -69,7 +69,7 @@ def search_coordinates(locations: List[Place], db_name="bibleData", collection="
     return locations
 
 
-def insert_bible_to_mongo(json_path, db_name, coll_name, db_url='localhost', db_port=27017):
+def insert_bible_to_mongo(json_path, db_name, coll_name, db_url='localhost', db_port=27018):
     client = MongoClient(db_url, db_port, username="root",password="rootpassword")
     db = client[db_name]
     collection = db[coll_name]
