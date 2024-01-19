@@ -1,15 +1,15 @@
 # This is a sample Python script.
-import json
 
 import uvicorn
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
 
 from Data.ScriptureResult import BibleStructure, bibleVersion
-from MongoStore import mongoimport, insert_bible_to_mongo, search_scripture, search_coordinates
 from fastapi import FastAPI, Response
 
-from cityScraping import search_for_location
+from Domain.AddBibleToMongo import insert_bible_to_mongo
+from Domain.AddCoordinatesStore import importCoordinatesStore
+from Domain.SearchScripture import search_scripture
+from Domain.searchLocations import search_coordinates
+from DirectAnalysis.cityScraping import search_for_location
 
 # Press ⇧F10 to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
@@ -58,7 +58,7 @@ async def get_coordinates_from_verse_label(bible_version:bibleVersion, book_num:
 if __name__ == '__main__':
     print_hi('PyCharm')
     uvicorn.run(app)
-    totalCount = mongoimport("Data/biblicalLonLat2_formatted.csv", "bibleData", "LonLats")
+    totalCount = importCoordinatesStore("Data/biblicalLonLat2_formatted.csv", "bibleData", "LonLats")
     totalCountBible = insert_bible_to_mongo("Data/asv.json", "bibleData", "Bible_ASV")
     print(totalCountBible)
     print(totalCount)
