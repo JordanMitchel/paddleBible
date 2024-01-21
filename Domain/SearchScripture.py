@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-from Data.ScriptureResult import Scripture
+from Models.ScriptureResult import Scripture
 
 
 def search_scripture(db_name,bible_version,book_num,chapter,verse_num) -> Scripture:

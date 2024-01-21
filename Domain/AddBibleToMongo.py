@@ -2,11 +2,11 @@ import json
 
 from pymongo import MongoClient
 
+
 def insert_bible_to_mongo(json_path, db_name, coll_name, db_url='localhost', db_port=27018):
-    client = MongoClient(db_url, db_port, username="root",password="rootpassword")
+    client = MongoClient(db_url, db_port, username="root", password="rootpassword")
     db = client[db_name]
     collection = db[coll_name]
-
 
     # Loading or Opening the json file
     with open(json_path) as file:
@@ -27,7 +27,4 @@ def insert_bible_to_mongo(json_path, db_name, coll_name, db_url='localhost', db_
     else:
         collection.insert_one(data)
 
-    return collection.count_documents({})
-
-totalCountBible = insert_bible_to_mongo("../Data/asv.json", "bibleData", "Bible_ASV")
-print(totalCountBible)
+    print(collection.count_documents({}))

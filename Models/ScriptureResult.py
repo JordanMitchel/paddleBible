@@ -7,13 +7,16 @@ from pydantic import BaseModel
 
 class Coordinates(BaseModel):
     Lat: float = 0.0
-    Lon: float =0.0
+    Lon: float = 0.0
 
 
 class Place(BaseModel):
-    location: Optional[str] =""
+    location: Optional[str] = ""
     coordinates: Optional[Coordinates] = {}
     warning: str | None = None
+    Passages: str | None = None
+    Comment: str | None = None
+
 
 #
 # class Verse(BaseModel):
@@ -32,6 +35,11 @@ class BibleStructure(BaseModel):
     location_count: int = 0
 
 
+class SearchResult(BaseModel):
+    ResultFound: bool = False
+    Location: Place = {}
+
+
 class bibleVersion(str, Enum):
     ASV = "Bible_ASV"
     NIV = "Bible_NIV"
@@ -46,4 +54,4 @@ class bibleBook(int, Enum):
     NUMBERS = 4
     DEUTERONOMY = 5
     JOSHUA = 6
-    JUDGES  = 7
+    JUDGES = 7

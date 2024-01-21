@@ -3,11 +3,11 @@ import pandas as pd
 from pymongo import MongoClient
 
 
-def importCoordinatesStore(csv_path, db_name, coll_name, db_url='localhost', db_port=27018):
+def insert_coordinates_store(csv_path, db_name, coll_name, db_url='localhost', db_port=27018):
     """ Imports a csv file at path csv_name to a mongo colection
     returns: count of the documants in the new collection
     """
-    client = MongoClient(host=db_url, port=db_port, username="root",password="rootpassword")
+    client = MongoClient(host=db_url, port=db_port, username="root", password="rootpassword")
     db = client[db_name]
     coll = db[coll_name]
     data = pd.read_csv(csv_path)
@@ -20,5 +20,6 @@ def importCoordinatesStore(csv_path, db_name, coll_name, db_url='localhost', db_
     coll.insert_many(payload)
     return coll.count_documents({})
 
-totalCount = importCoordinatesStore("../Data/biblicalLonLat2_formatted.csv", "bibleData", "LonLats")
+
+totalCount = insert_coordinates_store("./Data/biblicalLonLat2_formatted.csv", "bibleData", "LonLats")
 print(totalCount)
