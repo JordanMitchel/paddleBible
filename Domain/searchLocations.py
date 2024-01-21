@@ -17,17 +17,6 @@ def search_coordinates(locations: List[Place], bibleVersion: str, extra_bible_ve
     count = 0
     for area in locations:
         place = area.location
-        print(area)
-        # docESV = coll.find_one({"ESV Name": place})
-        # if docESV is None:
-        #     docKMZ = coll.find_one({"KMZ Name": place})
-        #     if docKMZ is None:
-        #         locations[count].warning = "No co-ordinates initially found found"
-        #         return locations
-        #     locations[count].coordinates = Coordinates(Lat=docKMZ['Lat'], Lon=docKMZ['Lon'])
-        #
-        # else:
-        #     locations[count].coordinates = Coordinates(Lat=docESV['Lat'], Lon=docESV['Lon'])
         initial_result = search_single_bible_version(bibleVersion, coll, place)
         if initial_result.ResultFound:
             locations[count].coordinates = initial_result.Location.coordinates
