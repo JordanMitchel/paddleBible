@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 
 from pymongo import MongoClient
 
-tree = ET.parse('./../Data/Bible_English_ESV.xml')
+tree = ET.parse('./../Data/Bible_English_MSG.xml')
 
 bibleXml = tree.findall('BIBLEBOOK')
 
