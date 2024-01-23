@@ -25,5 +25,3 @@ def get_all_bible_books(db_name="bibleData",
 
     sorted_bible_list = sorted(bible_books, key=lambda d: d['book'])
     return sorted_bible_list
-response = get_all_bible_books()
-print(response)
