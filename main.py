@@ -2,6 +2,7 @@
 
 import uvicorn
 
+from Domain.searchBibleBooksList import get_all_bible_books
 from Models.ScriptureResult import BibleStructure, bibleVersion
 from fastapi import FastAPI, Response
 
@@ -23,11 +24,9 @@ async def root():
     return {"message": "Hello World"}
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
-
-
+@app.get("/BibleBooks")
+async def get_bible_books():
+    return get_all_bible_books()
 @app.get("/Scripture/{verse}")
 async def get_coordinates_from_verse(verse: str) -> BibleStructure:
     verse_result: BibleStructure = search_for_location_by_scripture(verse)
@@ -39,18 +38,12 @@ async def get_coordinates_from_verse_label(bible_version: bibleVersion, book_num
         -> Response:
     scripture = search_scripture("bibleData", bible_version, book_num, chapter, verse_num)
     verse_result: BibleStructure = search_for_location_by_scripture(scripture.verse[verse_num])
-    # dynamically get list from bible explorer collection
+
     list_of_bible_versions = ["ESV Name", "KMZ Name"]
     coordinates = search_coordinates(verse_result.locations, "ESV Name",list_of_bible_versions)
     verse_result.locations = coordinates
     verse_result.scripture = scripture
-    # return json.loads(verse_result.model_dump_json())
-    # verse_result.locations = [{"jo":{"hi":142}}]
-    # json_compatible_item_data = jsonable_encoder(verse_result)
 
-    print(verse_result)
-    # return JSONResponse(content=json_compatible_item_data)
-    # # [3, 1.34,True,"hello",{"hi"},{"age":40}]
 
     return verse_result
 
@@ -59,7 +52,6 @@ async def get_coordinates_from_verse_label(bible_version: bibleVersion, book_num
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
     uvicorn.run(app)
     totalCount = insert_coordinates_store("Data/biblicalLonLat2_formatted.csv", "bibleData", "LonLats")
     totalCountBible = insert_bible_to_mongo("Data/asv.json", "bibleData", "Bible_ASV")
