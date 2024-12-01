@@ -1,11 +1,9 @@
 import pymongo
 import xml.etree.ElementTree as ET
+from Domain.db import MONGO_CLIENT
 
-from pymongo import MongoClient
 
-client = pymongo.MongoClient("mongodb://localhost:27018/")
-client = MongoClient(host='localhost', port=27018, username="root", password="rootpassword")
-mydb = client["school"]
+mydb = MONGO_CLIENT["school"]
 mycol = mydb["students"]
 import os
 var = os.listdir("./../Data")

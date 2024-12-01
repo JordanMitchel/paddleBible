@@ -1,17 +1,17 @@
 version: '3.7'
 services:
 
-  app:
-    build: .
-    stdin_open: true
-    tty: true
-    volumes:
-      - .:/app
+#  app:
+#    build: .
+#    stdin_open: true
+#    tty: true
+#    volumes:
+#      - .:/app
 
   mongodb_container:
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+      MONGO_INITDB_ROOT_PASSWORD: rootPassword
     ports:
-      - 27018:27017
+      - "27018:27017"

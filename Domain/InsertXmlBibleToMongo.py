@@ -1,6 +1,5 @@
 import xml.etree.ElementTree as ET
-
-from pymongo import MongoClient
+from Domain.db import MONGO_CLIENT, DB_NAME
 
 tree = ET.parse('./../Data/Bible_English_MSG.xml')
 
@@ -8,9 +7,7 @@ bibleXml = tree.findall('BIBLEBOOK')
 
 version_of_bible = tree._root.attrib.get('biblename')[-3:]
 collection = f"Bible_{version_of_bible}"
-db_name = "bibleData"
-client = MongoClient(host='localhost', port=27018, username="root", password="rootpassword")
-db = client[db_name]
+db = MONGO_CLIENT[DB_NAME]
 coll = db[collection]
 
 for book in bibleXml:

@@ -1,19 +1,14 @@
 from typing import List, Any
 
-from pymongo import MongoClient
+from Domain.db import DB
 
 from Models.ScriptureResult import Coordinates, Place, SearchResult
 
 
-def search_coordinates(locations: List[Place], bibleVersion: str, extra_bible_versions: List[str], db_name="bibleData",
+def search_coordinates(locations: List[Place], bibleVersion: str, extra_bible_versions: List[str],
                        collection="LonLats"):
-    db_url = 'localhost'
-    db_port = 27018
-    username = "root"
-    password = "rootpassword"
-    client = MongoClient(host=db_url, port=db_port, username=username, password=password)
-    db = client[db_name]
-    coll = db[collection]
+
+    coll = DB[collection]
     count = 0
     for area in locations:
         place = area.location
