@@ -5,7 +5,7 @@ import spacy
 from Models.ScriptureResult import BibleStructure, Place
 
 
-def search_for_location_by_scripture(verse: str) -> BibleStructure:
+async def search_for_location_by_scripture(verse: str) -> BibleStructure:
     location_list_en_core = sentiment_search('en_core_web_sm', verse)
     location_list_wiki = sentiment_search('xx_ent_wiki_sm', verse)
     location_lists = location_list_en_core + location_list_wiki

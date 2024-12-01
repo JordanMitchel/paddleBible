@@ -2,6 +2,7 @@ import uvicorn
 import asyncio
 
 from fastapi import FastAPI, Response
+from watchfiles import awatch
 
 from Domain.searchBibleBooksList import get_all_bible_books
 from Models.ScriptureResult import BibleStructure, bibleVersion
@@ -29,12 +30,12 @@ async def get_coordinates_from_verse(verse: str) -> BibleStructure:
     return verse_result
 
 @app.get("/Scripture/label/{bible_version}/{book_num}/{chapter}/{verse_num}")
-def get_coordinates_from_verse_label(bible_version: bibleVersion, book_num: int, chapter: int, verse_num: int) -> Response:
-    scripture = search_scripture(bible_version, book_num, chapter, verse_num)
-    verse_result: BibleStructure = search_for_location_by_scripture(scripture.verse[verse_num])
+async def get_coordinates_from_verse_label(bible_version: bibleVersion, book_num: int, chapter: int, verse_num: int) -> Response:
+    scripture = await search_scripture(bible_version, book_num, chapter, verse_num)
+    verse_result: BibleStructure = await search_for_location_by_scripture(scripture.verse[verse_num])
 
     list_of_bible_versions = ["ESV Name", "KMZ Name"]
-    coordinates = search_coordinates(verse_result.locations, "ESV Name", list_of_bible_versions)
+    coordinates = await search_coordinates(verse_result.locations, "ESV Name", list_of_bible_versions)
     verse_result.locations = coordinates
     verse_result.scripture = scripture
 
