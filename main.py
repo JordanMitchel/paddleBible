@@ -16,7 +16,7 @@ from DirectAnalysis.searchForLocationByScripture import search_for_location_by_s
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
 
-app = FastAPI()
+app = FastAPI(debug=True)
 
 
 @app.get("/")
@@ -27,6 +27,8 @@ async def root():
 @app.get("/BibleBooks")
 async def get_bible_books():
     return get_all_bible_books()
+
+
 @app.get("/Scripture/{verse}")
 async def get_coordinates_from_verse(verse: str) -> BibleStructure:
     verse_result: BibleStructure = search_for_location_by_scripture(verse)
@@ -52,10 +54,10 @@ async def get_coordinates_from_verse_label(bible_version: bibleVersion, book_num
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    uvicorn.run(app)
     totalCount = insert_coordinates_store("Data/biblicalLonLat2_formatted.csv", "bibleData", "LonLats")
     totalCountBible = insert_bible_to_mongo("Data/asv.json", "bibleData", "Bible_ASV")
     print(totalCountBible)
     print(totalCount)
 
+    uvicorn.run(app)
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
