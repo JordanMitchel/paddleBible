@@ -26,11 +26,11 @@ async def get_bible_books():
 
 @app.get("/Scripture/{verse}")
 async def get_coordinates_from_verse(verse: str) -> BibleStructure:
-    verse_result: BibleStructure = search_for_location_by_scripture(verse)
+    verse_result: BibleStructure = await search_for_location_by_scripture(verse)
     return verse_result
 
 @app.get("/Scripture/label/{bible_version}/{book_num}/{chapter}/{verse_num}")
-async def get_coordinates_from_verse_label(bible_version: bibleVersion, book_num: int, chapter: int, verse_num: int) -> Response:
+async def get_coordinates_from_verse_label(bible_version: bibleVersion, book_num: int, chapter: int, verse_num: int) -> BibleStructure:
     scripture = await search_scripture(bible_version, book_num, chapter, verse_num)
     verse_result: BibleStructure = await search_for_location_by_scripture(scripture.verse[verse_num])
 
