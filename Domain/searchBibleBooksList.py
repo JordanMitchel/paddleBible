@@ -1,19 +1,20 @@
 from Domain.db import DB
 
 
-def get_all_bible_books(collection="Bible_ASV"):
+async def get_all_bible_books(collection="Bible_ASV"):
 
     coll = DB[collection]
 
     bible_books = []
-    for record in coll.aggregate(
+    async for record in coll.aggregate(
             [
                 {'$group':
                      {'_id':
                           {'book': '$book', 'book_name': '$book_name'}
                       }
                  }
-            ]):
+            ]
+    ):
         bible_books.append(record["_id"])
         # print(record)
 
