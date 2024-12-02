@@ -1,11 +1,10 @@
 from pymongo import MongoClient
+from Domain.db import DB
 
 
 def update_lonlats():
     # where ever there is specific lon lats
-    client = MongoClient(host='localhost', port=27018, username="root", password="rootpassword")
-    mydb = client["bibleData"]
-    mycol = mydb["LonLats"]
+    mycol = DB["LonLats"]
 
     mycol.update_many({},
                       [{'$set':

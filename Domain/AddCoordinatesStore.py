@@ -1,25 +1,38 @@
 import json
+from io import StringIO
+
+import aiofiles
 import pandas as pd
-from pymongo import MongoClient
 
+from Domain.db import DB, DB_URL,DB_PORT, DB_PASSWORD, DB_USERNAME, DB_NAME
 
-def insert_coordinates_store(csv_path, db_name, coll_name, db_url='localhost', db_port=27018):
+async def insert_coordinates_store(csv_path, coll_name):
     """ Imports a csv file at path csv_name to a mongo colection
     returns: count of the documants in the new collection
     """
-    client = MongoClient(host=db_url, port=db_port, username="root", password="rootpassword")
-    db = client[db_name]
-    coll = db[coll_name]
-    data = pd.read_csv(csv_path)
-    payload = json.loads(data.to_json(orient='records'))
+    async with aiofiles.open(csv_path, 'r') as file:
+        data = await file.read()
+        csv_data = StringIO(data)
 
-    collist = db.list_collection_names()
+        df = pd.read_csv(csv_data)
+        json_data = df.to_dict(orient='records')
+
+        await insert_to_mongo(json_data,coll_name)
+
+
+async def insert_to_mongo(data, coll_name):
+    print(f"DB_URL: {DB_URL}")
+    print(f"DB_PORT: {DB_PORT}")
+    print(f"DB_NAME: {DB_NAME}")
+    print(f"DB_USERNAME: {DB_USERNAME}")
+    print(f"DB_PASSWORD: {DB_PASSWORD}")
+
+    coll = DB[coll_name]
+    collist = await DB.list_collection_names()
     if "LonLats" in collist:
         print("The collection exists.")
-        coll.drop()
-    coll.insert_many(payload)
-    return coll.count_documents({})
-
-
-totalCount = insert_coordinates_store("./Data/biblicalLonLat2_formatted.csv", "bibleData", "LonLats")
-print(totalCount)
+        await coll.drop()
+    await coll.insert_many(data)
+    count = await coll.count_documents({})
+    print(count)
+    return count

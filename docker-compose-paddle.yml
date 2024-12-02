@@ -1,17 +1,22 @@
 version: '3.7'
 services:
-
   app:
-    build: .
-    stdin_open: true
-    tty: true
-    volumes:
-      - .:/app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongodb_container
+    environment:
+      - ENVIRONMENT=docker  # Specify environment file to use
+    env_file:
+      - .env.docker
 
   mongodb_container:
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+      MONGO_INITDB_ROOT_PASSWORD: rootPassword
     ports:
-      - 27018:27017
+      - "27018:27017"

@@ -1,30 +1,41 @@
 import json
+import aiofiles
+from Domain.db import DB
 
-from pymongo import MongoClient
 
-
-def insert_bible_to_mongo(json_path, db_name, coll_name, db_url='localhost', db_port=27018):
-    client = MongoClient(db_url, db_port, username="root", password="rootpassword")
-    db = client[db_name]
-    collection = db[coll_name]
-
+async def insert_bible_store(json_path, coll_name):
     # Loading or Opening the json file
-    with open(json_path) as file:
-        file_data = json.load(file)
+    async with aiofiles.open(json_path) as file:
+        data = await file.read()
+        json_data = json.loads(data)
 
-    data = file_data["verses"]
+        data = json_data["verses"]
 
-    # Inserting the loaded data in the Collection
-    # if JSON contains data more than one entry
-    # insert_many is used else insert_one is used
-    collist = db.list_collection_names()
-    if "Bible_ASV" in collist:
-        print("The collection exists.")
-        collection.drop()
+        await insert_to_mongo(data,coll_name)
+
+
+async def insert_to_mongo(data, coll_name):
+    # Access the collection
+    collection = DB[coll_name]
+
+    # List all collection names in the database asynchronously
+    collist = await DB.list_collection_names()
+
+    # If the collection exists, drop it before inserting new data
+    if coll_name in collist:
+        print(f"The collection {coll_name} exists. Dropping it...")
+        await collection.drop()  # Drop the collection asynchronously
+
+    # Insert data based on whether it's a list or a single entry
     if isinstance(data, list):
-        collection.insert_many(data)
-
+        # Insert multiple documents asynchronously
+        result = await collection.insert_many(data)
+        print(f"Inserted {len(result.inserted_ids)} documents.")
     else:
-        collection.insert_one(data)
+        # Insert a single document asynchronously
+        result = await collection.insert_one(data)
+        print(f"Inserted 1 document.")
 
-    print(collection.count_documents({}))
+    # Print the current count of documents in the collection
+    count = await collection.count_documents({})
+    print(f"Current document count in {coll_name}: {count}")
