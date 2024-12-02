@@ -1,14 +1,26 @@
-# Use an official Python runtime as a parent image
+# Use an official Python runtime as the base image
 FROM python:3.11-slim
 
-# Set the working directory in the container
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV ENVIRONMENT=docker
+
+
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# Copy the requirements file into the container
+COPY requirements.txt /app/
 
-# Install any Python dependencies
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Specify the command to run your application
-CMD ["python", "app.py"]
+# Copy the entire project into the container
+COPY . /app/
+
+# Expose the port that Uvicorn will run on
+EXPOSE 8000
+
+# Command to run the FastAPI app with Uvicorn
+CMD ["python", "main.py"]

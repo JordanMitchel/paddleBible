@@ -41,19 +41,34 @@ async def get_coordinates_from_verse_label(bible_version: bibleVersion, book_num
 
     return verse_result
 
-async def run_tasks():
-    await insert_coordinates_store("./Data/biblicalLonLat2_formatted.csv", "LonLats")
-    await insert_bible_store("./Data/asv.json", "Bible_ASV")
+# FastAPI Startup Event
+@app.on_event("startup")
+async def startup_event():
+    print("Starting database seeding...")
+    try:
+        await run_tasks()  # Await directly for debugging
+        print("Database seeding completed.")
+    except Exception as e:
+        print(f"Error during startup event: {e}")
 
-# Start the FastAPI app using uvicorn, and await the background tasks
-async def main():
-    # Run the background tasks before starting the FastAPI server
-    await run_tasks()
-    # Start the FastAPI app with Uvicorn
-    config = uvicorn.Config(app, host="127.0.0.1", port=8000, log_level="debug")
-    server = uvicorn.Server(config)
-    await server.serve()
+async def run_tasks():
+    try:
+        print("Seeding LonLats collection...")
+        await insert_coordinates_store("./Data/biblicalLonLat2_formatted.csv", "LonLats")
+        print("Seeding Bible_ASV collection...")
+        await insert_bible_store("./Data/asv.json", "Bible_ASV")
+        print("Seeding completed successfully.")
+    except Exception as e:
+        print(f"Error during run_tasks: {e}")
+# # Start the FastAPI app using uvicorn, and await the background tasks
+# async def main():
+#     # Run the background tasks before starting the FastAPI server
+#     await run_tasks()
+#     # Start the FastAPI app with Uvicorn
+#     config = uvicorn.Config(app, host="127.0.0.1", port=8000, log_level="debug")
+#     server = uvicorn.Server(config)
+#     await server.serve()
 
 # Run the event loop properly
 if __name__ == '__main__':
-    asyncio.run(main())  # This will handle both the tasks and server start
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, log_level="debug")
