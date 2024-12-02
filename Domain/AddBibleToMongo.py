@@ -1,31 +1,41 @@
 import json
+import aiofiles
 from Domain.db import DB
 
 
-def insert_bible_to_mongo(json_path, coll_name):
+async def insert_bible_store(json_path, coll_name):
+    # Loading or Opening the json file
+    async with aiofiles.open(json_path) as file:
+        data = await file.read()
+        json_data = json.loads(data)
 
+        data = json_data["verses"]
+
+        await insert_to_mongo(data,coll_name)
+
+
+async def insert_to_mongo(data, coll_name):
+    # Access the collection
     collection = DB[coll_name]
 
-    # Loading or Opening the json file
-    with open(json_path) as file:
-        file_data = json.load(file)
+    # List all collection names in the database asynchronously
+    collist = await DB.list_collection_names()
 
-    data = file_data["verses"]
+    # If the collection exists, drop it before inserting new data
+    if coll_name in collist:
+        print(f"The collection {coll_name} exists. Dropping it...")
+        await collection.drop()  # Drop the collection asynchronously
 
-    # Inserting the loaded data in the Collection
-    # if JSON contains data more than one entry
-    # insert_many is used else insert_one is used
-    collist = DB.list_collection_names()
-    if "Bible_ASV" in collist:
-        print("The collection exists.")
-        collection.drop()
+    # Insert data based on whether it's a list or a single entry
     if isinstance(data, list):
-        collection.insert_many(data)
-        print(collection.count_documents({}))
+        # Insert multiple documents asynchronously
+        result = await collection.insert_many(data)
+        print(f"Inserted {len(result.inserted_ids)} documents.")
     else:
-        collection.insert_one(data)
-        print(collection.count_documents({}))
+        # Insert a single document asynchronously
+        result = await collection.insert_one(data)
+        print(f"Inserted 1 document.")
 
-
-# insert_bible_to_mongo
-
+    # Print the current count of documents in the collection
+    count = await collection.count_documents({})
+    print(f"Current document count in {coll_name}: {count}")

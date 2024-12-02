@@ -48,7 +48,7 @@ pathy==0.10.2
 preshed==3.0.8
 pydantic==2.3.0
 pydantic_core==2.6.3
-pymongo==3.12.0
+pymongo~=3.12.3
 python-dateutil==2.8.2
 python-decouple==3.8
 python-dotenv==1.0.0
@@ -87,3 +87,12 @@ websockets==11.0.3
 Werkzeug==2.3.7
 xx-ent-wiki-sm @ https://github.com/explosion/spacy-models/releases/download/xx_ent_wiki_sm-3.6.0/xx_ent_wiki_sm-3.6.0-py3-none-any.whl#sha256=5cd25405727477ac46ed96b511d8c893e0a734bb72e749967e2fa82db3005b4d
 xx-sent-ud-sm @ https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.6.0/xx_sent_ud_sm-3.6.0-py3-none-any.whl#sha256=66d6af65cfe7b7ff4a75b0c05e52ee3b824e547e2332d32647ebcbfc33446c60
+
+pip~=23.2.1
+zlib~=1.2.13
+wheel~=0.41.2
+openssl~=3.0.15
+setuptools~=68.1.2
+motor~=3.6.0
+aiofiles~=22.1.0
+beautifulsoup4~=4.12.2
