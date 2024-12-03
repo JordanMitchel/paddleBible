@@ -33,11 +33,11 @@ async def get_coordinates_from_verse(verse: str) -> BibleStructure:
 async def get_coordinates_from_verse_label(bible_version: bibleVersion, book_num: int, chapter: int, verse_num: int) -> BibleStructure:
     scripture = await search_scripture(bible_version, book_num, chapter, verse_num)
     verse_result: BibleStructure = await search_for_location_by_scripture(scripture.verse[verse_num])
-
-    list_of_bible_versions = ["ESV Name", "KMZ Name"]
-    coordinates = await search_coordinates(verse_result.locations, "ESV Name", list_of_bible_versions)
-    verse_result.locations = coordinates
     verse_result.scripture = scripture
+    list_of_bible_versions = ["ESV Name", "KMZ Name"]
+    if len(verse_result.locations) > 0:
+        coordinates = await search_coordinates(verse_result.locations, "ESV Name", list_of_bible_versions)
+        verse_result.locations = coordinates
 
     return verse_result
 
