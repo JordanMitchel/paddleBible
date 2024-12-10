@@ -1,4 +1,4 @@
-from Domain.db import DB
+from src.db.config import DB
 
 
 async def get_all_bible_books(collection="Bible_ASV"):

@@ -1,16 +1,14 @@
 import uvicorn
-import asyncio
 
-from fastapi import FastAPI, Response
-from watchfiles import awatch
+from fastapi import FastAPI
 
-from Domain.searchBibleBooksList import get_all_bible_books
-from Models.ScriptureResult import BibleStructure, bibleVersion
-from Domain.AddBibleToMongo import insert_bible_store
-from Domain.AddCoordinatesStore import insert_coordinates_store
-from Domain.SearchScripture import search_scripture
-from Domain.searchLocations import search_coordinates
-from DirectAnalysis.searchForLocationByScripture import search_for_location_by_scripture
+from src.search.searchBibleBooksList import get_all_bible_books
+from src.models.ScriptureResult import BibleStructure, bibleVersion
+from src.db.AddBibleToMongo import insert_bible_store
+from src.db.AddCoordinatesStore import insert_coordinates_store
+from src.search.SearchScripture import search_scripture
+from src.search.searchLocations import search_coordinates
+from src.search.searchForLocationByScripture import search_for_location_by_scripture
 
 app = FastAPI(debug=True)
 
@@ -54,9 +52,9 @@ async def startup_event():
 async def run_tasks():
     try:
         print("Seeding LonLats collection...")
-        await insert_coordinates_store("./Data/biblicalLonLat2_formatted.csv", "LonLats")
+        await insert_coordinates_store("Data/csv/biblicalLonLat2_formatted.csv", "LonLats")
         print("Seeding Bible_ASV collection...")
-        await insert_bible_store("./Data/asv.json", "Bible_ASV")
+        await insert_bible_store("Data/json/asv.json", "Bible_ASV")
         print("Seeding completed successfully.")
     except Exception as e:
         print(f"Error during run_tasks: {e}")

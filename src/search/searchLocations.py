@@ -1,22 +1,22 @@
-from typing import List, Any
+from typing import List
 
-from Domain.db import DB
+from src.db.config import DB
 
-from Models.ScriptureResult import Coordinates, Place, SearchResult
+from src.models.ScriptureResult import Coordinates, Place, SearchResult
 
 
-async def search_coordinates(locations: List[Place], bibleVersion: str, extra_bible_versions: List[str],
-                       collection="LonLats"):
+async def search_coordinates(locations: List[Place], bible_version: str, extra_bible_versions: List[str],
+                             collection="LonLats"):
 
     coll = DB[collection]
     count = 0
     for area in locations:
         place = area.location
-        initial_result = await search_single_bible_version(bibleVersion, coll, place)
+        initial_result = await search_single_bible_version(bible_version, coll, place)
         if initial_result.ResultFound:
             locations[count].coordinates = initial_result.Location.coordinates
         else:
-            deep_search_result = await search_across_bible_versions(bibleVersion, extra_bible_versions, coll, place)
+            deep_search_result = await search_across_bible_versions(bible_version, extra_bible_versions, coll, place)
             if deep_search_result.ResultFound:
                 locations[count].coordinates = deep_search_result.Location.coordinates
             else:

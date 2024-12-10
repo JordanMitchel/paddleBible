@@ -2,7 +2,7 @@ from typing import List
 
 import spacy
 
-from Models.ScriptureResult import BibleStructure, Place
+from src.models.ScriptureResult import BibleStructure, Place
 
 
 async def search_for_location_by_scripture(verse: str) -> BibleStructure:

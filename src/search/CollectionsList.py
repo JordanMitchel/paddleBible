@@ -1,4 +1,4 @@
-from Domain.db import DB
+from src.db.config import DB
 
 
 def bibles_list():

@@ -1,5 +1,5 @@
-from Models.ScriptureResult import Scripture
-from Domain.db import DB
+from src.models.ScriptureResult import Scripture
+from src.db.config import DB
 
 
 async def search_scripture(bible_version, book_num, chapter, verse_num) -> Scripture:
@@ -7,7 +7,7 @@ async def search_scripture(bible_version, book_num, chapter, verse_num) -> Scrip
 
     query = {"book": book_num, "chapter": chapter, "verse": verse_num}
     doc = await coll.find_one(query)
-    if doc != None:
+    if doc is not None:
         return Scripture(book=doc["book_name"], chapter=chapter, verse={verse_num: doc['text']})
 
     else:
