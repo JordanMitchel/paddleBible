@@ -1,7 +1,8 @@
 import os
 from email.policy import default
 
-from decouple import config, UndefinedValueError, RepositoryEnv
+from decouple import UndefinedValueError, RepositoryEnv, Config
+
 env_name = os.getenv('ENVIRONMENT','local')
 ENV_FILE_CONFIG = f'.env.{env_name}'
 
@@ -18,12 +19,15 @@ def get_env_variable(key, default=None, cast_type=str, env_file=ENV_FILE_CONFIG)
     Returns:
         Any: The value of the environment variable, cast to the specified type.
     """
+    if env_file and os.path.exists(env_file):
+        env_repo = RepositoryEnv(env_file)
+        config = Config(env_repo)
+    else:
+        config = Config()
+
     try:
-        if env_file:
-            env_repo = RepositoryEnv(env_file)
-            return config(key, default=default, cast=cast_type, repository=env_repo)
-        else:
-            return config(key, default=default, cast=cast_type)
+        # Fetch the key with optional casting and default fallback
+        return config(key, default=default, cast=cast_type)
     except UndefinedValueError:
         raise EnvironmentError(f"The required environment variable '{key}' is not set.")
 
@@ -36,8 +40,8 @@ def load_mongo_config():
         dict: A dictionary containing MongoDB connection details.
     """
     return {
-        "url": get_env_variable("DB_URL", "localhost"),
-        "mongo_port": get_env_variable("MONGO_PORT", "27018"),
+        "url": get_env_variable("MONGO_DB_URL", "localhost"),
+        "mongo_port": get_env_variable("MONGO_PORT", "27018",int),
         "db_collection": get_env_variable("DATABASE_NAME", "bibleData"),
         "db_username": get_env_variable("USER_NAME"),
         "db_password": get_env_variable("DB_PASSWORD"),

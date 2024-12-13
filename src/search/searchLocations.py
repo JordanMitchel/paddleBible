@@ -1,14 +1,14 @@
 from typing import List
 
-from src.db.config import DB
-
+from src.db.config import get_database
 from src.models.ScriptureResult import Coordinates, Place, SearchResult
 
 
-async def search_coordinates(locations: List[Place], bible_version: str, extra_bible_versions: List[str],
-                             collection="LonLats"):
+async def get_coordinates_by_location(locations: List[Place], bible_version: str, extra_bible_versions: List[str],
+                                      collection="LonLats"):
 
-    coll = DB[collection]
+    db = await  get_database()
+    coll = db[collection]
     count = 0
     for area in locations:
         place = area.location

@@ -8,8 +8,8 @@ async def get_mongo_client():
     """
     try:
         config = load_mongo_config()
-        client =  await AsyncIOMotorClient(config['url'], config['mongo_port'], username=config['db_username'], password=config['db_password'])
-        print(f"Connected to MongoDB at {client.address()}")
+        client =  AsyncIOMotorClient(config['url'], config['mongo_port'], username=config['db_username'], password=config['db_password'])
+        print(f"Connected to MongoDB at {client.PORT}")
         return client
     except Exception as e:
         print(f"Failed to connect to MongoDB: {e}")

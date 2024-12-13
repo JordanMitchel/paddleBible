@@ -1,9 +1,9 @@
-from src.db.config import DB
+from src.db.config import get_database
 
+async def bibles_list():
 
-def bibles_list():
-
-    collections = DB.list_collection_names()
+    db = await get_database()
+    collections = db.list_collection_names()
     bible_versions = []
     for coll in collections:
         if coll[0] == "B":
