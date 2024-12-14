@@ -1,9 +1,9 @@
-from Domain.db import DB
-
+from src.db.config import get_database
 
 async def get_all_bible_books(collection="Bible_ASV"):
 
-    coll = DB[collection]
+    db = await get_database()
+    coll = db[collection]
 
     bible_books = []
     async for record in coll.aggregate(

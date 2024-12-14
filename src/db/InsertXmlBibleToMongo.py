@@ -1,13 +1,13 @@
 import xml.etree.ElementTree as ET
-from Domain.db import MONGO_CLIENT, DB_NAME
+from src.db.config import get_database
 
-tree = ET.parse('./../Data/Bible_English_MSG.xml')
+tree = ET.parse('../../Data/xml/Bible_English_MSG.xml')
 
 bibleXml = tree.findall('BIBLEBOOK')
 
 version_of_bible = tree._root.attrib.get('biblename')[-3:]
 collection = f"Bible_{version_of_bible}"
-db = MONGO_CLIENT[DB_NAME]
+db =  get_database()
 coll = db[collection]
 
 for book in bibleXml:

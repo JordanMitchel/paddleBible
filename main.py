@@ -1,16 +1,14 @@
 import uvicorn
-import asyncio
 
-from fastapi import FastAPI, Response
-from watchfiles import awatch
+from fastapi import FastAPI
 
-from Domain.searchBibleBooksList import get_all_bible_books
-from Models.ScriptureResult import BibleStructure, bibleVersion
-from Domain.AddBibleToMongo import insert_bible_store
-from Domain.AddCoordinatesStore import insert_coordinates_store
-from Domain.SearchScripture import search_scripture
-from Domain.searchLocations import search_coordinates
-from DirectAnalysis.searchForLocationByScripture import search_for_location_by_scripture
+from src.search.searchBibleBooksList import get_all_bible_books
+from src.models.ScriptureResult import BibleStructure, bibleVersion
+from src.db.AddBibleToMongo import insert_bible_store
+from src.db.AddCoordinatesStore import insert_coordinates_store
+from src.search.SearchScripture import get_scripture_using_book_and_verse
+from src.search.searchLocations import get_coordinates_by_location
+from src.search.searchForLocationByScripture import get_locations_by_scripture
 
 app = FastAPI(debug=True)
 
@@ -26,22 +24,22 @@ async def get_bible_books():
 
 @app.get("/Scripture/{verse}")
 async def get_coordinates_from_verse(verse: str) -> BibleStructure:
-    verse_result: BibleStructure = await search_for_location_by_scripture(verse)
+    verse_result: BibleStructure = await get_locations_by_scripture(verse)
     return verse_result
 
 @app.get("/Scripture/label/{bible_version}/{book_num}/{chapter}/{verse_num}")
-async def get_coordinates_from_verse_label(bible_version: bibleVersion, book_num: int, chapter: int, verse_num: int) -> BibleStructure:
-    scripture = await search_scripture(bible_version, book_num, chapter, verse_num)
-    verse_result: BibleStructure = await search_for_location_by_scripture(scripture.verse[verse_num])
-
-    list_of_bible_versions = ["ESV Name", "KMZ Name"]
-    coordinates = await search_coordinates(verse_result.locations, "ESV Name", list_of_bible_versions)
-    verse_result.locations = coordinates
+async def get_locations_and_coordinates__from_verse_label(bible_version: bibleVersion, book_num: int, chapter: int, verse_num: int) -> BibleStructure:
+    scripture = await get_scripture_using_book_and_verse(bible_version, book_num, chapter, verse_num)
+    verse_result: BibleStructure = await get_locations_by_scripture(scripture.verse[verse_num])
     verse_result.scripture = scripture
+    list_of_bible_versions = ["ESV Name", "KMZ Name"]
+    if len(verse_result.locations) > 0:
+        coordinates = await get_coordinates_by_location(verse_result.locations, "ESV Name", list_of_bible_versions)
+        verse_result.locations = coordinates
 
     return verse_result
 
-# FastAPI Startup Event
+
 @app.on_event("startup")
 async def startup_event():
     print("Starting database seeding...")
@@ -54,20 +52,12 @@ async def startup_event():
 async def run_tasks():
     try:
         print("Seeding LonLats collection...")
-        await insert_coordinates_store("./Data/biblicalLonLat2_formatted.csv", "LonLats")
+        await insert_coordinates_store("Data/csv/biblicalLonLat2_formatted.csv", "LonLats")
         print("Seeding Bible_ASV collection...")
-        await insert_bible_store("./Data/asv.json", "Bible_ASV")
+        await insert_bible_store("Data/json/asv.json", "Bible_ASV")
         print("Seeding completed successfully.")
     except Exception as e:
         print(f"Error during run_tasks: {e}")
-# # Start the FastAPI app using uvicorn, and await the background tasks
-# async def main():
-#     # Run the background tasks before starting the FastAPI server
-#     await run_tasks()
-#     # Start the FastAPI app with Uvicorn
-#     config = uvicorn.Config(app, host="127.0.0.1", port=8000, log_level="debug")
-#     server = uvicorn.Server(config)
-#     await server.serve()
 
 # Run the event loop properly
 if __name__ == '__main__':

@@ -33,6 +33,7 @@ class BibleStructure(BaseModel):
     scripture: Scripture = {}
     locations: list[Place] | None = None
     location_count: int = 0
+    warning: Optional[str] = ""
 
 
 class SearchResult(BaseModel):
