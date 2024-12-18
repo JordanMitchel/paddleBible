@@ -2,10 +2,11 @@ from typing import List
 
 import spacy
 
+from src.models.Response import ResponseModel
 from src.models.ScriptureResult import BibleStructure, Place
 
 
-async def get_locations_by_scripture(verse: str) -> BibleStructure:
+async def get_locations_by_scripture(verse: str) -> ResponseModel:
     location_list_en_core = sentiment_search('en_core_web_sm', verse)
     location_list_wiki = sentiment_search('xx_ent_wiki_sm', verse)
     location_lists = location_list_en_core + location_list_wiki
@@ -26,10 +27,14 @@ async def get_locations_by_scripture(verse: str) -> BibleStructure:
         bible_struct.warning = "No location found"
 
     bible_struct.locations = locations_arr
-    return bible_struct
+    if len(locations_arr)==0:
+        response = ResponseModel(success=True, data=bible_struct, warnings="No location found")
+        return response
+    return ResponseModel(success=True, data=bible_struct)
 
 
-def sentiment_search(sentiment: str, verse: str):
+
+def sentiment_search(sentiment: str, verse: str) -> List[str]:
     nlp = spacy.load(sentiment)
     doc = nlp(verse)
     gpe = []
@@ -43,6 +48,6 @@ def sentiment_search(sentiment: str, verse: str):
     return gpe + loc
 
 
-def strip_locations_of_unneccesary_words(locations: List[str]) -> []:
+def strip_locations_of_unneccesary_words(locations: List[str]) -> set[str]:
     ignore_places = ["north", "east", "south", "west", "earth"]
     return set([place for place in locations if place.lower() not in ignore_places])

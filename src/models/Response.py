@@ -6,4 +6,3 @@ class ResponseModel(BaseModel):
     success: bool
     data: Any
     warnings: str | None = None
-    error: str | None = None

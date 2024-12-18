@@ -1,8 +1,7 @@
 from enum import Enum
-from typing import List, Dict, Optional
-from typing_extensions import TypedDict
+from typing import Dict, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Coordinates(BaseModel):
@@ -12,15 +11,10 @@ class Coordinates(BaseModel):
 
 class Place(BaseModel):
     location: Optional[str] = ""
-    coordinates: Optional[Coordinates] = {}
+    coordinates: Optional[Coordinates] = Field({})
     warning: str | None = None
     Passages: str | None = None
     Comment: str | None = None
-
-
-#
-# class Verse(BaseModel):
-#     verse: Optional[Dict[int,str]]
 
 
 class Scripture(BaseModel):
@@ -30,25 +24,24 @@ class Scripture(BaseModel):
 
 
 class BibleStructure(BaseModel):
-    scripture: Scripture = {}
+    scripture: Scripture = Field(default={})
     locations: list[Place] | None = None
     location_count: int = 0
-    warning: Optional[str] = ""
 
 
 class SearchResult(BaseModel):
     ResultFound: bool = False
-    Location: Place = {}
+    Location: Place = Field(default={})
 
 
-class bibleVersion(str, Enum):
+class BibleVersion(str, Enum):
     ASV = "Bible_ASV"
     NIV = "Bible_NIV"
     NLT = "Bible_NLT"
     KJV = "Bible_KJV"
 
 
-class bibleBook(int, Enum):
+class BibleBook(int, Enum):
     GENESIS = 1
     EXODUS = 2
     LEVITICUS = 3
