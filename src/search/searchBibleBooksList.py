@@ -1,6 +1,8 @@
 from src.db.config import get_database
+from src.models.Response import ResponseModel
 
-async def get_all_bible_books(collection="Bible_ASV"):
+
+async def get_all_bible_books(collection="Bible_ASV")-> ResponseModel:
 
     db = await get_database()
     coll = db[collection]
@@ -19,5 +21,6 @@ async def get_all_bible_books(collection="Bible_ASV"):
         # print(record)
 
     sorted_bible_list = sorted(bible_books, key=lambda d: d['book'])
-    return sorted_bible_list
+    response = ResponseModel(success= True, data= sorted_bible_list)
+    return response
 

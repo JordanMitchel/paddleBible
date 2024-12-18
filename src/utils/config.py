@@ -4,7 +4,7 @@ from email.policy import default
 from decouple import UndefinedValueError, RepositoryEnv, Config
 
 env_name = os.getenv('ENVIRONMENT','local')
-ENV_FILE_CONFIG = f'.env.{env_name}'
+ENV_FILE_CONFIG = f'.///env.{env_name}'
 
 def get_env_variable(key, default=None, cast_type=str, env_file=ENV_FILE_CONFIG):
     """
@@ -23,7 +23,7 @@ def get_env_variable(key, default=None, cast_type=str, env_file=ENV_FILE_CONFIG)
         env_repo = RepositoryEnv(env_file)
         config = Config(env_repo)
     else:
-        config = Config()
+        config = Config(repository=os.environ)
 
     try:
         # Fetch the key with optional casting and default fallback
