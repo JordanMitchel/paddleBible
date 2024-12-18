@@ -11,7 +11,7 @@ services:
     environment:
       - ENVIRONMENT=docker  # Specify environment file to use
     env_file:
-      - .env.docker
+      - ./env.docker
 
   mongodb_container:
     image: mongo:latest
