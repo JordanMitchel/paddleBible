@@ -4,5 +4,5 @@ from pydantic import BaseModel
 
 class ResponseModel(BaseModel):
     success: bool
-    data: Any
+    data: Any | None = None
     warnings: str | None = None
