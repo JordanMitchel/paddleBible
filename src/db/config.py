@@ -1,15 +1,15 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from src.utils.config import load_mongo_config
 
-
 async def get_mongo_client():
-    """
-    Creates and returns a MongoDB client instance.
-    """
     try:
         config = load_mongo_config()
-        client =  AsyncIOMotorClient(config['url'], config['mongo_port'], username=config['db_username'], password=config['db_password'])
-        print(f"Connected to MongoDB at {client.PORT}")
+        client = AsyncIOMotorClient(
+            config["url"],
+            username=config.get("db_username"),
+            password=config.get("db_password"),
+        )
+        print(f"Connected to MongoDB at {config['url']}")
         return client
     except Exception as e:
         print(f"Failed to connect to MongoDB: {e}")
@@ -17,15 +17,12 @@ async def get_mongo_client():
 
 
 async def get_database(client=None):
-    """
-    Returns the specified MongoDB database.
-    If no client is provided, a new one is created.
-    """
     try:
         config = load_mongo_config()
         if client is None:
             client = await get_mongo_client()
-        return client[config['db_collection']]
+        db_name = config.get("db_collection", "default_db")
+        return client[db_name]
     except Exception as e:
         print(f"Failed to get database: {e}")
         raise

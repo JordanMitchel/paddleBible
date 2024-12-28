@@ -9,7 +9,7 @@ from src.db.AddBibleToMongo import insert_bible_store
 from src.db.AddCoordinatesStore import insert_coordinates_store
 from src.search.SearchScripture import get_scripture_using_book_and_verse
 from src.search.searchLocations import get_coordinates_by_location
-from src.search.searchForLocationByScripture import get_locations_by_scripture
+from src.search.searchForLocationByScripture import get_locations_using_scripture
 import asyncio
 
 if hasattr(asyncio, "WindowsSelectorEventLoopPolicy"):
@@ -29,14 +29,14 @@ async def get_bible_books() -> ResponseModel:
 
 @app.get("/Scripture/{verse}")
 async def get_coordinates_from_verse(verse: str) -> ResponseModel:
-    verse_result: ResponseModel = await get_locations_by_scripture(verse)
+    verse_result: ResponseModel = await get_locations_using_scripture(verse)
     return verse_result
 
 @app.get("/Scripture/label/{bible_version}/{book_num}/{chapter}/{verse_num}")
 async def get_locations_and_coordinates__from_verse_label(bible_version: BibleVersion, book_num: int, chapter: int, verse_num: int) -> ResponseModel:
     scripture_result = await get_scripture_using_book_and_verse(bible_version, book_num, chapter, verse_num)
     if not scripture_result.success:
-        verse_result: ResponseModel = await get_locations_by_scripture(scripture_result.verse[verse_num])
+        verse_result: ResponseModel = await get_locations_using_scripture(scripture_result.verse[verse_num])
         verse_result.data.scripture = scripture_result
         list_of_bible_versions = ["ESV Name", "KMZ Name"]
         if len(verse_result.data.locations) > 0:

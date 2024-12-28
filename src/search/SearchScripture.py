@@ -4,16 +4,22 @@ from src.models.ScriptureResult import Scripture
 
 
 async def get_scripture_using_book_and_verse(bible_version, book_num, chapter, verse_num) -> ResponseModel:
+    try:
+        db = await get_database()
+        coll = db[bible_version]
 
-    db = await get_database()
-    coll = db[bible_version]
+        query = {"book": book_num, "chapter": chapter, "verse": verse_num}
+        doc = await coll.find_one(query)
 
-    query = {"book": book_num, "chapter": chapter, "verse": verse_num}
-    doc = await coll.find_one(query)
-    if doc is not None:
-        scripture = Scripture(book=doc["book_name"], chapter=chapter, verse={verse_num: doc['text']})
-        return ResponseModel(success=True,data=scripture)
+        if doc:
+            scripture = Scripture(book=doc["book_name"], chapter=chapter, verse={verse_num: doc["text"]})
+            return ResponseModel(success=True, data=scripture)
 
-    else:
-        scripture = Scripture(book="N/A", chapter=chapter, verse={verse_num: "N/A"})
-        return ResponseModel(success= False, data=scripture, warnings="No scripture found")
+        return ResponseModel(
+            success=False,
+            data=Scripture(book="N/A", chapter=chapter, verse={verse_num: "N/A"}),
+            warnings="No scripture found"
+        )
+    except Exception as e:
+        # Log exception here
+        return ResponseModel(success=False, warnings=f"Error fetching scripture: {str(e)}")
