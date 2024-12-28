@@ -1,3 +1,21 @@
+Django
+Flask==2.3.3
+python-decouple==3.8
+python-dotenv==1.0.0
+sqlparse==0.2.4
+
+spacy==3.6.1
+spacy-alignments==0.9.0
+spacy-legacy==3.0.12
+spacy-loggers==1.0.4
+spacy-transformers==1.2.5  # Upgraded version for compatibility
+
+thinc==8.1.12  # Latest version for better compatibility
+
+srsly==2.4.7
+
+murmurhash==1.0.9
+
 aiofiles
 annotated-types==0.5.0
 anyio==3.7.1
@@ -12,7 +30,6 @@ charset-normalizer==3.2.0
 click==8.1.7
 confection==0.1.1
 cymem==2.0.7
-Django
 django-cors-headers==4.2.0
 djangorestframework==3.14.0
 djongo==1.3.6
@@ -24,7 +41,6 @@ en-core-web-trf @ https://github.com/explosion/spacy-models/releases/download/en
 exceptiongroup==1.1.3
 fastapi==0.103.2
 filelock==3.12.3
-Flask==2.3.3
 fsspec==2023.9.0
 geographiclib==2.0
 geopy==2.4.0
@@ -40,20 +56,17 @@ langcodes==3.3.0
 MarkupSafe==2.1.3
 motor==3.6.0
 mpmath==1.3.0
-murmurhash==1.0.9
 networkx==3.1
-numpy==1.25.2
+numpy==1.23.4  # Adjusted version for compatibility
 opencage==2.3.0
 packaging==23.1
-pandas==2.1.0
+pandas==2.2.3
 pathy==0.10.2
 preshed==3.0.8
 pydantic==2.3.0
 pydantic_core==2.6.3
 pymongo
 python-dateutil==2.8.2
-python-decouple==3.8
-python-dotenv==1.0.0
 pytz==2023.3.post1
 PyYAML==6.0.1
 regex==2023.8.8
@@ -63,20 +76,8 @@ six==1.16.0
 smart-open==6.3.0
 sniffio==1.3.0
 soupsieve
-spacy==3.6.1
-spacy-alignments==0.9.0
-spacy-legacy==3.0.12
-spacy-loggers==1.0.4
-spacy-transformers==1.2.5
-sqlparse==0.2.4
-srsly==2.4.7
-starlette==0.27.0
-sympy==1.12
-thinc==8.1.12
-tokenizers==0.13.3
-torch==2.0.1
-tqdm==4.66.1
-transformers==4.30.2
+starlette==0.27.0,
+transformers==4.30.2  # Kept as requested version
 typer==0.9.0
 typing_extensions==4.7.1
 tzdata==2023.3
