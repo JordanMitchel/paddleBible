@@ -16,12 +16,12 @@ srsly==2.4.7
 
 murmurhash==1.0.9
 
-aiofiles
+aiofiles~=22.1.0
 annotated-types==0.5.0
 anyio==3.7.1
 asgiref
 backoff==2.2.1
-beautifulsoup4
+beautifulsoup4~=4.12.3
 blinker==1.6.2
 blis==0.7.10
 catalogue==2.0.9
@@ -65,7 +65,7 @@ pathy==0.10.2
 preshed==3.0.8
 pydantic==2.3.0
 pydantic_core==2.6.3
-pymongo
+pymongo~=4.9.2
 python-dateutil==2.8.2
 pytz==2023.3.post1
 PyYAML==6.0.1
@@ -90,3 +90,5 @@ websockets==11.0.3
 Werkzeug==2.3.7
 xx-ent-wiki-sm @ https://github.com/explosion/spacy-models/releases/download/xx_ent_wiki_sm-3.6.0/xx_ent_wiki_sm-3.6.0-py3-none-any.whl#sha256=5cd25405727477ac46ed96b511d8c893e0a734bb72e749967e2fa82db3005b4d
 xx-sent-ud-sm @ https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.6.0/xx_sent_ud_sm-3.6.0-py3-none-any.whl#sha256=66d6af65cfe7b7ff4a75b0c05e52ee3b824e547e2332d32647ebcbfc33446c60
+
+pytest~=8.3.4

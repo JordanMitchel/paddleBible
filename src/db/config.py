@@ -28,7 +28,7 @@ async def get_database(client=None):
         raise
 
 # Example Usage
-if __name__ == "__main__":
-    client = get_mongo_client()
-    db = get_database(client)
-    print(f"Using database: {db.name}")
+# if __name__ == "__main__":
+#     client = get_mongo_client()
+#     db = get_database(client)
+#     print(f"Using database: {db.name}")

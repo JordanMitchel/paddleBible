@@ -34,22 +34,32 @@ async def get_locations_using_scripture(verse: str) -> ResponseModel:
     return ResponseModel(success=True, data=bible_struct)
 
 
+from typing import List
+import spacy
 
 def sentiment_search(sentiment: str, verse: str) -> List[str]:
+    if not sentiment:
+        return []
+
     try:
+        # Load the specified SpaCy model
         nlp = spacy.load(sentiment)
         doc = nlp(verse)
         gpe = []
         loc = []
 
+        # Extract entities labeled as GPE or LOC
         for entry in doc.ents:
             if entry.label_ == 'GPE':
                 gpe.append(entry.text)
             elif entry.label_ == 'LOC':
                 loc.append(entry.text)
         return gpe + loc
-    except ValueError as e:
+    except OSError as e:
+        # Handle missing or invalid SpaCy models
+        print(f"Error loading SpaCy model '{sentiment}': {e}")
         return []
+
 
 
 def strip_locations_of_unneccesary_words(locations: List[str]) -> set[str]:
