@@ -1,6 +1,6 @@
-from unittest.mock import AsyncMock, patch
+from unittest.mock import patch
 import pytest
-from src.db.config import get_mongo_client, get_database
+from src.db.config import get_mongo_client
 
 
 @pytest.mark.asyncio
@@ -23,7 +23,7 @@ async def test_get_mongo_client_success(mock_motor_client, mock_load_config):
 
     # Assertions
     mock_motor_client.assert_called_once_with(
-        "mongodb://localhost", 27018, username="test_user", password="test_password"
+        "mongodb://localhost", username="test_user", password="test_password"
     )
     assert client == mock_motor_client.return_value
 
