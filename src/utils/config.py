@@ -16,8 +16,9 @@ def get_env_variable(key, default=None, cast_type=str, env_file=ENV_FILE_CONFIG)
     try:
         # Fetch the key with optional casting and default fallback
         return config(key, default=default, cast=cast_type)
-    except UndefinedValueError:
-        raise EnvironmentError(f"The required environment variable '{key}' is not set.")
+    except UndefinedValueError as exc:
+        # Explicitly re-raise the exception with context
+        raise EnvironmentError(f"The required environment variable '{key}' is not set.") from exc
 
 
 def load_mongo_config():

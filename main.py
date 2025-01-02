@@ -1,9 +1,9 @@
 import asyncio
 import uvicorn
 from fastapi import FastAPI
+from pymongo.errors import  ServerSelectionTimeoutError, OperationFailure
 from src.background_tasks.start_up_tasks import run_tasks
 from src.routers import  router_scripture
-from pymongo.errors import  ServerSelectionTimeoutError, OperationFailure
 
 
 if hasattr(asyncio, "WindowsSelectorEventLoopPolicy"):
