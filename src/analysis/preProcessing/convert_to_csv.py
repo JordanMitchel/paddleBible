@@ -9,7 +9,7 @@ dataframe = pd.read_csv("./Data/delimitedBiblicalData", delimiter="\t")
 dataframe.to_csv("./Data/biblicalLonLat2.csv", encoding='utf-8', index=False)
 
 # Format the generated CSV file by removing unwanted characters
-with open("./Data/biblicalLonLat2.csv", "r") as textFile:
+with open("./Data/biblicalLonLat2.csv", "r", encoding='utf-8') as textFile:
     text = ''.join([line for line in textFile]) \
         .replace(">", "").replace("~", "").replace("?", "")
 

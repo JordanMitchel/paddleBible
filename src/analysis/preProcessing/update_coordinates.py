@@ -4,8 +4,8 @@ import re
 from opencage.geocoder import OpenCageGeocode
 from requests import RequestException
 
-key = '0c12b649ffd54558846bde5342c92be4'
-geocoder = OpenCageGeocode(key)
+KEY = '0c12b649ffd54558846bde5342c92be4'
+geocoder = OpenCageGeocode(KEY)
 
 
 def update_null_coordinates_using_location_name():
