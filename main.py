@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
-from src.BackgroundTasks.startUpTasks import run_tasks
+from src.background_tasks.start_up_tasks import run_tasks
 from src.routers import  scriptureRouter
 import asyncio
 
