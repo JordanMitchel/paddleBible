@@ -1,9 +1,5 @@
-from typing import List
-
-import spacy
-
 from src.models.Response import ResponseModel
-from src.models.ScriptureResult import BibleStructure, Place, Scripture
+from src.models.ScriptureResult import BibleStructure, Place
 
 
 async def get_locations_using_scripture(verse: str) -> ResponseModel:

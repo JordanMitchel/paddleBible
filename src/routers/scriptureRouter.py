@@ -14,12 +14,14 @@ async def get_bible_books() -> ResponseModel:
     print(books.data)
     return books
 
-@router.get("/Scripture/{verse}")
+
+@router.get("/GetCoordinates/{verse}")
 async def get_coordinates_from_verse(verse: str) -> ResponseModel:
     verse_result: ResponseModel = await get_locations_using_scripture(verse)
     return verse_result
 
-@router.get("/Scripture/label/{bible_version}/{book_num}/{chapter}/{verse_num}")
+
+@router.get("/GetVerseData/{bible_version}/{book_num}/{chapter}/{verse_num}")
 async def get_locations_and_coordinates__from_verse_label(bible_version: BibleVersion, book_num: int, chapter: int, verse_num: int) -> ResponseModel:
     scripture_result = await get_scripture_using_book_and_verse(bible_version, book_num, chapter, verse_num)
     if not scripture_result.success:

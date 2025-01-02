@@ -9,7 +9,7 @@ if hasattr(asyncio, "WindowsSelectorEventLoopPolicy"):
 
 app = FastAPI(title="PaddleBible", version="1.0.0", debug=True)
 
-app.include_router(scriptureRouter.router)
+app.include_router(scriptureRouter.router, prefix="/scripture")
 @app.on_event("startup")
 async def startup_event():
     print("Starting database seeding...")
