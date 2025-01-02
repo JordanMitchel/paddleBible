@@ -1,12 +1,10 @@
-from typing import List
-
-import spacy
-
 from src.models.Response import ResponseModel
 from src.models.ScriptureResult import BibleStructure, Place
 
 
 async def get_locations_using_scripture(verse: str) -> ResponseModel:
+    if not verse:
+        return ResponseModel(success=False,data=BibleStructure(),warnings="Empty verse no location found")
     location_list_en_core = sentiment_search('en_core_web_sm', verse)
     location_list_wiki = sentiment_search('xx_ent_wiki_sm', verse)
     location_lists = location_list_en_core + location_list_wiki
@@ -38,7 +36,7 @@ from typing import List
 import spacy
 
 def sentiment_search(sentiment: str, verse: str) -> List[str]:
-    if not sentiment:
+    if not sentiment or not verse:
         return []
 
     try:

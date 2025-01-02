@@ -76,7 +76,7 @@ six==1.16.0
 smart-open==6.3.0
 sniffio==1.3.0
 soupsieve
-starlette==0.27.0,
+starlette==0.27.0
 transformers==4.30.2  # Kept as requested version
 typer==0.9.0
 typing_extensions==4.7.1
