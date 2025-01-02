@@ -3,8 +3,8 @@ import os
 from decouple import  Config, RepositoryEnv
 
 env_name = os.getenv('ENVIRONMENT','local')
-env_file = f'.env.{env_name}'
-config = Config(RepositoryEnv(env_file))
+ENV_FILE = f'.env.{env_name}'
+config = Config(RepositoryEnv(ENV_FILE))
 
 DB_URL = config("MONGO_DB_URL")
 DB_PORT = config("MONGO_PORT", cast=int)
