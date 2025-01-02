@@ -32,7 +32,6 @@ async def insert_into_each_book(bible_xml, coll):
                     "text": verse_text,
                 }
                 coll.insert_one(bible_dict)
-    
     print (coll.count())
 
 insert_xml_bible_to_mongo("Bible_English_MSG")
