@@ -36,14 +36,14 @@ async def search_single_bible_version(bible_version, collection, place) -> Searc
     return bible_location
 
 
-async def search_across_bible_versions(intial_version, list_of_versions, collection, place):
+async def search_across_bible_versions(initial_version, list_of_versions, collection, place):
     for bible_version in list_of_versions:
         bible_location_result: SearchResult = await light_search(place, collection, bible_version)
         if bible_location_result.ResultFound:
             return bible_location_result
     bible_location_deep_result: SearchResult = await deep_search_and_update(place,
                                                                             collection,
-                                                                            intial_version,
+                                                                            initial_version,
                                                                             list_of_versions)
     return bible_location_deep_result
 
@@ -72,7 +72,7 @@ async def deep_search_and_update(area, collection, bible_version, extra_versions
     return SearchResult()
 
 
-async def update_bible_with_location(identified_location, bible_versions, original_location, collection):
+async def update_bible_with_location(identified_location, bible_versions, original_location, collection)-> None:
     if identified_location.ResultFound:
         result_json={}
         for version in bible_versions:

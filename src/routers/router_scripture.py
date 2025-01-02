@@ -2,7 +2,7 @@
 
 from src.models.response import ResponseModel
 from src.models.scripture_result import BibleVersion
-from src.search.SearchScripture import get_scripture_using_book_and_verse
+from src.search.Search_scripture import get_scripture_using_book_and_verse
 from src.search.search_bible_books_list import get_all_bible_books
 from src.search.search_for_location_by_scripture import get_locations_using_scripture
 from src.search.search_locations import get_coordinates_by_location

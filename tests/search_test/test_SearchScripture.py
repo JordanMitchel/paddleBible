@@ -2,7 +2,7 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from src.models.scripture_result import Scripture
-from src.search.SearchScripture import get_scripture_using_book_and_verse
+from src.search.Search_scripture import get_scripture_using_book_and_verse
 
 @pytest.mark.asyncio
 @patch("src.search.SearchScripture.get_database")  # Mocking the get_database function
