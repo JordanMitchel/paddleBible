@@ -1,10 +1,14 @@
+import spacy
+from typing import List
 from src.models.response import ResponseModel
 from src.models.scripture_result import BibleStructure, Place
 
 
 async def get_locations_using_scripture(verse: str) -> ResponseModel:
     if not verse:
-        return ResponseModel(success=False,data=BibleStructure(),warnings="Empty verse no location found")
+        return ResponseModel(success=False,
+                             data=BibleStructure(),
+                             warnings="Empty verse no location found")
     location_list_en_core = sentiment_search('en_core_web_sm', verse)
     location_list_wiki = sentiment_search('xx_ent_wiki_sm', verse)
     location_lists = location_list_en_core + location_list_wiki
@@ -14,7 +18,7 @@ async def get_locations_using_scripture(verse: str) -> ResponseModel:
     locations_arr = []
     warnings = ""
     if len(location_lists) > 0:
-        location_lists_stripped = strip_locations_of_unneccesary_words(location_lists)
+        location_lists_stripped = strip_locations_of_unnecessary_words(location_lists)
 
         for spot in location_lists_stripped:
             place_obj = Place()
@@ -31,9 +35,6 @@ async def get_locations_using_scripture(verse: str) -> ResponseModel:
         return response
     return ResponseModel(success=True, data=bible_struct)
 
-
-from typing import List
-import spacy
 
 def sentiment_search(sentiment: str, verse: str) -> List[str]:
     if not sentiment or not verse:
@@ -59,7 +60,7 @@ def sentiment_search(sentiment: str, verse: str) -> List[str]:
         return []
 
 
+def strip_locations_of_unnecessary_words(locations: List[str]) -> set[str]:
+    ignore_places = {"north", "east", "south", "west", "earth"}
+    return {place for place in locations if place.lower() not in ignore_places}
 
-def strip_locations_of_unneccesary_words(locations: List[str]) -> set[str]:
-    ignore_places = ["north", "east", "south", "west", "earth"]
-    return set([place for place in locations if place.lower() not in ignore_places])

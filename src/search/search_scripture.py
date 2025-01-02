@@ -28,7 +28,7 @@ async def get_scripture_using_book_and_verse(bible_version,
             warnings="No scripture found"
         )
 
-    except ServerSelectionTimeoutError as e:
+    except ServerSelectionTimeoutError:
         return ResponseModel(success=False, warnings="MongoDB server could not be reached."
                                                      " Please check your connection.")
     except OperationFailure as e:
