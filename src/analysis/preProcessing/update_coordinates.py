@@ -60,10 +60,14 @@ def insert_new_lat_lon(collection, doc, location):
         print("The longitude of the location is: ", location.longitude)
 
         collection \
-            .update_one({"_id": doc["_id"]}, {"$set": {"Lat": location.latitude, "Lon": location.longitude}})
+            .update_one({"_id": doc["_id"]},
+                        {"$set": {"Lat": location.latitude,
+                                  "Lon": location.longitude}})
 
         try:
-            results = geocoder.reverse_geocode(location.latitude, location.longitude, language='en', no_annotations='1')
+            results = geocoder.reverse_geocode(location.latitude,
+                                               location.longitude,
+                                               language='en', no_annotations='1')
             if results and len(results):
                 print(results[0]['formatted'])
         except (IndexError, KeyError):
