@@ -1,6 +1,7 @@
+from unittest.mock import AsyncMock, patch
+
 import pytest
 from src.db.config import get_mongo_client
-from unittest.mock import AsyncMock, patch
 from src.db.config import get_database
 
 @pytest.mark.asyncio

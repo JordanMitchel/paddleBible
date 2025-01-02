@@ -16,7 +16,7 @@ async def test_get_locations_using_scripture_works():
     response: ResponseModel = await get_locations_using_scripture(verse)
 
     #test
-    assert response.success == True
+    assert response.success is True
     assert isinstance(response.data, BibleStructure)
 
 
@@ -30,6 +30,6 @@ async def test_get_locations_using_scripture_without_location_produces_warning()
     response: ResponseModel = await get_locations_using_scripture(verse)
 
     #test
-    assert response.success == True
+    assert response.success is True
     assert isinstance(response.data, BibleStructure)
     assert response.warnings == "No location found"

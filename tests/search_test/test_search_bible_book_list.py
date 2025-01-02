@@ -1,7 +1,7 @@
 from unittest.mock import AsyncMock, patch, MagicMock
 import pytest
-from src.models.response import ResponseModel
 from src.search.search_bible_books_list import get_all_bible_books
+from tests.search_test.mock_data import mock_bible_books
 
 
 class AsyncIteratorMock:
@@ -28,20 +28,15 @@ async def test_get_all_bible_books(mock_get_database):
     ]
 
     # Expected sorted response
-    expected_response = ResponseModel(
-        success=True,
-        data=[
-            {'book': 1, 'book_name': 'Genesis'},
-            {'book': 2, 'book_name': 'Exodus'},
-            {'book': 3, 'book_name': 'Leviticus'},
-        ]
-    )
+    expected_response = mock_bible_books
 
     # Create mock collection
     mock_collection = AsyncMock()
 
     # Instead of returning a coroutine, directly set the return value to our AsyncIteratorMock
-    mock_collection.aggregate = MagicMock(return_value=AsyncIteratorMock(mock_aggregate_data.copy()))
+    mock_collection.aggregate = MagicMock(
+        return_value=AsyncIteratorMock(mock_aggregate_data.copy())
+    )
 
     # Create mock database
     mock_db = AsyncMock()
