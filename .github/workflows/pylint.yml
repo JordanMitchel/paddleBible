@@ -17,7 +17,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pylint spacy pydantic pandas fastapi motor aiofiles pytest uvicorn requests bs4 opencage.geocoder # Install pylint, pydantic, fastapi, motor, and aiofiles
+        pip install pylint spacy pydantic pandas fastapi motor aiofiles pytest uvicorn requests opencage.geocoder # Install pylint, pydantic, fastapi, motor, and aiofiles
     - name: Analyzing the code with pylint
       run: |
         pylint --disable=missing-docstring,too-few-public-methods $(git ls-files '*.py')
