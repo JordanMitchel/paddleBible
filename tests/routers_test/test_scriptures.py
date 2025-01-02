@@ -1,23 +1,17 @@
-﻿import pytest
-from unittest.mock import patch, AsyncMock
-from src.models.Response import ResponseModel
-from src.models.ScriptureResult import BibleStructure, Scripture, Place
-from src.routers.scriptureRouter import get_bible_books
-from src.search.searchForLocationByScripture import get_locations_using_scripture
+﻿from unittest.mock import patch, AsyncMock
+import pytest
+from src.models.response import ResponseModel
+from src.models.scripture_result import BibleStructure, Scripture, Place
+from src.routers.router_scripture import get_bible_books
+from src.search.search_for_location_by_scripture import get_locations_using_scripture
+from tests.search_test.mock_data import mock_bible_books
 
 
 @pytest.mark.asyncio
 @patch("src.routers.scriptureRouter.get_all_bible_books", new_callable=AsyncMock)
 async def test_get_bible_books(mock_get_all_bible_books):
     # Arrange
-    bible_data = ResponseModel(
-        success=True,
-        data=[
-            {'book': 1, 'book_name': 'Genesis'},
-            {'book': 2, 'book_name': 'Exodus'},
-            {'book': 3, 'book_name': 'Leviticus'},
-        ]
-    )
+    bible_data = mock_bible_books
     mock_get_all_bible_books.return_value = bible_data
 
     # Act

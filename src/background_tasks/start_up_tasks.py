@@ -1,5 +1,7 @@
-﻿from src.db.AddBibleToMongo import insert_bible_store
-from src.db.AddCoordinatesStore import insert_coordinates_store
+﻿import json
+
+from src.db.add_bible_to_mongo import insert_bible_store
+from src.db.add_coordinates_store import insert_coordinates_store
 
 
 async def run_tasks():
@@ -9,5 +11,7 @@ async def run_tasks():
         print("Seeding Bible_ASV collection...")
         await insert_bible_store("Data/json/asv.json", "Bible_ASV")
         print("Seeding completed successfully.")
-    except Exception as e:
-        print(f"Error during run_tasks: {e}")
+    except FileNotFoundError as e:
+        print(f"File not found: {e}")
+    except json.JSONDecodeError as e:
+        print(f"Error decoding JSON: {e}")

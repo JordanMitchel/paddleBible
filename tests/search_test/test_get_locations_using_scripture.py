@@ -1,8 +1,8 @@
 import pytest
 
-from src.models.Response import ResponseModel
-from src.models.ScriptureResult import BibleStructure
-from src.search.searchForLocationByScripture import get_locations_using_scripture
+from src.models.response import ResponseModel
+from src.models.scripture_result import BibleStructure
+from src.search.search_for_location_by_scripture import get_locations_using_scripture
 
 
 @pytest.mark.asyncio
@@ -16,7 +16,7 @@ async def test_get_locations_using_scripture_works():
     response: ResponseModel = await get_locations_using_scripture(verse)
 
     #test
-    assert response.success == True
+    assert response.success is True
     assert isinstance(response.data, BibleStructure)
 
 
@@ -30,6 +30,6 @@ async def test_get_locations_using_scripture_without_location_produces_warning()
     response: ResponseModel = await get_locations_using_scripture(verse)
 
     #test
-    assert response.success == True
+    assert response.success is True
     assert isinstance(response.data, BibleStructure)
     assert response.warnings == "No location found"

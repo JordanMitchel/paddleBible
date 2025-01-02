@@ -1,7 +1,8 @@
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
+
 import pytest
 from src.db.config import get_mongo_client
-
+from src.db.config import get_database
 
 @pytest.mark.asyncio
 @patch("src.db.config.load_mongo_config")  # Fully qualified path for `load_mongo_config`
@@ -45,14 +46,6 @@ async def test_get_mongo_client_failure(mock_load_config, mock_motor_client):
     with pytest.raises(Exception, match="Connection error"):
         await get_mongo_client()
 
-
-from unittest.mock import AsyncMock, patch
-import pytest
-from src.db.config import get_database
-
-from unittest.mock import AsyncMock, patch
-import pytest
-from src.db.config import get_database
 
 @pytest.mark.asyncio
 @patch("src.db.config.load_mongo_config")  # Mocking the load_mongo_config function

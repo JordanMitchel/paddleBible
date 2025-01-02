@@ -30,6 +30,6 @@ async def insert_to_mongo(data, coll_name):
     else:
         # Insert a single document asynchronously
         await collection.insert_one(data)
-        print(f"Inserted 1 document.")
+        print("Inserted 1 document.")
     count = await collection.count_documents({})
     print(f"Current document count in {coll_name}: {count}")
