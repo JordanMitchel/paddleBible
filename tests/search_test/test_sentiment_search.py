@@ -1,4 +1,4 @@
-from src.search.searchForLocationByScripture import sentiment_search
+from src.search.search_for_location_by_scripture import sentiment_search
 
 
 def test_sentiment_search_works():

@@ -3,7 +3,7 @@ import pytest
 from typing import AsyncIterator
 
 from src.models.response import ResponseModel
-from src.search.searchBibleBooksList import get_all_bible_books
+from src.search.search_bible_books_list import get_all_bible_books
 
 
 class AsyncIteratorMock:

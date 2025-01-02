@@ -3,7 +3,7 @@ from unittest.mock import patch, AsyncMock
 from src.models.response import ResponseModel
 from src.models.scripture_result import BibleStructure, Scripture, Place
 from src.routers.router_scripture import get_bible_books
-from src.search.searchForLocationByScripture import get_locations_using_scripture
+from src.search.search_for_location_by_scripture import get_locations_using_scripture
 
 
 @pytest.mark.asyncio

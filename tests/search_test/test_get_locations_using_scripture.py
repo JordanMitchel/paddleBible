@@ -2,7 +2,7 @@ import pytest
 
 from src.models.response import ResponseModel
 from src.models.scripture_result import BibleStructure
-from src.search.searchForLocationByScripture import get_locations_using_scripture
+from src.search.search_for_location_by_scripture import get_locations_using_scripture
 
 
 @pytest.mark.asyncio

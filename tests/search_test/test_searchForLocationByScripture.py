@@ -1,4 +1,4 @@
-from src.search.searchForLocationByScripture import strip_locations_of_unneccesary_words
+from src.search.search_for_location_by_scripture import strip_locations_of_unneccesary_words
 
 
 def test_strip_locations_of_unnecessary_words():
