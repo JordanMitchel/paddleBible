@@ -12,4 +12,3 @@ print(u'%f;%f;%s;%s' % (results[0]['geometry']['lat'],
                         results[0]['geometry']['lng'],
                         results[0]['components']['country_code'],
                         results[0]['annotations']['timezone']['name']))
-# 45.797095;15.982453;hr;Europe/Belgrade

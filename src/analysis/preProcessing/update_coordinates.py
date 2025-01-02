@@ -1,16 +1,16 @@
-# Import the required library
 from geopy.geocoders import Nominatim
 from pymongo import MongoClient
 import re
 from opencage.geocoder import OpenCageGeocode
+from requests import RequestException
 
 key = '0c12b649ffd54558846bde5342c92be4'
 geocoder = OpenCageGeocode(key)
 
 
 def update_null_coordinates_using_location_name():
-    myclient = MongoClient("mongodb://localhost:27018/")
-    mydb = myclient["bibleLocations"]
+    client = MongoClient("mongodb://localhost:27018/")
+    mydb = client["bibleLocations"]
     lat_long_collection = mydb["LonLats"]
 
     myquery = {"Lat": None}
@@ -19,25 +19,25 @@ def update_null_coordinates_using_location_name():
     geolocator = Nominatim(user_agent="MyApp")
     for doc in docs:
         if doc['ESV Name'] is None:
-            name = clean_substring_in_latlons(doc['KMZ Name'], pattern)
+            name = clean_substring_in_lat_and_longs(doc['KMZ Name'], pattern)
             location = geolocator.geocode(name)
 
             print(doc)
             if location is not None:
                 insert_new_lat_lon(lat_long_collection, doc, location)
             else:
-                name = clean_substring_in_latlons(doc['ESV Name'], pattern)
+                name = clean_substring_in_lat_and_longs(doc['ESV Name'], pattern)
                 location = geolocator.geocode(name)
                 if location is not None:
                     insert_new_lat_lon(lat_long_collection, doc, location)
 
         else:
-            name = clean_substring_in_latlons(doc['ESV Name'], pattern)
+            name = clean_substring_in_lat_and_longs(doc['ESV Name'], pattern)
             location = geolocator.geocode(name)
             if location is not None:
                 insert_new_lat_lon(lat_long_collection, doc, location)
             else:
-                name = clean_substring_in_latlons(doc['KMZ Name'], pattern)
+                name = clean_substring_in_lat_and_longs(doc['KMZ Name'], pattern)
                 location = geolocator.geocode(name)
                 if location is not None:
                     insert_new_lat_lon(lat_long_collection, doc, location)
@@ -66,14 +66,18 @@ def insert_new_lat_lon(collection, doc, location):
             results = geocoder.reverse_geocode(location.latitude, location.longitude, language='en', no_annotations='1')
             if results and len(results):
                 print(results[0]['formatted'])
-        except:
-            print("error geocoding location")
+        except (IndexError, KeyError):
+            print("Error processing results: missing or invalid data.")
+        except RequestException:
+            print("Network error occurred during geocoding.")
+        except Exception as e:  # Catch-all for any other unexpected exceptions
+            print(f"An unexpected error occurred: {e}")
 
     else:
         print("out of area")
 
 
-def clean_substring_in_latlons(doc_col, pattern):
+def clean_substring_in_lat_and_longs(doc_col, pattern):
     if any(each_chr.isdigit() for each_chr in doc_col):
         new_string = re.sub(pattern, '', doc_col)
         return new_string

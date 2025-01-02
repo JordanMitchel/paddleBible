@@ -20,8 +20,8 @@ def dms2dec(dms_str):
 
 
 def find_coordinates_by_location(location: str):
-    URL = f"https://en.wikipedia.org/wiki/{location}"
-    page = requests.get(URL)
+    url = f"https://en.wikipedia.org/wiki/{location}"
+    page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
     latitude_result = soup.find("span", {"class": "latitude"}).contents[0]
     converted_lat = dms2dec(latitude_result)
