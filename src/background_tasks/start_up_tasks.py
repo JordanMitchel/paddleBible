@@ -1,7 +1,7 @@
 ﻿import json
 
-from src.db.AddBibleToMongo import insert_bible_store
-from src.db.AddCoordinatesStore import insert_coordinates_store
+from src.db.add_bible_to_mongo import insert_bible_store
+from src.db.add_coordinates_store import insert_coordinates_store
 
 
 async def run_tasks():
@@ -15,5 +15,3 @@ async def run_tasks():
         print(f"File not found: {e}")
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON: {e}")
-    except Exception as e:  # Catch-all for any other unexpected exceptions
-        print(f"Error during run_tasks: {e}")

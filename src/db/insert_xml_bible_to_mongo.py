@@ -6,9 +6,9 @@ tree = ET.parse('../../Data/xml/Bible_English_MSG.xml')
 bibleXml = tree.findall('BIBLEBOOK')
 
 version_of_bible = tree._root.attrib.get('biblename')[-3:]
-collection = f"Bible_{version_of_bible}"
+COLLECTION = f"Bible_{version_of_bible}"
 db =  get_database()
-coll = db[collection]
+coll = db[COLLECTION]
 
 for book in bibleXml:
     # bibleBook = book.find('BIBLEBOOK').text

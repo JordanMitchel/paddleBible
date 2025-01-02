@@ -1,6 +1,6 @@
+import re
 from geopy.geocoders import Nominatim
 from pymongo import MongoClient
-import re
 from opencage.geocoder import OpenCageGeocode
 from requests import RequestException
 
@@ -74,8 +74,6 @@ def insert_new_lat_lon(collection, doc, location):
             print("Error processing results: missing or invalid data.")
         except RequestException:
             print("Network error occurred during geocoding.")
-        except Exception as e:  # Catch-all for any other unexpected exceptions
-            print(f"An unexpected error occurred: {e}")
 
     else:
         print("out of area")
@@ -85,3 +83,4 @@ def clean_substring_in_lat_and_longs(doc_col, pattern):
     if any(each_chr.isdigit() for each_chr in doc_col):
         new_string = re.sub(pattern, '', doc_col)
         return new_string
+    return doc_col
