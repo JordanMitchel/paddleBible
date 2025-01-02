@@ -1,5 +1,5 @@
-﻿import pytest
-from unittest.mock import patch, AsyncMock
+﻿from unittest.mock import patch, AsyncMock
+import pytest
 from src.models.response import ResponseModel
 from src.models.scripture_result import BibleStructure, Scripture, Place
 from src.routers.router_scripture import get_bible_books
