@@ -1,5 +1,5 @@
-import spacy
 from typing import List
+import spacy
 from src.models.response import ResponseModel
 from src.models.scripture_result import BibleStructure, Place
 

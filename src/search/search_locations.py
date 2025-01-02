@@ -51,8 +51,10 @@ async def search_across_bible_versions(initial_version, list_of_versions, collec
 async def light_search(place, collection, bible_version) -> SearchResult:
     location_in_bible = await collection.find_one({bible_version: place})
     if location_in_bible is not None:
-        coordinates = Coordinates(Lat=location_in_bible['Lat'] or 0, Lon=location_in_bible['Lon'] or 0)
-        location = Place(location = place, coordinates=coordinates, Passages=location_in_bible["Passages"],
+        coordinates = Coordinates(Lat=location_in_bible['Lat'] or 0,
+                                  Lon=location_in_bible['Lon'] or 0)
+        location = Place(location = place, coordinates=coordinates,
+                         Passages=location_in_bible["Passages"],
                          Comment=location_in_bible["Comment"])
         return SearchResult(ResultFound=True, Location=location)
     return SearchResult()
@@ -64,7 +66,6 @@ async def deep_search_and_update(area, collection, bible_version, extra_versions
         areas_list = area.split()
         for location in areas_list:
             if location[0].isupper():
-                #             search bible for word if found insert the word back into mongo to avoid deep search
                 result = await light_search(location, collection, bible_version)
                 await update_bible_with_location(result, extra_versions, area, collection)
                 return result
@@ -72,7 +73,10 @@ async def deep_search_and_update(area, collection, bible_version, extra_versions
     return SearchResult()
 
 
-async def update_bible_with_location(identified_location, bible_versions, original_location, collection)-> None:
+async def update_bible_with_location(identified_location,
+                                     bible_versions,
+                                     original_location,
+                                     collection)-> None:
     if identified_location.ResultFound:
         result_json={}
         for version in bible_versions:

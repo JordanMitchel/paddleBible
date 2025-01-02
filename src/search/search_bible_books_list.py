@@ -25,7 +25,7 @@ async def get_all_bible_books(collection="Bible_ASV")-> ResponseModel:
         sorted_bible_list = sorted(bible_books, key=lambda d: d['book'])
         return ResponseModel(success= True, data= sorted_bible_list)
 
-    except ServerSelectionTimeoutError as e:
+    except ServerSelectionTimeoutError:
         return ResponseModel(success=False, warnings="MongoDB server could not be reached."
                                                      " Please check your connection.")
 
