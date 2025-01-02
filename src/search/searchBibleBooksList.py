@@ -1,5 +1,5 @@
 from src.db.config import get_database
-from src.models.Response import ResponseModel
+from src.models.response import ResponseModel
 
 
 async def get_all_bible_books(collection="Bible_ASV")-> ResponseModel:

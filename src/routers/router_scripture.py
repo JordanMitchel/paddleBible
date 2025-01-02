@@ -1,7 +1,7 @@
 ﻿from fastapi import APIRouter
 
-from src.models.Response import ResponseModel
-from src.models.ScriptureResult import BibleVersion
+from src.models.response import ResponseModel
+from src.models.scripture_result import BibleVersion
 from src.search.SearchScripture import get_scripture_using_book_and_verse
 from src.search.searchBibleBooksList import get_all_bible_books
 from src.search.searchForLocationByScripture import get_locations_using_scripture

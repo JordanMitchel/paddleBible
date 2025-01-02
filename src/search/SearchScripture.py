@@ -1,6 +1,6 @@
 from src.db.config import get_database
-from src.models.Response import ResponseModel
-from src.models.ScriptureResult import Scripture
+from src.models.response import ResponseModel
+from src.models.scripture_result import Scripture
 
 
 async def get_scripture_using_book_and_verse(bible_version, book_num, chapter, verse_num) -> ResponseModel:

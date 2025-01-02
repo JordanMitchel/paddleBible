@@ -1,5 +1,5 @@
-from src.models.Response import ResponseModel
-from src.models.ScriptureResult import BibleStructure, Place
+from src.models.response import ResponseModel
+from src.models.scripture_result import BibleStructure, Place
 
 
 async def get_locations_using_scripture(verse: str) -> ResponseModel:

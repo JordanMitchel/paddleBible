@@ -1,7 +1,7 @@
 import pytest
 
-from src.models.Response import ResponseModel
-from src.models.ScriptureResult import BibleStructure
+from src.models.response import ResponseModel
+from src.models.scripture_result import BibleStructure
 from src.search.searchForLocationByScripture import get_locations_using_scripture
 
 

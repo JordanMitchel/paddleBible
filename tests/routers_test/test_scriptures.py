@@ -1,8 +1,8 @@
 ﻿import pytest
 from unittest.mock import patch, AsyncMock
-from src.models.Response import ResponseModel
-from src.models.ScriptureResult import BibleStructure, Scripture, Place
-from src.routers.scriptureRouter import get_bible_books
+from src.models.response import ResponseModel
+from src.models.scripture_result import BibleStructure, Scripture, Place
+from src.routers.router_scripture import get_bible_books
 from src.search.searchForLocationByScripture import get_locations_using_scripture
 
 

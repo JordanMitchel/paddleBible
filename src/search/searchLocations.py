@@ -1,7 +1,7 @@
 from typing import List
 
 from src.db.config import get_database
-from src.models.ScriptureResult import Coordinates, Place, SearchResult
+from src.models.scripture_result import Coordinates, Place, SearchResult
 
 
 async def get_coordinates_by_location(locations: List[Place], bible_version: str, extra_bible_versions: List[str],

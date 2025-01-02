@@ -2,7 +2,7 @@ from unittest.mock import AsyncMock, patch, MagicMock
 import pytest
 from typing import AsyncIterator
 
-from src.models.Response import ResponseModel
+from src.models.response import ResponseModel
 from src.search.searchBibleBooksList import get_all_bible_books
 
 

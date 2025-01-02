@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from src.background_tasks.start_up_tasks import run_tasks
-from src.routers import  scriptureRouter
+from src.routers import  router_scripture
 import asyncio
 
 if hasattr(asyncio, "WindowsSelectorEventLoopPolicy"):
