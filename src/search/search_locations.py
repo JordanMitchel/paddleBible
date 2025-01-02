@@ -4,7 +4,9 @@ from src.db.config import get_database
 from src.models.scripture_result import Coordinates, Place, SearchResult
 
 
-async def get_coordinates_by_location(locations: List[Place], bible_version: str, extra_bible_versions: List[str],
+async def get_coordinates_by_location(locations: List[Place],
+                                      bible_version: str,
+                                      extra_bible_versions: List[str],
                                       collection="LonLats"):
 
     db = await  get_database()
@@ -16,7 +18,9 @@ async def get_coordinates_by_location(locations: List[Place], bible_version: str
         if initial_result.ResultFound:
             locations[count].coordinates = initial_result.Location.coordinates
         else:
-            deep_search_result = await search_across_bible_versions(bible_version, extra_bible_versions, coll, place)
+            deep_search_result = await search_across_bible_versions(bible_version,
+                                                                    extra_bible_versions,
+                                                                    coll, place)
             if deep_search_result.ResultFound:
                 locations[count].coordinates = deep_search_result.Location.coordinates
             else:
@@ -37,7 +41,10 @@ async def search_across_bible_versions(intial_version, list_of_versions, collect
         bible_location_result: SearchResult = await light_search(place, collection, bible_version)
         if bible_location_result.ResultFound:
             return bible_location_result
-    bible_location_deep_result: SearchResult = await deep_search_and_update(place, collection, intial_version, list_of_versions)
+    bible_location_deep_result: SearchResult = await deep_search_and_update(place,
+                                                                            collection,
+                                                                            intial_version,
+                                                                            list_of_versions)
     return bible_location_deep_result
 
 
@@ -48,8 +55,7 @@ async def light_search(place, collection, bible_version) -> SearchResult:
         location = Place(location = place, coordinates=coordinates, Passages=location_in_bible["Passages"],
                          Comment=location_in_bible["Comment"])
         return SearchResult(ResultFound=True, Location=location)
-    else:
-        return SearchResult()
+    return SearchResult()
 
 
 async def deep_search_and_update(area, collection, bible_version, extra_versions) -> SearchResult:
@@ -63,9 +69,7 @@ async def deep_search_and_update(area, collection, bible_version, extra_versions
                 await update_bible_with_location(result, extra_versions, area, collection)
                 return result
         return SearchResult()
-    else:
-        # cant find any places sorry
-        return SearchResult()
+    return SearchResult()
 
 
 async def update_bible_with_location(identified_location, bible_versions, original_location, collection):
