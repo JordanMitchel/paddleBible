@@ -1,7 +1,5 @@
 from unittest.mock import AsyncMock, patch, MagicMock
 import pytest
-from typing import AsyncIterator
-
 from src.models.response import ResponseModel
 from src.search.search_bible_books_list import get_all_bible_books
 
@@ -20,7 +18,7 @@ class AsyncIteratorMock:
 
 
 @pytest.mark.asyncio
-@patch("src.search.searchBibleBooksList.get_database")  # Make sure to patch the correct path
+@patch("src.search.searchBibleBooksList.get_database")
 async def test_get_all_bible_books(mock_get_database):
     # Mock data returned by the aggregate query
     mock_aggregate_data = [
