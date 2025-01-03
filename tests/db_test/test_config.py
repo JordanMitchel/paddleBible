@@ -7,6 +7,7 @@ from src.db.config import get_database
 @pytest.mark.asyncio
 @patch("src.db.config.load_mongo_config")  # Fully qualified path for `load_mongo_config`
 @patch("src.db.config.AsyncIOMotorClient")  # Fully qualified path for `AsyncIOMotorClient`
+@pytest.mark.requires_decouple
 async def test_get_mongo_client_success(mock_motor_client, mock_load_config):
     # Mock the configuration
     mock_load_config.return_value = {
@@ -31,6 +32,7 @@ async def test_get_mongo_client_success(mock_motor_client, mock_load_config):
 @pytest.mark.asyncio
 @patch("src.db.config.load_mongo_config")  # Fully qualified path for `load_mongo_config`
 @patch("src.db.config.AsyncIOMotorClient")
+@pytest.mark.requires_decouple
 async def test_get_mongo_client_failure(mock_load_config, mock_motor_client):
     # Mock the configuration
     mock_load_config.return_value = {
@@ -50,6 +52,7 @@ async def test_get_mongo_client_failure(mock_load_config, mock_motor_client):
 @pytest.mark.asyncio
 @patch("src.db.config.load_mongo_config")  # Mocking the load_mongo_config function
 @patch("src.db.config.AsyncIOMotorClient")  # Mocking the MongoDB client
+@pytest.mark.requires_decouple
 async def test_get_database_success(mock_get_client, mock_load_config):
     # Mock the configuration returned by load_mongo_config
     mock_load_config.return_value = {
@@ -74,6 +77,7 @@ async def test_get_database_success(mock_get_client, mock_load_config):
 @pytest.mark.asyncio
 @patch("src.db.config.load_mongo_config")
 @patch("src.db.config.get_mongo_client")
+@pytest.mark.requires_decouple
 async def test_get_database_failure(mock_load_config, mock_get_client):
     # Mock the configuration
     mock_load_config.return_value = {

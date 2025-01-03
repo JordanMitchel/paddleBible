@@ -7,6 +7,7 @@ from src.search.search_scripture import get_scripture_using_book_and_verse
 
 @pytest.mark.asyncio
 @patch("src.search.search_scripture.get_database")  # Mocking the get_database function
+@pytest.mark.requires_decouple
 async def test_get_scripture_found(mock_get_database):
     # Mock the database and collection
     mock_coll = AsyncMock()
@@ -29,6 +30,7 @@ async def test_get_scripture_found(mock_get_database):
 
 @pytest.mark.asyncio
 @patch("src.search.search_scripture.get_database")  # Mocking the get_database function
+@pytest.mark.requires_decouple
 async def test_get_scripture_not_found(mock_get_database):
     # Mock the database and collection
     mock_coll = AsyncMock()

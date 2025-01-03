@@ -9,6 +9,7 @@ from tests.search_test.mock_data import mock_bible_books
 
 @pytest.mark.asyncio
 @patch("src.routers.router_scripture.get_all_bible_books", new_callable=AsyncMock)
+@pytest.mark.requires_decouple
 async def test_get_bible_books(mock_get_all_bible_books):
     # Arrange
     bible_data = mock_bible_books
