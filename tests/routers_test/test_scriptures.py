@@ -8,7 +8,7 @@ from tests.search_test.mock_data import mock_bible_books
 
 
 @pytest.mark.asyncio
-@patch("src.routers.scriptureRouter.get_all_bible_books", new_callable=AsyncMock)
+@patch("src.routers.router_scripture.get_all_bible_books", new_callable=AsyncMock)
 async def test_get_bible_books(mock_get_all_bible_books):
     # Arrange
     bible_data = mock_bible_books
@@ -23,7 +23,7 @@ async def test_get_bible_books(mock_get_all_bible_books):
 
 
 @pytest.mark.asyncio
-@patch("src.routers.scriptureRouter.get_locations_using_scripture", new_callable=AsyncMock)
+@patch("src.routers.router_scripture.get_locations_using_scripture", new_callable=AsyncMock)
 async def test_get_coordinates_from_verse_returns_location_with_good_scripture(mock_get_locations):
     # Arrange
     verse = (

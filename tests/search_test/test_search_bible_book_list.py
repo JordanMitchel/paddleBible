@@ -1,5 +1,7 @@
 from unittest.mock import AsyncMock, patch, MagicMock
 import pytest
+from pymongo.errors import PyMongoError
+
 from src.search.search_bible_books_list import get_all_bible_books
 from tests.search_test.mock_data import mock_bible_books
 
@@ -18,7 +20,7 @@ class AsyncIteratorMock:
 
 
 @pytest.mark.asyncio
-@patch("src.search.searchBibleBooksList.get_database")
+@patch("src.search.search_bible_books_list.get_database")
 async def test_get_all_bible_books(mock_get_database):
     # Mock data returned by the aggregate query
     mock_aggregate_data = [
@@ -60,12 +62,13 @@ async def test_get_all_bible_books(mock_get_database):
     )
 
 @pytest.mark.asyncio
-@patch("src.search.searchBibleBooksList.get_database")  # Make sure to patch the correct path
+@patch("src.search.search_bible_books_list.get_database")  # Make sure to patch the correct path
 async def test_get_all_bible_books_error_handling(mock_get_database):
-    mock_get_database.side_effect = Exception("Database connection error")
+    mock_get_database.side_effect = PyMongoError("An error occurred with MongoDB")
 
     #Act
     _response = await get_all_bible_books()
 
     #Assertions
-    assert _response.success is False
+    # assert response.success is False
+    assert "An error occurred with MongoDB" in _response.warnings
