@@ -19,7 +19,7 @@ async def get_locations_using_scripture(verse: str) -> ResponseModel:
     warnings = ""
     if len(location_lists) > 0:
         location_lists_stripped = strip_locations_of_unnecessary_words(location_lists)
-        if location_lists_stripped == '':
+        if len(location_lists_stripped) == 0:
             warnings = "No location found"
         else:
 
