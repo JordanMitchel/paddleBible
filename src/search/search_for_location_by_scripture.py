@@ -19,12 +19,15 @@ async def get_locations_using_scripture(verse: str) -> ResponseModel:
     warnings = ""
     if len(location_lists) > 0:
         location_lists_stripped = strip_locations_of_unnecessary_words(location_lists)
+        if location_lists_stripped == '':
+            warnings = "No location found"
+        else:
 
-        for spot in location_lists_stripped:
-            place_obj = Place()
-            place_obj.location = spot
-            locations_arr.append(place_obj)
-        bible_struct.location_count = len(location_lists_stripped)
+            for spot in location_lists_stripped:
+                place_obj = Place()
+                place_obj.location = spot
+                locations_arr.append(place_obj)
+            bible_struct.location_count = len(location_lists_stripped)
 
     else:
         warnings = "No location found"
