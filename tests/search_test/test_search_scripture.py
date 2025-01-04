@@ -5,6 +5,7 @@ from pymongo.errors import PyMongoError
 from src.models.scripture_result import Scripture
 from src.search.search_scripture import get_scripture_using_book_and_verse
 
+
 @pytest.mark.asyncio
 @patch("src.search.search_scripture.get_database")  # Mocking the get_database function
 @pytest.mark.requires_decouple
@@ -28,6 +29,7 @@ async def test_get_scripture_found(mock_get_database):
                       chapter=1,
                       verse={1: 'In the beginning, God created the heavens and the earth.'}))
 
+
 @pytest.mark.asyncio
 @patch("src.search.search_scripture.get_database")  # Mocking the get_database function
 @pytest.mark.requires_decouple
@@ -48,6 +50,7 @@ async def test_get_scripture_not_found(mock_get_database):
     assert response.data.book == "N/A"
     assert response.data.verse[1] == "N/A"
     assert response.warnings == "No scripture found"
+
 
 @pytest.mark.asyncio
 @patch("src.search.search_scripture.get_database")  # Mocking the get_database function

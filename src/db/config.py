@@ -1,6 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from src.utils.config import load_mongo_config
 
+
 async def get_mongo_client():
     try:
         config = load_mongo_config()
@@ -8,13 +9,7 @@ async def get_mongo_client():
             config["url"],
             username=config.get("db_username"),
             password=config.get("db_password"),)
-        # username = config.get("db_username")
-        # password = config.get("db_password")
-        # url = config.get("url")
-        # port = config.get("mongo_port")
-        # client = AsyncIOMotorClient(
-        #     f"mongodb://{username}:{password}@{url}:{port}"
-        # )
+
         print(f"Connected to MongoDB at {config['url']}")
         return client
     except Exception as e:

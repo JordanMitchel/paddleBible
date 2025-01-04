@@ -61,14 +61,15 @@ async def test_get_all_bible_books(mock_get_database):
         ]
     )
 
+
 @pytest.mark.asyncio
 @patch("src.search.search_bible_books_list.get_database")  # Make sure to patch the correct path
 async def test_get_all_bible_books_error_handling(mock_get_database):
     mock_get_database.side_effect = PyMongoError("An error occurred with MongoDB")
 
-    #Act
+    # Act
     _response = await get_all_bible_books()
 
-    #Assertions
+    # Assertions
     # assert response.success is False
     assert "An error occurred with MongoDB" in _response.warnings

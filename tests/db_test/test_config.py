@@ -4,11 +4,12 @@ import pytest
 from src.db.config import get_mongo_client
 from src.db.config import get_database
 
+
+@pytest.mark.requires_decouple
 @pytest.mark.asyncio
 @patch("src.db.config.load_mongo_config")  # Fully qualified path for `load_mongo_config`
 @patch("src.db.config.AsyncIOMotorClient")  # Fully qualified path for `AsyncIOMotorClient`
-@pytest.mark.requires_decouple
-async def test_get_mongo_client_success(mock_motor_client, mock_load_config):
+async def test_get_mongo_client_success_using_decouple(mock_motor_client, mock_load_config):
     # Mock the configuration
     mock_load_config.return_value = {
         "url": "mongodb://localhost",
@@ -29,11 +30,12 @@ async def test_get_mongo_client_success(mock_motor_client, mock_load_config):
     )
     assert client == mock_motor_client.return_value
 
+
+@pytest.mark.requires_decouple
 @pytest.mark.asyncio
 @patch("src.db.config.load_mongo_config")  # Fully qualified path for `load_mongo_config`
 @patch("src.db.config.AsyncIOMotorClient")
-@pytest.mark.requires_decouple
-async def test_get_mongo_client_failure(mock_load_config, mock_motor_client):
+async def test_get_mongo_client_failure_using_decouple(mock_load_config, mock_motor_client):
     # Mock the configuration
     mock_load_config.return_value = {
         "url": "mongodb://localhost",
@@ -49,11 +51,11 @@ async def test_get_mongo_client_failure(mock_load_config, mock_motor_client):
         await get_mongo_client()
 
 
+@pytest.mark.requires_decouple
 @pytest.mark.asyncio
 @patch("src.db.config.load_mongo_config")  # Mocking the load_mongo_config function
 @patch("src.db.config.AsyncIOMotorClient")  # Mocking the MongoDB client
-@pytest.mark.requires_decouple
-async def test_get_database_success(mock_get_client, mock_load_config):
+async def test_get_database_success_using_decouple(mock_get_client, mock_load_config):
     # Mock the configuration returned by load_mongo_config
     mock_load_config.return_value = {
         "url": "mongodb://localhost",
@@ -72,13 +74,14 @@ async def test_get_database_success(mock_get_client, mock_load_config):
 
     # Assertions
     mock_get_client.assert_called_once()  # Ensure the client was created
-    assert db == mock_client["test_db"]   # Ensure the correct db is returned
+    assert db == mock_client["test_db"]  # Ensure the correct db is returned
 
+
+@pytest.mark.requires_decouple
 @pytest.mark.asyncio
 @patch("src.db.config.load_mongo_config")
 @patch("src.db.config.get_mongo_client")
-@pytest.mark.requires_decouple
-async def test_get_database_failure(mock_load_config, mock_get_client):
+async def test_get_database_failure_using_decouple(mock_load_config, mock_get_client):
     # Mock the configuration
     mock_load_config.return_value = {
         "db_collection": "test_db",

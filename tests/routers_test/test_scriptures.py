@@ -53,6 +53,7 @@ async def test_get_coordinates_from_verse_returns_location_with_good_scripture(m
     # Verify mock was called
     assert isinstance(verse_result.data, BibleStructure)
 
+
 @pytest.mark.asyncio
 async def test_get_coordinates_from_verse_returns_warning_with_empty_scripture():
     # Arrange

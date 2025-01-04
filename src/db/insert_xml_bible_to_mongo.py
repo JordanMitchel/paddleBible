@@ -2,15 +2,16 @@ import xml.etree.ElementTree as eT
 from src.db.config import get_database
 
 
-async def insert_xml_bible_to_mongo(bible_version:str):
+async def insert_xml_bible_to_mongo(bible_version: str):
     tree = eT.parse(f'../../Data/xml/{bible_version}.xml')
     bible_xml = tree.findall('BIBLEBOOK')
     version_of_bible = tree.getroot().attrib.get('biblename')[-3:]
     collection = f"Bible_{version_of_bible}"
-    db =  await get_database()
+    db = await get_database()
     coll = db[collection]
 
     await insert_into_each_book(bible_xml, coll)
+
 
 async def insert_into_each_book(bible_xml, coll):
     for book in bible_xml:
@@ -32,6 +33,6 @@ async def insert_into_each_book(bible_xml, coll):
                     "text": verse_text,
                 }
                 coll.insert_one(bible_dict)
-    print (coll.count())
+    print(coll.count())
 
 insert_xml_bible_to_mongo("Bible_English_MSG")

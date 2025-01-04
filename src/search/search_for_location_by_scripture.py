@@ -30,7 +30,7 @@ async def get_locations_using_scripture(verse: str) -> ResponseModel:
         warnings = "No location found"
 
     bible_struct.locations = locations_arr
-    if len(locations_arr)==0:
+    if len(locations_arr) == 0:
         response = ResponseModel(success=True, data=bible_struct, warnings=warnings)
         return response
     return ResponseModel(success=True, data=bible_struct)
