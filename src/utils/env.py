@@ -1,8 +1,8 @@
 import os
 
-from decouple import  Config, RepositoryEnv
+from decouple import Config, RepositoryEnv
 
-env_name = os.getenv('ENVIRONMENT','local')
+env_name = os.getenv('ENVIRONMENT', 'local')
 ENV_FILE = f'.env.{env_name}'
 config = Config(RepositoryEnv(ENV_FILE))
 

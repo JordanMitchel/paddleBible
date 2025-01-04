@@ -9,7 +9,7 @@ async def get_coordinates_by_location(locations: List[Place],
                                       extra_bible_versions: List[str],
                                       collection="LonLats"):
 
-    db = await  get_database()
+    db = await get_database()
     coll = db[collection]
     count = 0
     for area in locations:
@@ -53,7 +53,7 @@ async def light_search(place, collection, bible_version) -> SearchResult:
     if location_in_bible is not None:
         coordinates = Coordinates(Lat=location_in_bible['Lat'] or 0,
                                   Lon=location_in_bible['Lon'] or 0)
-        location = Place(location = place, coordinates=coordinates,
+        location = Place(location=place, coordinates=coordinates,
                          Passages=location_in_bible["Passages"],
                          Comment=location_in_bible["Comment"])
         return SearchResult(ResultFound=True, Location=location)
@@ -76,9 +76,9 @@ async def deep_search_and_update(area, collection, bible_version, extra_versions
 async def update_bible_with_location(identified_location,
                                      bible_versions,
                                      original_location,
-                                     collection)-> None:
+                                     collection) -> None:
     if identified_location.ResultFound:
-        result_json={}
+        result_json = {}
         for version in bible_versions:
             result_json[version] = original_location
 

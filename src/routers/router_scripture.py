@@ -8,6 +8,8 @@ from src.search.search_for_location_by_scripture import get_locations_using_scri
 from src.search.search_locations import get_coordinates_by_location
 
 router = APIRouter()
+
+
 @router.get("/BibleBooks")
 async def get_bible_books() -> ResponseModel:
     books = await get_all_bible_books()
@@ -43,4 +45,4 @@ async def get_locations_and_coordinates__from_verse_label(bible_version: BibleVe
             verse_result.locations = coordinates
 
         return verse_result
-    return ResponseModel(success=False,data={},warnings="Scripture not found")
+    return ResponseModel(success=False, data={}, warnings="Scripture not found")

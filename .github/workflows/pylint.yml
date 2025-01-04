@@ -17,8 +17,23 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pylint python-decouple opencage geopy spacy pydantic pandas fastapi motor aiofiles pytest uvicorn requests bs4
+        pip install pylint python-decouple opencage geopy spacy pydantic pandas fastapi motor aiofiles pytest flake8 pytest-cov pytest-asyncio uvicorn requests bs4
+        python -m spacy download xx_ent_wiki_sm
 
     - name: Analyzing the code with pylint
       run: |
            pylint --disable=missing-docstring,too-few-public-methods --ignored-modules=decouple $(git ls-files '*.py')
+    - name: Lint with flake8
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Run pytest tests
+      env:
+       PYTHONPATH: src
+      run: |
+          pytest --cov=src -m "not requires_decouple"
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: htmlcov/

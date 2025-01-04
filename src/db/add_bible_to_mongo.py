@@ -10,11 +10,11 @@ async def insert_bible_store(json_path, coll_name):
 
         data = json_data["verses"]
 
-        await insert_to_mongo(data,coll_name)
+        await insert_to_mongo(data, coll_name)
 
 
 async def insert_to_mongo(data, coll_name):
-    db =await  get_database()
+    db = await get_database()
     collection = db[coll_name]
     collist = await db.list_collection_names()
 
