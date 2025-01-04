@@ -24,8 +24,6 @@ jobs:
       run: |
            pylint --disable=missing-docstring,too-few-public-methods --ignored-modules=decouple $(git ls-files '*.py')
 
-    - name: Show pytest help
-      run: pytest --help
     - name: Run pytest tests
       env:
        PYTHONPATH: src

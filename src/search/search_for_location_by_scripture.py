@@ -61,5 +61,5 @@ def sentiment_search(sentiment: str, verse: str) -> List[str]:
 
 
 def strip_locations_of_unnecessary_words(locations: List[str]) -> set[str]:
-    ignore_words = {"north", "east", "south", "west", "earth", "christ", "jesus"}
+    ignore_words = {"north", "east", "south", "west", "earth", "christ", "jesus", "christ jesus"}
     return {place for place in locations if place.lower() not in ignore_words}
