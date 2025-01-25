@@ -15,19 +15,6 @@ if hasattr(asyncio, "WindowsSelectorEventLoopPolicy"):
 app = FastAPI(title="PaddleBible", version="1.0.0", debug=True)
 app.include_router(router_scripture.router, prefix="/scripture")
 
-rabbitmq = RabbitMQ()
-
-def create_app():
-    rabbitmq = RabbitMQ()
-
-    consumer_service = ConsumerService(rabbitmq)
-    producer_service = ProducerService(rabbitmq)
-
-    return {
-        "rabbitmq": rabbitmq,
-        "consumer_service": consumer_service,
-        "producer_service": producer_service,
-    }
 
 
 @app.on_event("startup")
@@ -36,10 +23,6 @@ async def startup_event():
     try:
         await run_tasks()
         print("Database seeding completed.")
-
-        # Start consumer after database seeding
-        consumer_service = ConsumerService(rabbitmq)
-        consumer_service.start_consuming("postprocess_queue")
 
     except OperationFailure as op_failure:
         print(f"Operation failure message: {str(op_failure)}")

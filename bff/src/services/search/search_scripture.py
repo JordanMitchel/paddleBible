@@ -1,6 +1,5 @@
 from pymongo.errors import ServerSelectionTimeoutError, OperationFailure, PyMongoError
 
-from domain.src.db import get_database
 from domain.src.services.db_connector import get_collection
 from shared.src.models.response import ResponseModel
 from shared.src.models.scripture_result import Scripture
@@ -11,7 +10,6 @@ async def get_scripture_using_book_and_verse(bible_version,
                                              chapter,
                                              verse_num) -> ResponseModel:
     try:
-        db = await get_database()
         coll = await get_collection(bible_version)
 
         query = {"book": book_num, "chapter": chapter, "verse": verse_num}
