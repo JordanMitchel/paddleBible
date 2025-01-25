@@ -1,17 +1,40 @@
 version: '3.7'
 services:
-  app:
+  bff:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: bff/Dockerfile
     ports:
-      - "8000:8000"
+      - "8001:8000"
+    depends_on:
+      - mongodb_container
+    environment:
+      - ENVIRONMENT=docker  # Specify environment file to use
+      -
+    env_file:
+      - ./env.docker
+  ai-nlp-llm:
+    build:
+      context: .
+      dockerfile: ai-nlp-llm/Dockerfile
+    ports:
+      - "8002:8000"
     depends_on:
       - mongodb_container
     environment:
       - ENVIRONMENT=docker  # Specify environment file to use
     env_file:
       - ./env.docker
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
 
   mongodb_container:
     image: mongo:latest
