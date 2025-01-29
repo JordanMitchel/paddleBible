@@ -1,9 +1,9 @@
 ﻿from fastapi import APIRouter, Depends, HTTPException
 
-from bff.src.dependencies import get_producer_service, get_consumer_service
+from shared.src.ServiceBus.consumer_service import ConsumerService
+from shared.src.ServiceBus.producer_service import ProducerService
+from shared.src.dependencies import get_producer_service, get_consumer_service
 from bff.src.services.BibleService import BibleService
-from bff.src.services.service_bus.consumer_service import ConsumerService
-from bff.src.services.service_bus.producer_service import ProducerService
 from shared.src.models.response import ResponseModel
 from shared.src.models.scripture_result import BibleVersion
 
@@ -44,10 +44,12 @@ async def get_locations_and_coordinates_from_verse_label(
     chapter: int,
     verse_num: int,
     bible_service: BibleService = Depends(get_bible_service),
+    producer_service: ProducerService = Depends(get_producer_service),
+    consumer_service: ConsumerService = Depends(get_consumer_service)
 ) -> ResponseModel:
     """Retrieve scripture data and corresponding coordinates for a specific verse."""
     result = await bible_service.get_scripture_and_coordinates(
-        bible_version, book_num, chapter, verse_num
+        bible_version, book_num, chapter, verse_num, producer_service, consumer_service
     )
     if not result.success:
         raise HTTPException(status_code=404, detail=result.warnings)

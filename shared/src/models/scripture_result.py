@@ -11,7 +11,7 @@ class Coordinates(BaseModel):
 
 class Place(BaseModel):
     location: Optional[str] = ""
-    coordinates: Optional[Coordinates] = Field({})
+    coordinates: Optional[Coordinates] = Field(default_factory=Coordinates)
     warning: str | None = None
     Passages: str | None = None
     Comment: str | None = None

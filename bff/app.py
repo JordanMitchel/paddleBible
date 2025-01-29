@@ -2,12 +2,8 @@
 import uvicorn
 from fastapi import FastAPI
 from pymongo.errors import ServerSelectionTimeoutError, OperationFailure
-
-from bff.src.services.service_bus.consumer_service import ConsumerService
-from bff.src.services.service_bus.producer_service import ProducerService
 from scripts.background_tasks.start_up_tasks import run_tasks
 from bff.src.routes import router_scripture
-from shared.src.ServiceBus.rabbitmq import RabbitMQ
 
 if hasattr(asyncio, "WindowsSelectorEventLoopPolicy"):
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())

@@ -10,5 +10,5 @@ class ConsumerService:
     def __init__(self, rabbitmq: RabbitMQ):
         self.rabbitmq = rabbitmq
 
-    def start_consuming(self, queue_name):
+    def start_consuming(self, queue_name, message):
         self.rabbitmq.consume(queue_name, process_message)

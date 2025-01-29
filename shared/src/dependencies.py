@@ -1,6 +1,7 @@
-﻿from bff.src.services.service_bus.consumer_service import ConsumerService
-from bff.src.services.service_bus.producer_service import ProducerService
+﻿from shared.src.ServiceBus.consumer_service import ConsumerService
+from shared.src.ServiceBus.producer_service import ProducerService
 from shared.src.ServiceBus.rabbitmq import RabbitMQ
+
 
 def get_producer_service() -> ProducerService:
     rabbitmq = RabbitMQ()

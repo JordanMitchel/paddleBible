@@ -25,7 +25,7 @@ class RabbitMQ:
         if not self.channel:
             raise Exception("Connection is not established.")
         self.channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
-        self.channel.start_consuming()
+        self.channel.start_consuming(, process_message
 
     def publish(self, queue_name, message):
         if not self.channel:

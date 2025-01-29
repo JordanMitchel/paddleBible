@@ -16,7 +16,7 @@ async def get_locations_using_scripture(verse: str, producer_service: ProducerSe
     print(f"Verse pushed to {queue_name}: {verse}")
     # result = await push_text(verse)
     try:
-        result = await consumer_service.start_consuming(queue_name)
+        result = await consumer_service.start_consuming(queue_name, process_message)
         if result.warnings != '':
             return ResponseModel(success=True, data=result.data)
         return ResponseModel(success=False, warnings=result.warnings)
