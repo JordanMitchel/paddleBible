@@ -1,4 +1,4 @@
-﻿from shared.src.ServiceBus.rabbitmq import RabbitMQ
+﻿from shared.src.ServiceBus.RabbitMQ import RabbitMQ
 
 
 class ProducerService:

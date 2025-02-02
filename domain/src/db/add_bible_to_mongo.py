@@ -3,7 +3,6 @@ import json
 import aiofiles
 import xml.etree.ElementTree as eT
 from domain.src.db.add_coordinates_to_mongo import insert_to_mongo
-from domain.src.services.db_connector import get_database
 from shared.src.models.FileType import FileTypeEnum
 
 

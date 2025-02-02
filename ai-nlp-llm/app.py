@@ -1,8 +1,7 @@
 from shared.src.dependencies import ConsumerService
-from shared.src.ServiceBus.rabbitmq import RabbitMQ
+from shared.src.ServiceBus.RabbitMQ import RabbitMQ
 from src.services.ProcessService import ProcessService
 from fastapi import FastAPI
-import asyncio
 
 app = FastAPI()
 

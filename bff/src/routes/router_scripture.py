@@ -1,7 +1,7 @@
 ﻿from fastapi import APIRouter, Depends, HTTPException
 
-from shared.src.ServiceBus.consumer_service import ConsumerService
-from shared.src.ServiceBus.producer_service import ProducerService
+from shared.src.ServiceBus.ConsumerService import ConsumerService
+from shared.src.ServiceBus.ProducerService import ProducerService
 from shared.src.dependencies import get_producer_service, get_consumer_service
 from bff.src.services.BibleService import BibleService
 from shared.src.models.response import ResponseModel

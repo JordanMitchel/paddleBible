@@ -1,5 +1,7 @@
-from bff.src.services.service_bus.consumer_service import ConsumerService
-from bff.src.services.service_bus.producer_service import ProducerService
+
+
+from shared.src.ServiceBus.ConsumerService import process_message, ConsumerService
+from shared.src.ServiceBus.ProducerService import ProducerService
 from shared.src.models.response import ResponseModel
 from shared.src.models.scripture_result import BibleStructure
 

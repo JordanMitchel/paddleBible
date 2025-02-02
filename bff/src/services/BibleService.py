@@ -1,5 +1,5 @@
-﻿from shared.src.ServiceBus.consumer_service import ConsumerService
-from shared.src.ServiceBus.producer_service import ProducerService
+﻿from shared.src.ServiceBus.ConsumerService import ConsumerService
+from shared.src.ServiceBus.ProducerService import ProducerService
 from shared.src.models.response import ResponseModel
 from shared.src.models.scripture_result import BibleVersion
 from bff.src.services.search.search_bible_books_list import get_all_bible_books
@@ -8,6 +8,7 @@ from bff.src.services.search.search_locations import get_coordinates_by_location
 from bff.src.services.search.search_scripture import get_scripture_using_book_and_verse
 
 
+# noinspection PyMethodMayBeStatic
 class BibleService:
     async def get_all_bible_books(self) -> ResponseModel:
         """Fetch all Bible books."""

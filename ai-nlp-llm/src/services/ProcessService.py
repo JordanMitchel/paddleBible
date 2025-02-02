@@ -6,6 +6,7 @@ from shared.src.models.response import ResponseModel
 from shared.src.models.scripture_result import BibleStructure, Place
 
 
+# noinspection PyMethodMayBeStatic
 class ProcessService:
     async def process_text(self,verse: str) -> ResponseModel:
         location_list_en_core = self.sentiment_search('en_core_web_sm', verse)

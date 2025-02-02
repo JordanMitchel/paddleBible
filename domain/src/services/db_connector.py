@@ -48,7 +48,6 @@ async def coll_is_populated(collection_name, db):
 
 
 async def insert_to_mongo(data, coll_name):
-    db = await get_database()
     collection = await get_collection(coll_name)
 
     # Insert data based on whether it's a list or a single entry
