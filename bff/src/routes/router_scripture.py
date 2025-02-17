@@ -1,8 +1,9 @@
 ﻿from fastapi import APIRouter, Depends, HTTPException
 
-from shared.src.ServiceBus.ConsumerService import ConsumerService
-from shared.src.ServiceBus.ProducerService import ProducerService
-from shared.src.dependencies import get_producer_service, get_consumer_service
+from shared.src.ServiceBus.consumer import KombuConsumer
+from shared.src.ServiceBus.kombu_config import bff_consuming_ai_results
+from shared.src.ServiceBus.producer import KombuProducer
+from shared.src.ServiceBus.dependencies import get_producer_service, get_consumer_factory
 from bff.src.services.BibleService import BibleService
 from shared.src.models.response import ResponseModel
 from shared.src.models.scripture_result import BibleVersion
@@ -25,10 +26,11 @@ async def get_bible_books(bible_service: BibleService = Depends(get_bible_servic
 
 @router.get("/GetCoordinates/{verse}")
 async def get_coordinates_from_verse(
-    verse: str,
-    bible_service: BibleService = Depends(get_bible_service),
-    producer_service: ProducerService = Depends(get_producer_service),
-    consumer_service: ConsumerService = Depends(get_consumer_service)
+        verse: str,
+        bible_service: BibleService = Depends(get_bible_service),
+        producer_service: KombuProducer = Depends(get_producer_service),  # Inline dependency
+        consumer_service: KombuConsumer = Depends(lambda: get_consumer_factory(bff_consuming_ai_results))
+        # Pass queue name dynamically
 ) -> ResponseModel:
     """Retrieve locations based on a scripture verse."""
     verse_result = await bible_service.get_locations_by_scripture(verse, producer_service, consumer_service)
@@ -44,8 +46,8 @@ async def get_locations_and_coordinates_from_verse_label(
     chapter: int,
     verse_num: int,
     bible_service: BibleService = Depends(get_bible_service),
-    producer_service: ProducerService = Depends(get_producer_service),
-    consumer_service: ConsumerService = Depends(get_consumer_service)
+    producer_service: KombuProducer = Depends(get_producer_service),
+    consumer_service: KombuConsumer = Depends(lambda: get_consumer_factory(bff_consuming_ai_results))
 ) -> ResponseModel:
     """Retrieve scripture data and corresponding coordinates for a specific verse."""
     result = await bible_service.get_scripture_and_coordinates(

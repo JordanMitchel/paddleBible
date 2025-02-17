@@ -28,5 +28,7 @@ async def startup_event():
 
 
 # Run the event loop properly
+# if __name__ == '__main__':
+#     uvicorn.run("app:app", host="localhost", port=8002, log_level="debug")
 if __name__ == '__main__':
-    uvicorn.run("app:app", host="localhost", port=8000, log_level="debug")
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, log_level="debug")

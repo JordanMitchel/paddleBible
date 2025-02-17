@@ -1,8 +1,10 @@
-﻿from motor.motor_asyncio import AsyncIOMotorClient
+﻿from collections.abc import Mapping
+
+from motor.motor_asyncio import AsyncIOMotorClient
 from shared.utils.config import load_mongo_config
 
 
-async def get_mongo_client():
+async def get_mongo_client() -> AsyncIOMotorClient[Mapping[str,any]]:
     try:
         config = load_mongo_config()
         client = AsyncIOMotorClient(
@@ -20,20 +22,23 @@ async def get_mongo_client():
 async def get_database(client=None):
     try:
         config = load_mongo_config()
+        print(f"MongoDB Config: {config}")  # Debugging line
+
         if client is None:
             client = await get_mongo_client()
-        db_name = config.get("db_collection", "default_db")
+
+        db_name = str(config.get("db_collection", "default_db"))
+        print(f"Using database: {db_name}")  # Debugging line
+
         return client[db_name]
     except Exception as e:
         print(f"Failed to get database: {e}")
         raise
 
-async  def get_collection(collection_name: str, db_name: str = ""):
+async  def get_collection(collection_name: str):
     try:
-        config = load_mongo_config()
-        if db_name == "":
-            db_name = config.get("db_collection","default_db")
-        db = await get_database(db_name)
+
+        db = await get_database()
         return db[collection_name]
     except Exception as e:
         print(f"Failed to get collection: {e}")

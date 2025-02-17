@@ -90,5 +90,6 @@ websockets==11.0.3
 Werkzeug==2.3.7
 xx-ent-wiki-sm @ https://github.com/explosion/spacy-models/releases/download/xx_ent_wiki_sm-3.6.0/xx_ent_wiki_sm-3.6.0-py3-none-any.whl#sha256=5cd25405727477ac46ed96b511d8c893e0a734bb72e749967e2fa82db3005b4d
 xx-sent-ud-sm @ https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.6.0/xx_sent_ud_sm-3.6.0-py3-none-any.whl#sha256=66d6af65cfe7b7ff4a75b0c05e52ee3b824e547e2332d32647ebcbfc33446c60
-
+aio_pika
+kombu
 pytest~=8.3.4

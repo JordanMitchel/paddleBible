@@ -8,6 +8,14 @@ from shared.src.models.scripture_result import BibleStructure, Place
 
 # noinspection PyMethodMayBeStatic
 class ProcessService:
+
+    async def message_callback(self,body, message):
+        """Callback function for processing messages."""
+        response = await self.process_text(body)
+        print(f"✅ Processed message: {response}")
+        message.ack()
+
+
     async def process_text(self,verse: str) -> ResponseModel:
         location_list_en_core = self.sentiment_search('en_core_web_sm', verse)
         location_list_wiki = self.sentiment_search('xx_ent_wiki_sm', verse)
@@ -20,6 +28,7 @@ class ProcessService:
             locations_arr.append(place_obj)
         bible_struct = BibleStructure(locations=locations_arr, location_count=len(locations_arr))
         return ResponseModel(success=True, data=bible_struct)
+
 
     def sentiment_search(self, sentiment: str, verse: str) -> List[str]:
         if not sentiment or not verse:

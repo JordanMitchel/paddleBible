@@ -1,26 +1,25 @@
-# Use an official Python runtime as the base image
-FROM python:3.11-slim
-
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-ENV ENVIRONMENT=docker
+# Use a Python image with PyTorch and other AI dependencies
+FROM python:3.11
 
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /app
 
-# Copy the requirements file into the container
-COPY requirements.txt /app/
-
-# Install dependencies
+# Copy the requirements and install dependencies
+COPY ai-nlp-llm/requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the entire project into the container
-COPY . /app/
+# Copy the source code and shared utilities
+COPY ai-nlp-llm/ /app/ai-nlp-llm
+COPY ./scripts /app/scripts
+COPY ./shared /app/shared
 
-# Expose the port that Uvicorn will run on
+# Set the Python path to include shared modules
+ENV PYTHONPATH="/app:/app/ai-nlp-llm:/app/shared:/app/scripts"
+# Expose the service port
 EXPOSE 8000
 
+# Start the AI service
+
 # Command to run the FastAPI app with Uvicorn
-CMD ["python", "main.py"]
+CMD ["python", "-u", "ai-nlp-llm/src/app.py"]

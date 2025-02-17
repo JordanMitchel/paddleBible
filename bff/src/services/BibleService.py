@@ -1,5 +1,5 @@
-﻿from shared.src.ServiceBus.ConsumerService import ConsumerService
-from shared.src.ServiceBus.ProducerService import ProducerService
+﻿from shared.src.ServiceBus.consumer import KombuConsumer
+from shared.src.ServiceBus.producer import KombuProducer
 from shared.src.models.response import ResponseModel
 from shared.src.models.scripture_result import BibleVersion
 from bff.src.services.search.search_bible_books_list import get_all_bible_books
@@ -15,14 +15,14 @@ class BibleService:
         return await get_all_bible_books()
 
     async def get_locations_by_scripture(self, verse: str,
-                 producer_service: ProducerService,
-                 consumer_service: ConsumerService) -> ResponseModel:
+                 producer_service: KombuProducer,
+                 consumer_service: KombuConsumer) -> ResponseModel:
         """Fetch locations for a given verse."""
         return await get_locations_using_scripture(verse, producer_service, consumer_service)
 
     async def get_scripture_and_coordinates(
         self, bible_version: BibleVersion, book_num: int, chapter: int, verse_num: int,
-            producer_service: ProducerService, consumer_service: ConsumerService
+            producer_service: KombuProducer, consumer_service: KombuConsumer
     ) -> ResponseModel:
         """Fetch scripture data and calculate coordinates."""
         scripture_result = await get_scripture_using_book_and_verse(
