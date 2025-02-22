@@ -1,11 +1,21 @@
 import os
 from decouple import UndefinedValueError, RepositoryEnv, Config
+from kombu import Exchange
 
 env_name = os.getenv('ENVIRONMENT', 'local')
 # ENV_FILE_CONFIG = f'env.{env_name}'  # Fixed path
 ENV_FILE_CONFIG = f'./env.{env_name}'  # Fixed path
 # BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the current script's directory
 # env_file2 = os.path.join(BASE_DIR, ".env")
+
+BROKER_URL = "amqp://guest:guest@rabbitmq:5672//"
+#local
+# BROKER_URL = "amqp://guest:guest@localhost:5672//"
+# Define a shared exchange
+EXCHANGE = Exchange("bible_exchange", type="direct")
+
+
+
 def get_env_variable(key, default=None, cast_type=str, env_file=ENV_FILE_CONFIG):
     """Fetches environment variables with optional casting and a default fallback."""
     if env_file and os.path.exists(env_file):

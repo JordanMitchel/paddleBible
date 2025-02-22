@@ -1,4 +1,3 @@
-version: '3.7'
 services:
   bff:
     build:
@@ -17,10 +16,10 @@ services:
     env_file:
       - ./env.docker
 
-  ai-nlp-llm:
+  ml_service:
     build:
       context: .
-      dockerfile: ai-nlp-llm/Dockerfile
+      dockerfile: ml_service/Dockerfile
     ports:
       - "8001:8000"
     depends_on:

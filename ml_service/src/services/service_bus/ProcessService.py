@@ -2,32 +2,25 @@
 
 import spacy
 
-from shared.src.models.response import ResponseModel
-from shared.src.models.scripture_result import BibleStructure, Place
+from shared.src.models.scripture_result import BibleStructure, Place, ScriptureResponse
 
 
 # noinspection PyMethodMayBeStatic
 class ProcessService:
 
-    async def message_callback(self,body, message):
-        """Callback function for processing messages."""
-        response = await self.process_text(body)
-        print(f"✅ Processed message: {response}")
-        message.ack()
-
-
-    async def process_text(self,verse: str) -> ResponseModel:
+    async def process_text(self,verse: str) -> ScriptureResponse:
         location_list_en_core = self.sentiment_search('en_core_web_sm', verse)
         location_list_wiki = self.sentiment_search('xx_ent_wiki_sm', verse)
         location_lists = location_list_en_core + location_list_wiki
-
+        stripped_list = self.strip_locations_of_unnecessary_words(location_lists)
         locations_arr = []
-        for spot in location_lists:
+        for spot in stripped_list:
             place_obj = Place()
             place_obj.location = spot
             locations_arr.append(place_obj)
         bible_struct = BibleStructure(locations=locations_arr, location_count=len(locations_arr))
-        return ResponseModel(success=True, data=bible_struct)
+        print(bible_struct)
+        return ScriptureResponse(success=True, data=bible_struct)
 
 
     def sentiment_search(self, sentiment: str, verse: str) -> List[str]:
@@ -54,5 +47,5 @@ class ProcessService:
             return []
 
     def strip_locations_of_unnecessary_words(self, locations: List[str]) -> set[str]:
-        ignore_words = {"north", "east", "south", "west", "earth", "christ", "jesus", "christ jesus"}
+        ignore_words = {"north", "east", "south", "west", "earth", "christ", "jesus", "christ jesus", "eden"}
         return {place for place in locations if place.lower() not in ignore_words}

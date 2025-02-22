@@ -2,39 +2,31 @@ import asyncio
 import uvicorn
 from fastapi import FastAPI
 from kombu import Connection
-from services.service_bus.ProcessService import ProcessService
-from shared.src.ServiceBus.consumer import KombuConsumer
-from shared.src.ServiceBus.kombu_config import BROKER_URL, ai_consuming_bff_requests
-from shared.src.ServiceBus.dependencies import get_producer_service, get_consumer_factory
-from shared.src.ServiceBus.producer import KombuProducer
+
+from ml_service.src.services.service_bus.MLKombuConsumer import MLKombuConsumer
+from shared.utils.config import BROKER_URL
 
 app = FastAPI()
 
 # Global references for Kombu services
-ai_producer_service: KombuProducer
-ai_consumer_service: KombuConsumer
+ai_consumer_service: MLKombuConsumer
+consumer_task: asyncio.Task | None = None
 
 
 @app.on_event("startup")
 async def startup_event():
     """Setup Kombu consumer and producer on startup."""
-    global ai_producer_service, ai_consumer_service
+    global ai_consumer_service
 
     try:
-
         print("✅ Connected to RabbitMQ")
+        # Initialize Kombu Consumer
+        ai_consumer_service = MLKombuConsumer()
 
-        # Initialize Producer
-        ai_producer_service = get_producer_service()
-        # Initialize Consumer with callback
+        # Run Kombu consumer in a separate thread
+        asyncio.create_task(asyncio.to_thread(ai_consumer_service.run))
 
-        process_service = ProcessService()
-        ai_consumer_service = get_consumer_factory(ai_consuming_bff_requests)()
-        ai_consumer_service.callback = process_service.message_callback
-
-        # Start consumer in the background
-        asyncio.create_task(ai_consumer_service.start())
-        print(f"✅ Kombu consumer listening on queue: {ai_consuming_bff_requests.name}")
+        print(f"✅ Kombu consumer listening on queue: {ai_consumer_service.queue.name}")
 
     except Exception as e:
         print(f"❌ Failed to setup Kombu services: {e}")
@@ -43,14 +35,17 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     """Gracefully shutdown Kombu producer & consumer."""
-    global ai_consumer_service, ai_producer_service
+    global ai_consumer_service, consumer_task
 
-    if ai_consumer_service:
-        await ai_consumer_service.stop()
-        print("🛑 Kombu consumer stopped,  RabbitMQ (Kombu) connection closed.")
-        await ai_producer_service.stop()
-        print("🛑 Kombu producer stopped,  RabbitMQ (Kombu) connection closed.")
+    if consumer_task:
+        consumer_task.cancel()
+        try:
+            await consumer_task  # Ensure the task stops cleanly
+        except asyncio.CancelledError:
+            print("🛑 Kombu consumer task cancelled.")
+        consumer_task = None
 
+    print("🛑 Kombu consumer stopped, RabbitMQ connection closed.")
 
 @app.get("/health")
 async def health_check():

@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Dict, Optional
+from typing import Dict, Optional, Any, List
 
 from pydantic import BaseModel, Field
 
@@ -20,11 +20,11 @@ class Place(BaseModel):
 class Scripture(BaseModel):
     book: str = ""
     chapter: int = 0
-    verse: Dict[int, str]
+    verse: Dict[int, str] = Field(default={})
 
 
 class BibleStructure(BaseModel):
-    scripture: Scripture = Field(default={})
+    scripture: Scripture = Field(default_factory=Scripture)
     locations: list[Place] | None = None
     location_count: int = 0
 
@@ -49,3 +49,23 @@ class BibleBook(int, Enum):
     DEUTERONOMY = 5
     JOSHUA = 6
     JUDGES = 7
+
+class DataModel(BaseModel):
+    scripture: Scripture
+    locations: List[Place]
+    location_count: int
+
+class ScriptureResponse(BaseModel):
+    success: bool
+    data: BibleStructure = Field(default_factory=BibleStructure)
+    warnings: Optional[str] = None
+
+class ResponseModel(BaseModel):
+    success: bool
+    data: Any | None = None
+    warnings: Optional[str] = None
+
+
+
+
+

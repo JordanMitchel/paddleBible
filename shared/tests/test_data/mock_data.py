@@ -1,4 +1,4 @@
-﻿from shared.src.models.response import ResponseModel
+﻿from shared.src.models.scripture_result import ResponseModel
 
 mock_bible_books = ResponseModel(
         success=True,

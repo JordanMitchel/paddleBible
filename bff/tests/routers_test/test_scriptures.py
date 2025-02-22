@@ -1,9 +1,8 @@
 ﻿from unittest.mock import patch, AsyncMock
 import pytest
 
-from bff.src.services.search.search_for_location_by_scripture import get_locations_using_scripture
-from shared.src.models.response import ResponseModel
-from shared.src.models.scripture_result import BibleStructure, Scripture, Place
+from bff.src.services.search.search_for_location_by_scripture import request_locations_using_scripture
+from shared.src.models.scripture_result import BibleStructure, Scripture, Place, ResponseModel
 from bff.src.routes.router_scripture import get_bible_books
 from shared.tests.test_data.mock_data import mock_bible_books
 
@@ -44,7 +43,7 @@ async def test_get_coordinates_from_verse_returns_location_with_good_scripture(m
     mock_get_locations.return_value = coordinate_response_model
 
     # Act
-    verse_result = await get_locations_using_scripture(verse)
+    verse_result = await request_locations_using_scripture(verse)
 
     # Assert
     assert verse_result.success is True
@@ -61,7 +60,7 @@ async def test_get_coordinates_from_verse_returns_warning_with_empty_scripture()
     verse = ""
 
     # Act
-    verse_result = await get_locations_using_scripture(verse)
+    verse_result = await request_locations_using_scripture(verse)
 
     # Assert
     assert verse_result.success is False

@@ -1,6 +1,6 @@
 ﻿import asyncio
 from kombu import Connection, Producer
-from shared.src.ServiceBus.kombu_config import BROKER_URL, exchange
+from shared.utils.config import BROKER_URL, EXCHANGE
 
 
 class KombuProducer:
@@ -25,7 +25,7 @@ class KombuProducer:
     def _send(self, body, routing_key):
         """Helper method to send a message (Runs in a thread)."""
         with self.get_channel() as channel:
-            producer = Producer(channel, exchange=exchange)
+            producer = Producer(channel, exchange=EXCHANGE)
             producer.publish(body, routing_key=routing_key)
             print(f"✅ Sent: {body} to {routing_key}")
 
