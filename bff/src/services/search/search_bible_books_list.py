@@ -1,7 +1,7 @@
 from pymongo.errors import ServerSelectionTimeoutError, OperationFailure, PyMongoError
 
 from domain.src.db import get_database
-from shared.src.models.response import ResponseModel
+from shared.src.models.scripture_result import ResponseModel
 
 
 async def get_all_bible_books(collection="Bible_ASV") -> ResponseModel:

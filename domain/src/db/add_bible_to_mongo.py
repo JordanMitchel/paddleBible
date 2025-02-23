@@ -1,13 +1,14 @@
 import asyncio
 import json
-import aiofiles
 import xml.etree.ElementTree as eT
+
+import aiofiles
+
 from domain.src.db.add_coordinates_to_mongo import insert_to_mongo
-from domain.src.services.db_connector import get_database
 from shared.src.models.FileType import FileTypeEnum
 
 
-async def insert_bible_store(file_path, file_type, collection_name,bible_version="custom"):
+async def insert_bible_store(file_path, file_type, collection_name, bible_version="custom"):
     if file_type == FileTypeEnum.JSON:
 
         async with aiofiles.open(file_path) as file:
@@ -50,6 +51,7 @@ async def process_book(book, collection_name):
 
     if book_data:
         await insert_to_mongo(book_data, collection_name)
+
 
 async def insert_into_each_book(bible_xml, collection_name):
     tasks = [process_book(book, collection_name) for book in bible_xml]

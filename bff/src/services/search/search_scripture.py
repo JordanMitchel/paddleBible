@@ -1,9 +1,7 @@
 from pymongo.errors import ServerSelectionTimeoutError, OperationFailure, PyMongoError
 
-from domain.src.db import get_database
 from domain.src.services.db_connector import get_collection
-from shared.src.models.response import ResponseModel
-from shared.src.models.scripture_result import Scripture
+from shared.src.models.scripture_result import Scripture, ResponseModel
 
 
 async def get_scripture_using_book_and_verse(bible_version,
@@ -11,23 +9,26 @@ async def get_scripture_using_book_and_verse(bible_version,
                                              chapter,
                                              verse_num) -> ResponseModel:
     try:
-        db = await get_database()
         coll = await get_collection(bible_version)
 
+        print(coll)
         query = {"book": book_num, "chapter": chapter, "verse": verse_num}
+        print(query)
         doc = await coll.find_one(query)
 
+        print(f"📄 Fetched Document: {doc}")
+
         if doc:
-            scripture = Scripture(book=doc["book_name"],
-                                  chapter=chapter,
-                                  verse={verse_num: doc["text"]})
+            scripture = Scripture(
+                book=doc["book_name"],
+                chapter=doc["chapter"],
+                verse={doc["verse"]: doc["text"]}
+            )
+            print(f"✅ Found Scripture: {scripture}")
             return ResponseModel(success=True, data=scripture)
 
-        return ResponseModel(
-            success=False,
-            data=Scripture(book="N/A", chapter=chapter, verse={verse_num: "N/A"}),
-            warnings="No scripture found"
-        )
+        print("❌ No scripture found for query.")
+        return ResponseModel(success=False, warnings="No scripture found")
 
     except ServerSelectionTimeoutError:
         return ResponseModel(success=False, warnings="MongoDB server could not be reached."

@@ -1,14 +1,17 @@
-﻿from motor.motor_asyncio import AsyncIOMotorClient
+﻿from collections.abc import Mapping
+
+from motor.motor_asyncio import AsyncIOMotorClient
+
 from shared.utils.config import load_mongo_config
 
 
-async def get_mongo_client():
+async def get_mongo_client() -> AsyncIOMotorClient[Mapping[str, any]]:
     try:
         config = load_mongo_config()
         client = AsyncIOMotorClient(
             config["url"],
             username=config.get("db_username"),
-            password=config.get("db_password"),)
+            password=config.get("db_password"), )
 
         print(f"Connected to MongoDB at {config['url']}")
         return client
@@ -20,24 +23,29 @@ async def get_mongo_client():
 async def get_database(client=None):
     try:
         config = load_mongo_config()
+        print(f"MongoDB Config: {config}")  # Debugging line
+
         if client is None:
             client = await get_mongo_client()
-        db_name = config.get("db_collection", "default_db")
+
+        db_name = str(config.get("db_collection", "default_db"))
+        print(f"Using database: {db_name}")  # Debugging line
+
         return client[db_name]
     except Exception as e:
         print(f"Failed to get database: {e}")
         raise
 
-async  def get_collection(collection_name: str, db_name: str = ""):
+
+async def get_collection(collection_name: str):
     try:
-        config = load_mongo_config()
-        if db_name == "":
-            db_name = config.get("db_collection","default_db")
-        db = await get_database(db_name)
+
+        db = await get_database()
         return db[collection_name]
     except Exception as e:
         print(f"Failed to get collection: {e}")
         raise
+
 
 async def coll_is_populated(collection_name, db):
     collist = await db.list_collection_names()
@@ -48,7 +56,6 @@ async def coll_is_populated(collection_name, db):
 
 
 async def insert_to_mongo(data, coll_name):
-    db = await get_database()
     collection = await get_collection(coll_name)
 
     # Insert data based on whether it's a list or a single entry

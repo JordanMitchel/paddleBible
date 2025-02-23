@@ -8,7 +8,6 @@ async def get_coordinates_by_location(locations: List[Place],
                                       bible_version: str,
                                       extra_bible_versions: List[str],
                                       collection="LonLats"):
-
     db = await get_database()
     coll = db[collection]
     count = 0

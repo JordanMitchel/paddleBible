@@ -1,26 +1,22 @@
-from bff.src.services.service_bus.producer_service import ProducerService
-from shared.src.ServiceBus.publish_message import push_text
-from shared.src.models.response import ResponseModel
-from shared.src.models.scripture_result import BibleStructure, Place
+from kombu.exceptions import OperationalError, EncodeError
+
+from shared.src.ServiceBus.producer import KombuProducer
 
 
-async def get_locations_using_scripture(verse: str, producer_service: ProducerService) -> ResponseModel:
+async def request_locations_using_scripture(verse: str, producer_service: KombuProducer) -> bool:
     if not verse:
-        return ResponseModel(success=False,
-                             data=BibleStructure(),
-                             warnings="Empty verse no location found")
+        print("Received empty verse.")
+        return False
 
-    queue_name = "locations_queue"
-    producer_service.send_message(queue_name,verse)
-    print(f"Verse pushed to {queue_name}: {verse}")
-    # result = await push_text(verse)
     try:
-        result = await get_result_from_consumer(queue_name, verse)
-        if result.warnings != '':
-            return ResponseModel(success=True, data=result.data)
-        return ResponseModel(success=False, warnings=result.warnings)
-    except TimeoutError:
-        return ResponseModel(success=False, warnings="Timeout: No response from consumer")
+        await producer_service.send_message(verse, routing_key="ai_consuming.bff.requests")
+        print(f"Verse '{verse}' pushed to Channel {producer_service.get_channel()}")
+        return True
+    except OperationalError as e:  # Broker connection issues
+        print(f"Message broker unavailable: {e}")
+    except EncodeError as e:  # Serialization issues
+        print(f"Failed to encode message: {e}")
+    except Exception as e:  # Catch-all for unexpected errors
+        print(f"Unexpected error while sending message: {e}")
 
-
-
+    return False
