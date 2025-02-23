@@ -1,7 +1,7 @@
 ﻿import asyncio
 from kombu import Connection, Queue
 from kombu.mixins import ConsumerProducerMixin
-from kombu.exceptions import OperationalError, ConsumeTimeout
+from kombu.exceptions import OperationalError, ConnectionError
 from shared.src.models.scripture_result import ScriptureResponse
 from shared.utils.config import BROKER_URL, EXCHANGE
 from bff.src.services.ServiceBus.ResultService import ResultService
@@ -37,8 +37,8 @@ class BFFKombuConsumer(ConsumerProducerMixin):
             print("Finished consuming messages.")
         except OperationalError as e:
             print(f"Error connecting to message broker: {str(e)}")
-        except ConsumeTimeout as e:
-            print(f"Consume timeout error: {str(e)}")
+        except ConnectionError as e:
+            print(f"Connection error: {str(e)}")
         except Exception as e:
             print(f"Unexpected error while consuming messages: {str(e)}")
 
