@@ -12,7 +12,6 @@ app = FastAPI(title="PaddleBible", version="1.0.0", debug=True)
 app.include_router(router_scripture.router, prefix="/scripture")
 
 
-
 @app.on_event("startup")
 async def startup_event():
     print("Starting database seeding...")

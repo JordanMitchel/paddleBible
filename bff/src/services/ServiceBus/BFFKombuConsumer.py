@@ -1,14 +1,11 @@
 ﻿import asyncio
-import json
 
-from kombu import Connection, Consumer, Queue
+from kombu import Connection, Queue
 from kombu.mixins import ConsumerProducerMixin
 
 from bff.src.services.ServiceBus.ResultService import ResultService
 from shared.src.models.scripture_result import ScriptureResponse
 from shared.utils.config import BROKER_URL, EXCHANGE
-
-
 
 
 class BFFKombuConsumer(ConsumerProducerMixin):
@@ -20,7 +17,6 @@ class BFFKombuConsumer(ConsumerProducerMixin):
         self.result_data = None  # Store extracted data
         self.result_event = asyncio.Event()  # Event for signaling when the result is available
         self.processor = ResultService()
-
 
     def get_consumers(self, Consumer, channel):
         """Set up Kombu consumer with the queue and callback."""
@@ -34,7 +30,6 @@ class BFFKombuConsumer(ConsumerProducerMixin):
 
         # self.result_data = ResponseModel.from_json(body)  # Store received message in result_data
         message.ack()  # Acknowledge the message
-
 
     def start_consuming(self):
         """Start the consumer and process messages."""

@@ -12,7 +12,6 @@ from shared.src.models.scripture_result import ResponseModel
 # noinspection PyMethodMayBeStatic
 
 
-
 class BibleService:
     async def get_all_bible_books(self) -> ResponseModel:
         """Fetch all Bible books."""
@@ -20,14 +19,14 @@ class BibleService:
 
     async def get_locations_by_scripture(self, verse: str,
                                          producer_service: KombuProducer,
-                                         ) -> ResponseModel:
+                                         ) -> bool:
         """Fetch locations for a given verse."""
         return await request_locations_using_scripture(verse, producer_service)
 
     async def get_scripture_and_coordinates(self,
-            bible_version, book_num, chapter, verse_num,
-            producer_service:KombuProducer, consumer_service:BFFKombuConsumer
-    ) -> ResponseModel:
+                                            bible_version, book_num, chapter, verse_num,
+                                            producer_service: KombuProducer, consumer_service: BFFKombuConsumer
+                                            ) -> ResponseModel:
         """Fetch scripture data and calculate coordinates."""
         scripture_result: ResponseModel = await get_scripture_using_book_and_verse(
             bible_version, book_num, chapter, verse_num
@@ -50,7 +49,7 @@ class BibleService:
                 )
                 verse_result.data.locations = coordinates
 
-            response = ResponseModel(success= True,data=verse_result.data, warnings=verse_result.warnings)
+            response = ResponseModel(success=True, data=verse_result.data, warnings=verse_result.warnings)
             return response
 
         return ResponseModel(success=False, data={}, warnings="Scripture not found")

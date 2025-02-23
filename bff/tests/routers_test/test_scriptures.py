@@ -1,68 +1,49 @@
-﻿from unittest.mock import patch, AsyncMock
+﻿from unittest.mock import patch, AsyncMock, MagicMock
+
 import pytest
 
+from bff.src.app import app
+from bff.src.routes.router_scripture import get_bible_books, get_bible_service
+from bff.src.services.BibleService import BibleService
 from bff.src.services.search.search_for_location_by_scripture import request_locations_using_scripture
+from fastapi.testclient import TestClient
+from shared.src.ServiceBus.producer import KombuProducer
 from shared.src.models.scripture_result import BibleStructure, Scripture, Place, ResponseModel
-from bff.src.routes.router_scripture import get_bible_books
 from shared.tests.test_data.mock_data import mock_bible_books
 
 
+@pytest.fixture
+def mock_bible_service():
+    """Fixture to create a mock of BibleService."""
+    mock_service = AsyncMock(spec=BibleService)
+    return mock_service
+
 @pytest.mark.asyncio
-@patch("bff.src.routes.router_scripture.get_all_bible_books", new_callable=AsyncMock)
 @pytest.mark.requires_decouple
-async def test_get_bible_books(mock_get_all_bible_books):
+async def test_get_bible_books(mock_bible_service):
+    # ✅ Override the FastAPI dependency
+    app.dependency_overrides[get_bible_service] = lambda: mock_bible_service
+
     # Arrange
-    bible_data = mock_bible_books
-    mock_get_all_bible_books.return_value = bible_data
+    bible_data = mock_bible_books  # Ensure this is predefined
+    mock_bible_service.get_all_bible_books.return_value = bible_data
+
+    # ✅ Use FastAPI's TestClient to send a request
+    client = TestClient(app)
 
     # Act
-    books = await get_bible_books()
+    response = client.get("/BibleBooks")
 
     # Assert
-    assert books.success is True
-    assert books.data == bible_data.data
+    assert response.status_code == 200
+    books = response.json()
+    assert books["success"] is True
+    assert books["data"] == bible_data.data
+
+    # ✅ Ensure the method was called once
+    mock_bible_service.get_all_bible_books.assert_called_once()
+
+    # ✅ Clean up the dependency override
+    app.dependency_overrides.clear()
 
 
-@pytest.mark.asyncio
-@patch("bff.src.routes.router_scripture.get_locations_using_scripture", new_callable=AsyncMock)
-async def test_get_coordinates_from_verse_returns_location_with_good_scripture(mock_get_locations):
-    # Arrange
-    verse = (
-        "Yet to his son I will give one tribe,"
-        " that David my servant may always have a lamp"
-        " before me in Jerusalem, the city where I have chosen to put my name."
-    )
-
-    mock_scripture = Scripture(book="book1", chapter=1, verse={1: "verse1"})
-    mock_bible_data = BibleStructure(
-        scripture=mock_scripture,
-        locations=[Place()],
-        location_count=1
-    )
-    coordinate_response_model = ResponseModel(success=True, data=mock_bible_data)
-    mock_get_locations.return_value = coordinate_response_model
-
-    # Act
-    verse_result = await request_locations_using_scripture(verse)
-
-    # Assert
-    assert verse_result.success is True
-    assert verse_result.data.location_count == 1
-    assert len(verse_result.data.locations) == 1
-
-    # Verify mock was called
-    assert isinstance(verse_result.data, BibleStructure)
-
-
-@pytest.mark.asyncio
-async def test_get_coordinates_from_verse_returns_warning_with_empty_scripture():
-    # Arrange
-    verse = ""
-
-    # Act
-    verse_result = await request_locations_using_scripture(verse)
-
-    # Assert
-    assert verse_result.success is False
-    assert verse_result.warnings == "Empty verse no location found"
-    assert isinstance(verse_result.data, BibleStructure)

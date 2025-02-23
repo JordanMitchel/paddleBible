@@ -7,28 +7,39 @@ from shared.src.models.scripture_result import Scripture
 
 
 @pytest.mark.asyncio
-@patch("bff.src.services.search.search_scripture.get_database")  # Mocking the get_database function
+@patch("bff.src.services.search.search_scripture.get_collection",  new_callable=AsyncMock)  # Mocking the get_database function
 @pytest.mark.requires_decouple
-async def test_get_scripture_found(mock_get_database):
-    # Mock the database and collection
+async def test_get_scripture_found(mock_get_collection):
+    # ✅ Mock the collection behavior
     mock_coll = AsyncMock()
-    mock_coll.find_one.return_value = {
-        "book_name": "Genesis",
-        "text": "In the beginning, God created the heavens and the earth."
-    }
-    mock_db = AsyncMock()
-    mock_db.__getitem__.return_value = mock_coll
-    mock_get_database.return_value = mock_db
+    mock_cursor = AsyncMock()
 
-    # Call the function
+    # ✅ Mock find().sort().to_list() chain properly
+    mock_cursor.to_list.return_value = [
+        {
+            "book_name": "Genesis",
+            "chapter": 1,
+            "verse": 1,
+            "text": "In the beginning, God created the heavens and the earth."
+        }
+    ]
+
+    # ✅ Ensure mock find() returns a mock cursor
+    mock_coll.find.return_value.sort.return_value = mock_cursor
+
+    # ✅ Ensure `get_collection` returns `mock_coll` when awaited
+    mock_get_collection.return_value = mock_coll
+
+    # 🔥 Call the function
     response = await get_scripture_using_book_and_verse("test_version", 1, 1, 1)
 
-    # Assertions
-    assert (response.data ==
-            Scripture(book='Genesis',
-                      chapter=1,
-                      verse={1: 'In the beginning, God created the heavens and the earth.'}))
-
+    # ✅ Assertions
+    assert response.success is True
+    assert response.data == Scripture(
+        book='Genesis',
+        chapter=1,
+        verse={1: 'In the beginning, God created the heavens and the earth.'}
+    )
 
 @pytest.mark.asyncio
 @patch("bff.src.services.search.search_scripture.get_database")  # Mocking the get_database function
