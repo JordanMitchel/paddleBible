@@ -1,4 +1,5 @@
 import asyncio
+
 import uvicorn
 from fastapi import FastAPI
 from kombu import Connection
@@ -8,23 +9,19 @@ from shared.utils.config import BROKER_URL
 
 app = FastAPI()
 
-# Global references for Kombu services
-ai_consumer_service: MLKombuConsumer
-consumer_task: asyncio.Task | None = None
-
 
 @app.on_event("startup")
 async def startup_event():
     """Setup Kombu consumer and producer on startup."""
-    global ai_consumer_service
-
     try:
         print("✅ Connected to RabbitMQ")
         # Initialize Kombu Consumer
         ai_consumer_service = MLKombuConsumer()
+        app.state.ai_consumer_service = ai_consumer_service  # Store in app state
 
         # Run Kombu consumer in a separate thread
-        asyncio.create_task(asyncio.to_thread(ai_consumer_service.run))
+        consumer_task = asyncio.create_task(asyncio.to_thread(ai_consumer_service.run))
+        app.state.consumer_task = consumer_task  # Store in app state
 
         print(f"✅ Kombu consumer listening on queue: {ai_consumer_service.queue.name}")
 
@@ -34,8 +31,8 @@ async def startup_event():
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    """Gracefully shutdown Kombu producer & consumer."""
-    global ai_consumer_service, consumer_task
+    """Gracefully shutdown Kombu consumer."""
+    consumer_task = getattr(app.state, "consumer_task", None)
 
     if consumer_task:
         consumer_task.cancel()
@@ -43,9 +40,10 @@ async def shutdown_event():
             await consumer_task  # Ensure the task stops cleanly
         except asyncio.CancelledError:
             print("🛑 Kombu consumer task cancelled.")
-        consumer_task = None
+        app.state.consumer_task = None
 
     print("🛑 Kombu consumer stopped, RabbitMQ connection closed.")
+
 
 @app.get("/health")
 async def health_check():

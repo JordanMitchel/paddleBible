@@ -50,26 +50,27 @@ class BibleBook(int, Enum):
     JOSHUA = 6
     JUDGES = 7
 
+
 class DataModel(BaseModel):
     scripture: Scripture
     locations: List[Place]
     location_count: int
+
 
 class ScriptureResponse(BaseModel):
     success: bool
     data: BibleStructure = Field(default_factory=BibleStructure)
     warnings: Optional[str] = None
 
+
 class ResponseModel(BaseModel):
     success: bool
     data: Any | None = None
     warnings: Optional[str] = None
+
 
 class VerseRequest(BaseModel):
     bible_version: BibleVersion
     book_num: int
     chapter: int
     verse_num: int
-
-
-

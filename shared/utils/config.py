@@ -1,4 +1,5 @@
 import os
+
 from decouple import UndefinedValueError, RepositoryEnv, Config
 from kombu import Exchange
 
@@ -9,11 +10,10 @@ ENV_FILE_CONFIG = f'./env.{env_name}'  # Fixed path
 # env_file2 = os.path.join(BASE_DIR, ".env")
 
 BROKER_URL = "amqp://guest:guest@rabbitmq:5672//"
-#local
+# local
 # BROKER_URL = "amqp://guest:guest@localhost:5672//"
 # Define a shared exchange
 EXCHANGE = Exchange("bible_exchange", type="direct")
-
 
 
 def get_env_variable(key, default=None, cast_type=str, env_file=ENV_FILE_CONFIG):
@@ -30,7 +30,7 @@ def get_env_variable(key, default=None, cast_type=str, env_file=ENV_FILE_CONFIG)
         raise EnvironmentError(f"The required environment variable '{key}' is not set.") from exc
 
 
-def load_mongo_config()-> {}:
+def load_mongo_config() -> {}:
     """Loads MongoDB configuration from environment variables."""
     return {
         "url": get_env_variable("MONGO_DB_URL", "mongodb_container"),
@@ -51,4 +51,3 @@ def load_logging_config():
 def is_debug_mode():
     """Checks if the application is running in debug mode."""
     return get_env_variable("DEBUG_MODE", False, bool)  # Fixed casting
-
