@@ -1,9 +1,9 @@
 ﻿from fastapi import APIRouter, Depends, HTTPException
 
-from bff.src.services.ServiceBus.BFFKombuConsumer import BFFKombuConsumer
-from shared.src.ServiceBus.producer import KombuProducer
-from shared.src.ServiceBus.dependencies import get_producer_service
 from bff.src.services.BibleService import BibleService
+from bff.src.services.ServiceBus.BFFKombuConsumer import BFFKombuConsumer
+from shared.src.ServiceBus.dependencies import get_producer_service
+from shared.src.ServiceBus.producer import KombuProducer
 from shared.src.models.scripture_result import BibleVersion, ResponseModel
 
 # Instantiate router
@@ -16,7 +16,8 @@ def get_bible_service() -> BibleService:
 
 
 @router.get("/BibleBooks")
-async def get_bible_books(bible_service: BibleService = Depends(get_bible_service)) -> ResponseModel:
+async def get_bible_books(
+        bible_service: BibleService = Depends(get_bible_service)) -> ResponseModel:
     """Retrieve a list of all Bible books."""
     books = await bible_service.get_all_bible_books()
     return books

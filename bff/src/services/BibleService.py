@@ -1,11 +1,12 @@
 ﻿import asyncio
 
 from bff.src.services.ServiceBus.BFFKombuConsumer import BFFKombuConsumer
-from shared.src.ServiceBus.producer import KombuProducer
 from bff.src.services.search.search_bible_books_list import get_all_bible_books
-from bff.src.services.search.search_for_location_by_scripture import request_locations_using_scripture
+from bff.src.services.search.search_for_location_by_scripture import \
+    request_locations_using_scripture
 from bff.src.services.search.search_locations import get_coordinates_by_location
 from bff.src.services.search.search_scripture import get_scripture_using_book_and_verse
+from shared.src.ServiceBus.producer import KombuProducer
 from shared.src.models.scripture_result import ResponseModel
 
 
@@ -25,7 +26,8 @@ class BibleService:
 
     async def get_scripture_and_coordinates(self,
                                             bible_version, book_num, chapter, verse_num,
-                                            producer_service: KombuProducer, consumer_service: BFFKombuConsumer
+                                            producer_service: KombuProducer,
+                                            consumer_service: BFFKombuConsumer
                                             ) -> ResponseModel:
         """Fetch scripture data and calculate coordinates."""
         scripture_result: ResponseModel = await get_scripture_using_book_and_verse(
@@ -37,7 +39,8 @@ class BibleService:
             await request_locations_using_scripture(scripture.verse[verse_num], producer_service)
 
             results = consumer_service.processor
-            asyncio.create_task(asyncio.to_thread(consumer_service.run))  # Run the consumer in a background thread
+            asyncio.create_task(
+                asyncio.to_thread(consumer_service.run))  # Run the consumer in a background thread
 
             verse_result = await results.wait_for_message()  # Wait until the message is received
             verse_result.data.scripture = scripture_result
@@ -49,7 +52,8 @@ class BibleService:
                 )
                 verse_result.data.locations = coordinates
 
-            response = ResponseModel(success=True, data=verse_result.data, warnings=verse_result.warnings)
+            response = ResponseModel(success=True, data=verse_result.data,
+                                     warnings=verse_result.warnings)
             return response
 
         return ResponseModel(success=False, data={}, warnings="Scripture not found")
