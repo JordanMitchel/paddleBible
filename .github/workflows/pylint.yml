@@ -10,30 +10,35 @@ jobs:
         python-version: ["3.11"]
     steps:
     - uses: actions/checkout@v4
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pylint python-decouple opencage geopy spacy pydantic pandas fastapi motor aiofiles pytest flake8 \
-        pytest-cov pytest-asyncio uvicorn requests bs4
+        pip install pylint python-decouple opencage geopy spacy pydantic pandas fastapi motor aiofiles pytest \
+        pytest-cov pytest-asyncio uvicorn requests bs4 flake8
         python -m spacy download xx_ent_wiki_sm
 
     - name: Analyzing the code with pylint
       run: |
-             pylint --disable=missing-docstring --max-line-length=120 --enable=C0103 \
-         --ignored-modules=decouple $(git ls-files '*.py') $(git ls-files '*.py')
+        pylint --disable=missing-docstring --max-line-length=120 --enable=C0103 \
+        --ignored-modules=decouple $(git ls-files '*.py')
+
     - name: Lint with flake8
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
+
     - name: Run pytest tests
       env:
-       PYTHONPATH: src
+        PYTHONPATH: src
       run: |
-          pytest --cov=src -m "not requires_decouple"
+        pytest --cov=src --cov-report=html -m "not requires_decouple"
+
     - name: Upload coverage report
       uses: actions/upload-artifact@v4
       with:
