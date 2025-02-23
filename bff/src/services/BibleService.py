@@ -1,12 +1,12 @@
 ﻿import asyncio
 
+from bff.src.services.ServiceBus.BFFKombuConsumer import BFFKombuConsumer
 from bff.src.services.search.search_bible_books_list import get_all_bible_books
 from bff.src.services.search.search_for_location_by_scripture import request_locations_using_scripture
 from bff.src.services.search.search_locations import get_coordinates_by_location
 from bff.src.services.search.search_scripture import get_scripture_using_book_and_verse
-from shared.src.models.scripture_result import ResponseModel
 from shared.src.ServiceBus.producer import KombuProducer
-from bff.src.services.ServiceBus.BFFKombuConsumer import BFFKombuConsumer
+from shared.src.models.scripture_result import ResponseModel
 
 
 class BibleService:

@@ -1,11 +1,10 @@
 ﻿import asyncio
-
 from kombu import Connection, Queue
 from kombu.mixins import ConsumerProducerMixin
-
-from bff.src.services.ServiceBus.ResultService import ResultService
+from kombu.exceptions import OperationalError, ConsumeTimeout
 from shared.src.models.scripture_result import ScriptureResponse
 from shared.utils.config import BROKER_URL, EXCHANGE
+from bff.src.services.ServiceBus.ResultService import ResultService
 
 
 class BFFKombuConsumer(ConsumerProducerMixin):
@@ -28,7 +27,6 @@ class BFFKombuConsumer(ConsumerProducerMixin):
         print(f"📩 Custom Consumer Received: {body}")
         asyncio.run(self._async_process_message(ScriptureResponse(**body)))
 
-        # self.result_data = ResponseModel.from_json(body)  # Store received message in result_data
         message.ack()  # Acknowledge the message
 
     def start_consuming(self):
@@ -37,11 +35,20 @@ class BFFKombuConsumer(ConsumerProducerMixin):
             print("Starting to consume messages...")
             self.run()  # This is where the actual consuming happens
             print("Finished consuming messages.")
+        except OperationalError as e:
+            print(f"Error connecting to message broker: {str(e)}")
+        except ConsumeTimeout as e:
+            print(f"Consume timeout error: {str(e)}")
         except Exception as e:
-            print(f"Error while consuming messages: {str(e)}")
+            print(f"Unexpected error while consuming messages: {str(e)}")
 
     async def _async_process_message(self, body):
         """Async wrapper to run the processing service in an event loop."""
-        result = await self.processor.process_message(body)
-        print("✅ Processed message successfully.")
-        return result  # Return processed result
+        try:
+            result = await self.processor.process_message(body)
+            print("✅ Processed message successfully.")
+            return result  # Return processed result
+        except asyncio.TimeoutError as e:
+            print(f"Async processing timed out: {str(e)}")
+        except Exception as e:
+            print(f"Error during message processing: {str(e)}")
