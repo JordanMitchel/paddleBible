@@ -1,54 +1,44 @@
 ﻿from fastapi import APIRouter, Depends, HTTPException
 
-from bff.src.services.BibleService import BibleService
-from bff.src.services.ServiceBus.BFFKombuConsumer import BFFKombuConsumer
-from shared.src.ServiceBus.dependencies import get_producer_service
-from shared.src.ServiceBus.producer import KombuProducer
-from shared.src.models.scripture_result import BibleVersion, ResponseModel
+from bff.src.services.ServiceContainer import ServiceContainer, get_services
+from shared.src.models.scripture_result import BibleVersion, ResponseModel, VerseRequest
 
 # Instantiate router
 router = APIRouter()
 
-
-# Dependency injection for services
-def get_bible_service() -> BibleService:
-    return BibleService()
-
-
+# Dependency injection for services using ServiceContainer
 @router.get("/BibleBooks")
-async def get_bible_books(
-        bible_service: BibleService = Depends(get_bible_service)) -> ResponseModel:
+async def get_bible_books(services: ServiceContainer = Depends(get_services)) -> ResponseModel:
     """Retrieve a list of all Bible books."""
-    books = await bible_service.get_all_bible_books()
+    books = await services.bible_service.get_all_bible_books()
     return books
-
 
 @router.get("/GetCoordinates/{verse}")
 async def get_coordinates_from_verse(
-        verse: str,
-        bible_service: BibleService = Depends(get_bible_service),
-        producer_service: KombuProducer = Depends(get_producer_service)
+    verse: str,
+    services: ServiceContainer = Depends(get_services)
 ) -> bool:
     """Retrieve locations based on a scripture verse."""
-    verse_result = await bible_service.get_locations_by_scripture(verse, producer_service)
+    verse_result = await services.bible_service.get_locations_by_scripture(
+        verse, services.producer_service
+    )
     if not verse_result:
         raise HTTPException(status_code=404, detail="Locations not found for the given verse.")
     return verse_result
 
-
-@router.get("/GetVerseData/{bible_version}/{book_num}/{chapter}/{verse_num}")
+@router.post("/GetVerseData/")
 async def get_locations_and_coordinates_from_verse_label(
-        bible_version: BibleVersion,
-        book_num: int,
-        chapter: int,
-        verse_num: int,
-        bible_service: BibleService = Depends(get_bible_service),
-        producer_service: KombuProducer = Depends(get_producer_service),
-        consumer_service: BFFKombuConsumer = Depends(BFFKombuConsumer)
+    request: VerseRequest,
+    services: ServiceContainer = Depends(get_services)
 ) -> ResponseModel:
     """Retrieve scripture data and corresponding coordinates for a specific verse."""
-    result = await bible_service.get_scripture_and_coordinates(
-        bible_version, book_num, chapter, verse_num, producer_service, consumer_service
+    result = await services.bible_service.get_scripture_and_coordinates(
+        request.bible_version,
+        request.book_num,
+        request.chapter,
+        request.verse_num,
+        services.producer_service,  # ✅ Use ServiceContainer attributes
+        services.consumer_service,
     )
     if not result.success:
         raise HTTPException(status_code=404, detail=result.warnings)

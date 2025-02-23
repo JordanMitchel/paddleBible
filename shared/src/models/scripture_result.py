@@ -65,7 +65,11 @@ class ResponseModel(BaseModel):
     data: Any | None = None
     warnings: Optional[str] = None
 
-
+class VerseRequest(BaseModel):
+    bible_version: BibleVersion
+    book_num: int
+    chapter: int
+    verse_num: int
 
 
 
