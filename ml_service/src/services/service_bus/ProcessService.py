@@ -8,7 +8,7 @@ from shared.src.models.scripture_result import BibleStructure, Place, ScriptureR
 # noinspection PyMethodMayBeStatic
 class ProcessService:
 
-    async def process_text(self,verse: str) -> ScriptureResponse:
+    async def process_text(self, verse: str) -> ScriptureResponse:
         location_list_en_core = self.sentiment_search('en_core_web_sm', verse)
         location_list_wiki = self.sentiment_search('xx_ent_wiki_sm', verse)
         location_lists = location_list_en_core + location_list_wiki
@@ -21,7 +21,6 @@ class ProcessService:
         bible_struct = BibleStructure(locations=locations_arr, location_count=len(locations_arr))
         print(bible_struct)
         return ScriptureResponse(success=True, data=bible_struct)
-
 
     def sentiment_search(self, sentiment: str, verse: str) -> List[str]:
         if not sentiment or not verse:

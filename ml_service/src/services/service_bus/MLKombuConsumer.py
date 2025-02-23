@@ -1,10 +1,12 @@
 ﻿import asyncio
-from kombu.mixins import ConsumerProducerMixin
-from kombu import Connection, Queue
 
+from kombu import Connection, Queue
+from kombu.mixins import ConsumerProducerMixin
+
+from ml_service.src.services.service_bus.ProcessService import ProcessService
 from shared.src.ServiceBus.producer import KombuProducer
 from shared.utils.config import BROKER_URL, EXCHANGE
-from ml_service.src.services.service_bus.ProcessService import ProcessService
+
 
 class MLKombuConsumer(ConsumerProducerMixin):
     def __init__(self):
@@ -39,6 +41,6 @@ class MLKombuConsumer(ConsumerProducerMixin):
     def publish_result(self, result):
         """Send processed result to another queue."""
         routing_key = "bff_consuming.ai.results"
-        output_result  = result.model_dump()
+        output_result = result.model_dump()
         print(f"🚀 Publishing result: {output_result} to {routing_key}")
-        asyncio.run(self.publisher.send_message( output_result, routing_key=routing_key))
+        asyncio.run(self.publisher.send_message(output_result, routing_key=routing_key))

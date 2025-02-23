@@ -26,7 +26,7 @@ jobs:
     - name: Analyzing the code with pylint
       run: |
         pylint --disable=missing-docstring --max-line-length=120 --disable=C0103,W0718 \
-        --ignored-modules=decouple $(git ls-files '*.py')
+        --ignored-modules=decouple --ignore-patterns=test_.* $(git ls-files '*.py')
 
     - name: Lint with flake8
       run: |

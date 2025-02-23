@@ -1,16 +1,17 @@
 ﻿from collections.abc import Mapping
 
 from motor.motor_asyncio import AsyncIOMotorClient
+
 from shared.utils.config import load_mongo_config
 
 
-async def get_mongo_client() -> AsyncIOMotorClient[Mapping[str,any]]:
+async def get_mongo_client() -> AsyncIOMotorClient[Mapping[str, any]]:
     try:
         config = load_mongo_config()
         client = AsyncIOMotorClient(
             config["url"],
             username=config.get("db_username"),
-            password=config.get("db_password"),)
+            password=config.get("db_password"), )
 
         print(f"Connected to MongoDB at {config['url']}")
         return client
@@ -35,7 +36,8 @@ async def get_database(client=None):
         print(f"Failed to get database: {e}")
         raise
 
-async  def get_collection(collection_name: str):
+
+async def get_collection(collection_name: str):
     try:
 
         db = await get_database()
@@ -43,6 +45,7 @@ async  def get_collection(collection_name: str):
     except Exception as e:
         print(f"Failed to get collection: {e}")
         raise
+
 
 async def coll_is_populated(collection_name, db):
     collist = await db.list_collection_names()
