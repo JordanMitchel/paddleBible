@@ -35,10 +35,10 @@ class BFFKombuConsumer(ConsumerProducerMixin):
             print("Starting to consume messages...")
             self.run()  # This is where the actual consuming happens
             print("Finished consuming messages.")
-        except OperationalError as e:
-            print(f"Error connecting to message broker: {str(e)}")
-        except ConnectionError as e:
-            print(f"Connection error: {str(e)}")
+        except ValueError as e:
+            print(f"Value error: {str(e)}")
+        except TimeoutError as e:
+            print(f"Timeout error: {str(e)}")
         except Exception as e:
             print(f"Unexpected error while consuming messages: {str(e)}")
 
