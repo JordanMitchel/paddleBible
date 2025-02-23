@@ -11,6 +11,7 @@ pydantic==2.3.0
 pymongo~=4.9.2
 requests==2.31.0
 uvicorn==0.23.2
-pytest~=8.3.4
 pika~=1.3.2
-kombu~=5.4.2
+aio_pika
+kombu
+pytest~=8.3.4
