@@ -1,7 +1,7 @@
 ﻿from fastapi import APIRouter, Depends, HTTPException
 
 from bff.src.services.BibleService import BibleService
-from bff.src.services.ServiceContainer import ServiceContainer, get_service_container
+from bff.src.services.ServiceContainer import get_service_container
 from shared.src.models.scripture_result import ResponseModel, VerseRequest
 
 # Instantiate router
@@ -14,6 +14,7 @@ async def get_bible_service(services=Depends(get_service_container)) -> BibleSer
         producer=services.get_producer_service(),
         consumer=services.get_consumer_service()
     )
+
 
 @router.get("/BibleBooks")
 async def get_bible_books(bible_service: BibleService = Depends(get_bible_service)) -> ResponseModel:
