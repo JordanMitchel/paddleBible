@@ -14,9 +14,7 @@ async def get_scripture_using_book_and_verse(bible_version,
         print(coll)
         query = {"book": book_num, "chapter": chapter, "verse": verse_num}
         print(query)
-        cursor = coll.find(query).sort("verse", 1)
-        doc = await cursor.to_list(length=1)
-        doc = doc[0] if doc else None  # Extract the first document
+        doc = await coll.find_one(query)
 
         print(f"📄 Fetched Document: {doc}")
 

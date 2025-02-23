@@ -8,7 +8,7 @@ from shared.src.models.scripture_result import ResponseModel, VerseRequest
 router = APIRouter()
 
 
-async def get_bible_service(services=Depends(get_service_container)):
+async def get_bible_service(services=Depends(get_service_container)) -> BibleService:
     """Initialize BibleService using explicit dependencies."""
     return BibleService(
         producer=services.get_producer_service(),
@@ -24,11 +24,11 @@ async def get_bible_books(bible_service: BibleService = Depends(get_bible_servic
 @router.get("/GetCoordinates/{verse}")
 async def get_coordinates_from_verse(
         verse: str,
-        services: ServiceContainer = Depends(get_service_container)
+        services: BibleService = Depends(get_bible_service)
 ) -> bool:
     """Retrieve locations based on a scripture verse."""
-    verse_result = await services.get_bible_service().get_locations_by_scripture(
-        verse, services.get_producer_service()
+    verse_result = await services.get_locations_by_scripture(
+        verse
     )
     if not verse_result:
         raise HTTPException(status_code=404, detail="Locations not found for the given verse.")
@@ -38,16 +38,14 @@ async def get_coordinates_from_verse(
 @router.post("/GetVerseData/")
 async def get_locations_and_coordinates_from_verse_label(
         request: VerseRequest,
-        services: ServiceContainer = Depends(get_service_container)
+        services: BibleService = Depends(get_bible_service)
 ) -> ResponseModel:
     """Retrieve scripture data and corresponding coordinates for a specific verse."""
-    result = await services.get_bible_service().get_scripture_and_coordinates(
+    result = await services.get_scripture_and_coordinates(
         request.bible_version,
         request.book_num,
         request.chapter,
         request.verse_num,
-        services.get_producer_service(),  # ✅ Use ServiceContainer attributes
-        services.get_consumer_service(),
     )
     if not result.success:
         raise HTTPException(status_code=404, detail=result.warnings)
