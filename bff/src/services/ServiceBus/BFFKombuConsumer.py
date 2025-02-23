@@ -1,10 +1,11 @@
 ﻿import asyncio
+
 from kombu import Connection, Queue
 from kombu.mixins import ConsumerProducerMixin
-from kombu.exceptions import OperationalError, ConnectionError
+
+from bff.src.services.ServiceBus.ResultService import ResultService
 from shared.src.models.scripture_result import ScriptureResponse
 from shared.utils.config import BROKER_URL, EXCHANGE
-from bff.src.services.ServiceBus.ResultService import ResultService
 
 
 class BFFKombuConsumer(ConsumerProducerMixin):
