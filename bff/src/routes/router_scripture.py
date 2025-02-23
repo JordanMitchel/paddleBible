@@ -1,28 +1,34 @@
 ﻿from fastapi import APIRouter, Depends, HTTPException
 
-from bff.src.services.ServiceContainer import ServiceContainer, get_services
+from bff.src.services.BibleService import BibleService
+from bff.src.services.ServiceContainer import ServiceContainer, get_service_container
 from shared.src.models.scripture_result import ResponseModel, VerseRequest
 
 # Instantiate router
 router = APIRouter()
 
 
-# Dependency injection for services using ServiceContainer
+async def get_bible_service(services=Depends(get_service_container)):
+    """Initialize BibleService using explicit dependencies."""
+    return BibleService(
+        producer=services.get_producer_service(),
+        consumer=services.get_consumer_service()
+    )
+
 @router.get("/BibleBooks")
-async def get_bible_books(services: ServiceContainer = Depends(get_services)) -> ResponseModel:
+async def get_bible_books(bible_service: BibleService = Depends(get_bible_service)) -> ResponseModel:
     """Retrieve a list of all Bible books."""
-    books = await services.bible_service.get_all_bible_books()
-    return books
+    return await bible_service.get_all_bible_books()
 
 
 @router.get("/GetCoordinates/{verse}")
 async def get_coordinates_from_verse(
         verse: str,
-        services: ServiceContainer = Depends(get_services)
+        services: ServiceContainer = Depends(get_service_container)
 ) -> bool:
     """Retrieve locations based on a scripture verse."""
-    verse_result = await services.bible_service.get_locations_by_scripture(
-        verse, services.producer_service
+    verse_result = await services.get_bible_service().get_locations_by_scripture(
+        verse, services.get_producer_service()
     )
     if not verse_result:
         raise HTTPException(status_code=404, detail="Locations not found for the given verse.")
@@ -32,16 +38,16 @@ async def get_coordinates_from_verse(
 @router.post("/GetVerseData/")
 async def get_locations_and_coordinates_from_verse_label(
         request: VerseRequest,
-        services: ServiceContainer = Depends(get_services)
+        services: ServiceContainer = Depends(get_service_container)
 ) -> ResponseModel:
     """Retrieve scripture data and corresponding coordinates for a specific verse."""
-    result = await services.bible_service.get_scripture_and_coordinates(
+    result = await services.get_bible_service().get_scripture_and_coordinates(
         request.bible_version,
         request.book_num,
         request.chapter,
         request.verse_num,
-        services.producer_service,  # ✅ Use ServiceContainer attributes
-        services.consumer_service,
+        services.get_producer_service(),  # ✅ Use ServiceContainer attributes
+        services.get_consumer_service(),
     )
     if not result.success:
         raise HTTPException(status_code=404, detail=result.warnings)

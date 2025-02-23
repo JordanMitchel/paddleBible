@@ -1,25 +1,29 @@
 ﻿import asyncio
 
-from bff.src.services.ServiceContainer import ServiceContainer
 from bff.src.services.search.search_bible_books_list import get_all_bible_books
 from bff.src.services.search.search_for_location_by_scripture import request_locations_using_scripture
 from bff.src.services.search.search_locations import get_coordinates_by_location
 from bff.src.services.search.search_scripture import get_scripture_using_book_and_verse
 from shared.src.models.scripture_result import ResponseModel
+from shared.src.ServiceBus.producer import KombuProducer
+from bff.src.services.ServiceBus.BFFKombuConsumer import BFFKombuConsumer
 
 
 class BibleService:
-    def __init__(self, services: ServiceContainer):
-        """Initialize BibleService with ServiceContainer to manage dependencies."""
-        self.services = services
+    """Service to manage Bible-related queries."""
+
+    def __init__(self, producer: KombuProducer, consumer: BFFKombuConsumer):
+        """Initialize BibleService with explicit dependencies."""
+        self.producer = producer
+        self.consumer = consumer
 
     async def get_all_bible_books(self) -> ResponseModel:
         """Fetch all Bible books."""
         return await get_all_bible_books()
 
     async def get_locations_by_scripture(self, verse: str) -> bool:
-        """Fetch locations for a given verse using the producer service."""
-        return await request_locations_using_scripture(verse, self.services.producer_service)
+        """Fetch locations for a given verse."""
+        return await request_locations_using_scripture(verse, self.producer)
 
     async def get_scripture_and_coordinates(self, bible_version, book_num, chapter, verse_num) -> ResponseModel:
         """Fetch scripture data and calculate coordinates."""
@@ -31,10 +35,10 @@ class BibleService:
             return ResponseModel(success=False, data={}, warnings="Scripture not found")
 
         scripture = scripture_result.data
-        await request_locations_using_scripture(scripture.verse[verse_num], self.services.producer_service)
+        await request_locations_using_scripture(scripture.verse[verse_num], self.producer)
 
-        results = self.services.consumer_service.processor
-        asyncio.create_task(asyncio.to_thread(self.services.consumer_service.run))  # Run consumer in the background
+        results = self.consumer.processor
+        asyncio.create_task(asyncio.to_thread(self.consumer.run))  # Run consumer in the background
 
         verse_result = await results.wait_for_message()  # Wait for the message
         verse_result.data.scripture = scripture_result
