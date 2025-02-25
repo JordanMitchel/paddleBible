@@ -1,95 +1,19 @@
-Django
-Flask==2.3.3
 python-decouple==3.8
-python-dotenv==1.0.0
-sqlparse==0.2.4
 
 spacy==3.6.1
-spacy-alignments==0.9.0
-spacy-legacy==3.0.12
-spacy-loggers==1.0.4
-spacy-transformers==1.2.5  # Upgraded version for compatibility
-
-thinc==8.1.12  # Latest version for better compatibility
-
-srsly==2.4.7
-
-murmurhash==1.0.9
-
-aiofiles~=22.1.0
-annotated-types==0.5.0
-anyio==3.7.1
-asgiref
-backoff==2.2.1
-beautifulsoup4~=4.12.3
-blinker==1.6.2
-blis==0.7.10
-catalogue==2.0.9
-certifi==2023.7.22
-charset-normalizer==3.2.0
-click==8.1.7
-confection==0.1.1
-cymem==2.0.7
-django-cors-headers==4.2.0
-djangorestframework==3.14.0
-djongo==1.3.6
-dnspython==2.4.2
-el-core-news-lg @ https://github.com/explosion/spacy-models/releases/download/el_core_news_lg-3.6.0/el_core_news_lg-3.6.0-py3-none-any.whl#sha256=72f1b33a1f7601239b0d2e3df67a04802a4fd9d20e6577417da8a24ec69a3f97
-en-core-web-lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.6.0/en_core_web_lg-3.6.0-py3-none-any.whl#sha256=9012584a8fcf5bc61bedb13a4b511fb81ffff9f770958ee06366671be10632e9
 en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.6.0/en_core_web_sm-3.6.0-py3-none-any.whl#sha256=83276fc78a70045627144786b52e1f2728ad5e29e5e43916ec37ea9c26a11212
-en-core-web-trf @ https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.6.1/en_core_web_trf-3.6.1-py3-none-any.whl#sha256=f9a1f0ae83954c49ebf92c0f7043ea02de51db59bf6cd3ed849d46928612c806
-exceptiongroup==1.1.3
-fastapi==0.103.2
-filelock==3.12.3
-fsspec==2023.9.0
-geographiclib==2.0
-geopy==2.4.0
-google==3.0.0
-h11==0.14.0
-httptools==0.6.1
-huggingface-hub==0.16.4
-idna==3.4
-it-core-news-lg @ https://github.com/explosion/spacy-models/releases/download/it_core_news_lg-3.6.0/it_core_news_lg-3.6.0-py3-none-any.whl#sha256=4278169743bcc89e8aaefced6b1043b2de1b0625a52fb327bc293866db9b5d02
-itsdangerous==2.1.2
-Jinja2==3.1.2
-langcodes==3.3.0
-MarkupSafe==2.1.3
-motor==3.6.0
-mpmath==1.3.0
-networkx==3.1
-numpy==1.23.4  # Adjusted version for compatibility
-opencage==2.3.0
-packaging==23.1
-pandas==2.2.3
-pathy==0.10.2
-preshed==3.0.8
-pydantic==2.3.0
-pydantic_core==2.6.3
-pymongo~=4.9.2
-python-dateutil==2.8.2
-pytz==2023.3.post1
-PyYAML==6.0.1
-regex==2023.8.8
-requests==2.31.0
-safetensors==0.3.3
-six==1.16.0
-smart-open==6.3.0
-sniffio==1.3.0
-soupsieve
-starlette==0.27.0
-transformers==4.30.2  # Kept as requested version
-typer==0.9.0
-typing_extensions==4.7.1
-tzdata==2023.3
-urllib3==2.0.4
-uvicorn==0.23.2
-uvloop==0.18.0; sys_platform != 'win32'
-wasabi==1.1.2
-watchfiles==0.21.0
-websockets==11.0.3
-Werkzeug==2.3.7
 xx-ent-wiki-sm @ https://github.com/explosion/spacy-models/releases/download/xx_ent_wiki_sm-3.6.0/xx_ent_wiki_sm-3.6.0-py3-none-any.whl#sha256=5cd25405727477ac46ed96b511d8c893e0a734bb72e749967e2fa82db3005b4d
-xx-sent-ud-sm @ https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.6.0/xx_sent_ud_sm-3.6.0-py3-none-any.whl#sha256=66d6af65cfe7b7ff4a75b0c05e52ee3b824e547e2332d32647ebcbfc33446c60
-aio_pika
-kombu
+numpy==1.23.4  # Adjusted version for compatibility
+aiofiles~=22.1.0
+beautifulsoup4~=4.12.3
+fastapi==0.103.2
+geopy==2.4.0
+motor==3.6.0
+opencage==2.3.0
+pandas==2.2.3
+pydantic==2.3.0
+pymongo~=4.9.2
+requests==2.31.0
+uvicorn==0.23.2
+kombu~=5.4.2
 pytest~=8.3.4
