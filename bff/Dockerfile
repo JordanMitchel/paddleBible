@@ -17,11 +17,12 @@ COPY scripts /app/scripts
 COPY domain /app/domain
 
 # Set the Python path to include shared modules
-ENV PYTHONPATH="/app:/bff:/app/shared:/app/scripts:/app/domain"
+ENV PYTHONPATH="/app:/app/bff:/app/shared:/app/scripts:/app/domain"
+
 # Expose the application port
-EXPOSE 8002
+EXPOSE 8000
 
 # Start the FastAPI application
 
 # Command to run the FastAPI app with Uvicorn
-CMD ["python", "-u", "bff/src/app.py"]
+CMD ["uvicorn", "bff.src.app:app", "--host", "0.0.0.0", "--port", "8000", "--log-level", "debug"]

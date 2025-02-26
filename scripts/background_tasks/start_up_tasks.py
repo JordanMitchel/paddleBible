@@ -1,5 +1,6 @@
 ﻿import json
 
+from bff.src.services.ServiceBus.BFFKombuConsumer import BFFKombuConsumer
 from domain.src.db.add_bible_to_mongo import insert_bible_store
 from domain.src.db.add_coordinates_to_mongo import update_coordinates_collection_using_file
 from shared.src.models.FileType import FileTypeEnum
@@ -18,3 +19,5 @@ async def run_tasks():
         print(f"File not found: {e}")
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON: {e}")
+
+

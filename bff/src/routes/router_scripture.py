@@ -1,19 +1,15 @@
 ﻿from fastapi import APIRouter, Depends, HTTPException
-
 from bff.src.services.BibleService import BibleService
-from bff.src.services.ServiceContainer import get_service_container
+from bff.src.services.ServiceContainer import ServiceContainer
 from shared.src.models.scripture_result import ResponseModel, VerseRequest
-
 # Instantiate router
 router = APIRouter()
 
 
-async def get_bible_service(services=Depends(get_service_container)) -> BibleService:
-    """Initialize BibleService using explicit dependencies."""
+async def get_bible_service() -> BibleService:
+    service_container = ServiceContainer()
     return BibleService(
-        producer=services.get_producer_service(),
-        consumer=services.get_consumer_service()
-    )
+        producer=service_container.get_producer_service())
 
 
 @router.get("/BibleBooks")
@@ -26,14 +22,14 @@ async def get_bible_books(bible_service: BibleService = Depends(get_bible_servic
 async def get_coordinates_from_verse(
         verse: str,
         services: BibleService = Depends(get_bible_service)
-) -> bool:
+) -> ResponseModel:
     """Retrieve locations based on a scripture verse."""
-    verse_result = await services.get_locations_by_scripture(
+    request_result = await services.get_locations_by_scripture(
         verse
     )
-    if not verse_result:
-        raise HTTPException(status_code=404, detail="Locations not found for the given verse.")
-    return verse_result
+    if not request_result:
+        raise HTTPException(status_code=404, detail="Request failed")
+    return request_result
 
 
 @router.post("/GetVerseData/")

@@ -14,8 +14,6 @@ class MLKombuConsumer(ConsumerProducerMixin):
         self.connection = Connection(BROKER_URL)
         self.queue = Queue("ai_consuming.bff.requests", EXCHANGE, routing_key="ai_consuming.bff.requests")
         self.process_service = ProcessService()
-
-        # Initialize a producer for sending processed results
         self.publisher = KombuProducer()
 
     def get_consumers(self, Consumer, channel):
@@ -25,11 +23,8 @@ class MLKombuConsumer(ConsumerProducerMixin):
     def custom_message_callback(self, body, message):
         """Process messages asynchronously inside Kombu's sync callback."""
         print(f"📩 Custom Consumer Received: {body}")
-
-        # Process the message and produce the result
         result = asyncio.run(self._async_process_message(body))
         self.publish_result(result)
-
         message.ack()  # Acknowledge the message
 
     async def _async_process_message(self, body):
