@@ -37,17 +37,17 @@ class BibleService:
         scripture = scripture_result.data
         await request_locations_using_scripture(scripture.verse[verse_num], self.producer)
 
-        results = self.consumer.processor
+        # results = self.consumer.processor
         asyncio.create_task(asyncio.to_thread(self.consumer.run))  # Run consumer in the background
 
-        verse_result = await results.wait_for_message()  # Wait for the message
-        verse_result.data.scripture = scripture_result
+        # verse_result = await results.wait_for_message()  # Wait for the message
+        # verse_result.data.scripture = scripture_result
 
-        if verse_result.data.locations:
-            list_of_bible_versions = ["ESV Name", "KMZ Name"]
-            coordinates = await get_coordinates_by_location(
-                verse_result.data.locations, "ESV Name", list_of_bible_versions
-            )
-            verse_result.data.locations = coordinates
+        # if verse_result.data.locations:
+        #     list_of_bible_versions = ["ESV Name", "KMZ Name"]
+        #     coordinates = await get_coordinates_by_location(
+        #         verse_result.data.locations, "ESV Name", list_of_bible_versions
+        #     )
+        #     verse_result.data.locations = coordinates
 
-        return ResponseModel(success=True, data=verse_result.data, warnings=verse_result.warnings)
+        return ResponseModel(success=True, data="verse_result.data", warnings="verse_result.warnings")

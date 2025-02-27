@@ -1,16 +1,18 @@
 ﻿import asyncio
 import uvicorn
 from fastapi import FastAPI
+from fastapi.websockets import WebSocket, WebSocketDisconnect
+
 from pymongo.errors import ServerSelectionTimeoutError, OperationFailure
 from scripts.background_tasks.start_up_tasks import run_tasks
-from bff.src.routes import router_scripture
+from bff.src.routes import router_scripture, router_ws
 
 if hasattr(asyncio, "WindowsSelectorEventLoopPolicy"):
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 app = FastAPI(title="PaddleBible", version="1.0.0", debug=True)
 app.include_router(router_scripture.router, prefix="/scripture")
-
+app.include_router(router_ws.ws_router, prefix="/ws-test")
 
 @app.on_event("startup")
 async def startup_event():
