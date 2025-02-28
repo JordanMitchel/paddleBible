@@ -7,19 +7,12 @@ class ServiceContainer:
 
     def __init__(self):
         self._producer_service = None
-        # self._consumer_service = None
 
     def get_producer_service(self) -> KombuProducer:
         """Lazily initialize and return the producer service."""
         if self._producer_service is None:
             self._producer_service = KombuProducer()
         return self._producer_service
-
-    # def get_consumer_service(self) -> BFFKombuConsumer:
-    #     """Lazily initialize and return the consumer service."""
-    #     if self._consumer_service is None:
-    #         self._consumer_service = BFFKombuConsumer()
-    #     return self._consumer_service
 
 
 # Dependency injection function

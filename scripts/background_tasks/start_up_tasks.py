@@ -8,21 +8,22 @@ from domain.src.db.add_coordinates_to_mongo import update_coordinates_collection
 from shared.src.models.FileType import FileTypeEnum
 
 
+import threading
+
 async def run_kombu_tasks(app):
-    print("✅ Connected to RabbitMQ")
+    print("✅ Starting Kombu consumer...")
 
-    bff_consumer_service = BFFKombuConsumer()
-    app.state.bff_consumer_service = bff_consumer_service  # Store in app state
+    def start_kombu():
+        """Run Kombu in a separate thread to avoid blocking FastAPI."""
+        bff_consumer_service = BFFKombuConsumer()
+        app.state.bff_consumer_service = bff_consumer_service
+        bff_consumer_service.run()  # Blocking call
 
-    def start_consumer():
-        """Run Kombu consumer in a separate thread."""
-        bff_consumer_service.run()  # This must be a blocking method
+    thread = threading.Thread(target=start_kombu, daemon=True)
+    thread.start()
 
-    # Run consumer in a separate thread
-    consumer_thread = threading.Thread(target=start_consumer, daemon=True)
-    consumer_thread.start()
+    print("✅ Kombu consumer thread started!")
 
-    print(f"✅ Kombu consumer listening on queue: {bff_consumer_service.queue.name}")
 
 
 async def run_db_tasks():
@@ -42,7 +43,24 @@ async def run_db_tasks():
 
 
 async def run_tasks(app):
-    await run_kombu_tasks(app)
-    await run_db_tasks()
+    print("📌 Running background tasks...")  # Debug print
+    try:
+        # await run_db_tasks()
+        # await run_kombu_tasks(app)
+        await asyncio.gather(run_db_tasks(), run_kombu_tasks(app))
+        print("✅ Background tasks started successfully!")
+    except Exception as e:
+        print(f"🔥 Error in background tasks: {e}")
+
+
+async def shutdown_tasks(app):
+    print("🔄 Shutting down Kombu consumer...")
+    bff_consumer_service = getattr(app.state, "bff_consumer_service", None)
+
+    if bff_consumer_service:
+        bff_consumer_service.should_stop = True
+        bff_consumer_service.connection.close()
+        print("✅ Kombu consumer stopped cleanly.")
+
 
 

@@ -7,7 +7,7 @@ services:
       - "8002:8000"
     depends_on:
       rabbitmq:
-        condition: service_healthy  # Ensures RabbitMQ is ready
+        condition: service_healthy
       mongodb_container:
         condition: service_started
     environment:
@@ -15,6 +15,10 @@ services:
       - BROKER_URL=amqp://guest:guest@rabbitmq:5672/  # Kombu connection URL
     env_file:
       - ./env.docker
+    healthcheck:
+        test: [ "CMD", "curl", "-f", "http://localhost:8002/health" ]
+        interval: 30s
+        retries: 3
 
   ml_service:
     build:

@@ -15,7 +15,7 @@ class BibleService:
     def __init__(self, producer: KombuProducer):
         """Initialize BibleService with explicit dependencies."""
         self.producer = producer
-        # self.consumer = consumer
+
 
     async def get_all_bible_books(self) -> ResponseModel:
         """Fetch all Bible books."""
@@ -37,6 +37,5 @@ class BibleService:
         scripture = scripture_result.data
         await request_locations_using_scripture(scripture.verse[verse_num], self.producer)
 
-        # asyncio.create_task(asyncio.to_thread(self.consumer.run))  # Run consumer in the background
 
         return ResponseModel(success=True, data="verse_result.data", warnings="verse_result.warnings")

@@ -25,4 +25,5 @@ EXPOSE 8000
 # Start the FastAPI application
 
 # Command to run the FastAPI app with Uvicorn
-CMD ["uvicorn", "bff.src.app:app", "--host", "0.0.0.0", "--port", "8000", "--log-level", "debug"]
+#CMD ["uvicorn", "bff.src.app:app", "--host", "0.0.0.0", "--port", "8000", "--log-level", "debug"]
+CMD ["python", "-u", "bff/src/app.py"]
