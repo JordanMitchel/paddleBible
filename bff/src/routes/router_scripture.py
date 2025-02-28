@@ -12,7 +12,7 @@ async def get_bible_service(services=Depends(get_service_container)) -> BibleSer
     """Initialize BibleService using explicit dependencies."""
     return BibleService(
         producer=services.get_producer_service(),
-        consumer=services.get_consumer_service()
+        # consumer=services.get_consumer_service()
     )
 
 

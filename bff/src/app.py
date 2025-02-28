@@ -16,16 +16,7 @@ app.include_router(router_ws.ws_router, prefix="/ws-test")
 
 @app.on_event("startup")
 async def startup_event():
-    print("Starting database seeding...")
-    try:
-        await run_tasks()
-        print("Database seeding completed.")
-
-    except OperationFailure as op_failure:
-        print(f"Operation failure message: {str(op_failure)}")
-
-    except ServerSelectionTimeoutError as timeout_error:
-        print(f"Timeout error message: {str(timeout_error)}")
+    await run_tasks(app)
 
 
 # Run the event loop properly
