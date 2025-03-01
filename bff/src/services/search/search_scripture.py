@@ -29,19 +29,19 @@ async def get_scripture_using_book_and_verse(clientId,
             return ScriptureRequest(clientId=clientId, data=scripture)
 
         print("❌ No scripture found for query.")
-        return ScriptureRequest(clientId=clientId)
+        return ScriptureRequest(clientId=clientId, warnings="No scripture found for query.")
 
     except ServerSelectionTimeoutError:
         print("MongoDB server could not be reached. Please check your connection.")
-        return ScriptureRequest(clientId=clientId)
+        return ScriptureRequest(clientId=clientId, warnings="An error occurred with MongoDB")
 
     except OperationFailure as e:
         print(f"Error fetching scripture: {str(e)}")
-        return ScriptureRequest(clientId=clientId)
+        return ScriptureRequest(clientId=clientId, warnings=f"Error fetching scripture: {str(e)}")
 
     except PyMongoError as e:
         print(f"An error occurred with MongoDB: {str(e)}")
-        return ScriptureRequest(clientId=clientId)
+        return ScriptureRequest(clientId=clientId, warnings=f"An error occurred with MongoDB: {str(e)}")
 
 
 async def get_scripture_using_verse(clientId, bible_version,verse)->ScriptureRequest:
