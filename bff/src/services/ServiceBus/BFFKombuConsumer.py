@@ -49,16 +49,16 @@ class BFFKombuConsumer(ConsumerProducerMixin):
         try:
             result = await self.processor.process_message(body)
             print("✅ Processed message successfully.")
-            client_id = "client-1"
+
             # client_id = scripture_response.client_id
-            await self._send_to_websocket(result, client_id)
+            await self._send_to_websocket(client_id=result.clientId, data=result)
 
         except asyncio.TimeoutError as e:
             print(f"Async processing timed out: {str(e)}")
         except Exception as e:
             print(f"Error during message processing: {str(e)}")
 
-    async def _send_to_websocket(self, data, client_id):
+    async def _send_to_websocket(self, client_id, data):
         """Send processed result to WebSocket clients."""
         websocket = connected_clients.get(client_id)
 

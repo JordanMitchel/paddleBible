@@ -1,11 +1,12 @@
 ﻿import asyncio
+import uuid
 
 import uvicorn
 from fastapi import FastAPI
 from kombu import Connection
 
 from bff.src.routes import router_scripture, router_ws
-from scripts.background_tasks.start_up_tasks import run_tasks, shutdown_tasks
+from scripts.background_tasks.start_up_tasks import run_tasks, shutdown_tasks, run_kombu_tasks, run_db_tasks
 from shared.utils.config import BROKER_URL
 
 if hasattr(asyncio, "WindowsSelectorEventLoopPolicy"):
@@ -45,12 +46,12 @@ async def check_rabbitmq():
 
 @app.on_event("startup")
 async def startup_event():
-    print("🚀 FastAPI startup event triggered!")
-    await asyncio.sleep(1)  # Delay to ensure startup event executes
-    print("📌 Running background tasks...")
-    await run_tasks(app)
-    print("✅ Background tasks started successfully!")
-
+    try:
+        print(" Running background tasks...")  # Debug print
+        await run_kombu_tasks(app)
+        await run_db_tasks()
+    except Exception as e:
+        print(f"🔥 Error in background tasks: {e}")
 
 @app.on_event("shutdown")
 async def shutdown():
@@ -58,4 +59,4 @@ async def shutdown():
 
 
 if __name__ == '__main__':
-    uvicorn.run("bff.src.app:app", host="0.0.0.0", port=8000, log_level="debug")
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, log_level="debug")

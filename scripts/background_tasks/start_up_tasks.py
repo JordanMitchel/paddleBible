@@ -8,8 +8,6 @@ from domain.src.db.add_coordinates_to_mongo import update_coordinates_collection
 from shared.src.models.FileType import FileTypeEnum
 
 
-import threading
-
 async def run_kombu_tasks(app):
     print("✅ Starting Kombu consumer...")
 
@@ -25,13 +23,11 @@ async def run_kombu_tasks(app):
     print("✅ Kombu consumer thread started!")
 
 
-
 async def run_db_tasks():
     try:
         print("Seeding LonLats collection...")
         await update_coordinates_collection_using_file("domain/data/csv/biblicalLonLat2_formatted.csv", "LonLats")
 
-        # await update_coordinates_collection_using_file("domain/data/csv/biblicalLonLat2_formatted.csv", "LonLats")
         print("Seeding Bible_ASV collection...")
         await insert_bible_store("domain/data/json/asv.json", FileTypeEnum.JSON, "Bible_ASV")
         print("Seeding completed successfully.")
@@ -43,10 +39,8 @@ async def run_db_tasks():
 
 
 async def run_tasks(app):
-    print("📌 Running background tasks...")  # Debug print
+    print("🚀 Running background tasks...")  # Debug print
     try:
-        # await run_db_tasks()
-        # await run_kombu_tasks(app)
         await asyncio.gather(run_db_tasks(), run_kombu_tasks(app))
         print("✅ Background tasks started successfully!")
     except Exception as e:
@@ -61,6 +55,3 @@ async def shutdown_tasks(app):
         bff_consumer_service.should_stop = True
         bff_consumer_service.connection.close()
         print("✅ Kombu consumer stopped cleanly.")
-
-
-

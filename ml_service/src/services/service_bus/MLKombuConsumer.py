@@ -5,6 +5,7 @@ from kombu.mixins import ConsumerProducerMixin
 
 from ml_service.src.services.service_bus.ProcessService import ProcessService
 from shared.src.ServiceBus.producer import KombuProducer
+from shared.src.models.scripture_result import ScriptureRequest, ScriptureResponse
 from shared.utils.config import BROKER_URL, EXCHANGE
 
 
@@ -27,14 +28,14 @@ class MLKombuConsumer(ConsumerProducerMixin):
         print(f"📩 Custom Consumer Received: {body}")
 
         # Process the message and produce the result
-        result = asyncio.run(self._async_process_message(body))
+        result = asyncio.run(self._async_process_message(ScriptureRequest(**body)))
         self.publish_result(result)
 
         message.ack()  # Acknowledge the message
 
-    async def _async_process_message(self, body):
+    async def _async_process_message(self, body:ScriptureRequest):
         """Async wrapper to run the processing service in an event loop."""
-        result = await self.process_service.process_text(body)
+        result:ScriptureResponse = await self.process_service.process_text(body)
         print("✅ Processed message successfully.")
         return result  # Return processed result
 
