@@ -17,9 +17,10 @@ COPY scripts /app/scripts
 COPY domain /app/domain
 
 # Set the Python path to include shared modules
-ENV PYTHONPATH="/app:/bff:/app/shared:/app/scripts:/app/domain"
+ENV PYTHONPATH="/app:/app/bff:/app/shared:/app/scripts:/app/domain"
+
 # Expose the application port
-EXPOSE 8002
+EXPOSE 8000
 
 # Start the FastAPI application
 

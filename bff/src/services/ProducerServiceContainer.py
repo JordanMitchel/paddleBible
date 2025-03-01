@@ -1,13 +1,14 @@
-﻿from bff.src.services.ServiceBus.BFFKombuConsumer import BFFKombuConsumer
+﻿from fastapi import Depends
+
+from bff.src.services.BibleService import BibleService
 from shared.src.ServiceBus.producer import KombuProducer
 
 
-class ServiceContainer:
+class ProducerServiceContainer:
     """Manages service dependencies except BibleService to avoid circular imports."""
 
     def __init__(self):
         self._producer_service = None
-        self._consumer_service = None
 
     def get_producer_service(self) -> KombuProducer:
         """Lazily initialize and return the producer service."""
@@ -15,13 +16,14 @@ class ServiceContainer:
             self._producer_service = KombuProducer()
         return self._producer_service
 
-    def get_consumer_service(self) -> BFFKombuConsumer:
-        """Lazily initialize and return the consumer service."""
-        if self._consumer_service is None:
-            self._consumer_service = BFFKombuConsumer()
-        return self._consumer_service
-
 
 # Dependency injection function
-async def get_service_container() -> ServiceContainer:
-    return ServiceContainer()
+async def get_service_container() -> ProducerServiceContainer:
+    return ProducerServiceContainer()
+
+
+async def get_bible_service(services=Depends(get_service_container)) -> BibleService:
+    """Initialize BibleService using explicit dependencies."""
+    return BibleService(
+        producer=services.get_producer_service(),
+    )

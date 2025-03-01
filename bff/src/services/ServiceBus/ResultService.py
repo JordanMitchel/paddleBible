@@ -1,24 +1,24 @@
 ﻿import asyncio
 
+from bff.src.services.search.search_locations import get_coordinates_by_location
 from shared.src.models.scripture_result import ScriptureResponse
 
 
+# noinspection PyMethodMayBeStatic
 class ResultService:
     def __init__(self):
         self.received = False
         self.body: ScriptureResponse = ScriptureResponse(success=False)
         self.event = asyncio.Event()  # Create an asyncio event
 
-    def set_message(self, body):
-        self.body = body
-        self.received = True
-        self.event.set()  # Signal that the message has been received
+    async def process_message(self, message:ScriptureResponse)-> ScriptureResponse:
+        if message.data.locations:
+            list_of_bible_versions = ["ESV Name", "KMZ Name"]
+            coordinates = await get_coordinates_by_location(
+                message.data.locations, "ESV Name", list_of_bible_versions
+            )
+            message.data.locations = coordinates
 
-    async def wait_for_message(self) -> ScriptureResponse:
-        """Wait until a message is received."""
-        await self.event.wait()  # Blocks until event is set
-        return self.body
-
-    async def process_message(self, body: ScriptureResponse):
-        self.set_message(body)
-        print(f"✅ Result data stored: {self.body}")
+            return message
+        message.warnings = "location not found"
+        return message

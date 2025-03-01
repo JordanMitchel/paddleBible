@@ -3,6 +3,7 @@
 from kombu import Connection, Queue
 from kombu.mixins import ConsumerProducerMixin
 
+from bff.src.routes.router_ws import connected_clients
 from bff.src.services.ServiceBus.ResultService import ResultService
 from shared.src.models.scripture_result import ScriptureResponse
 from shared.utils.config import BROKER_URL, EXCHANGE
@@ -48,8 +49,25 @@ class BFFKombuConsumer(ConsumerProducerMixin):
         try:
             result = await self.processor.process_message(body)
             print("✅ Processed message successfully.")
-            return result  # Return processed result
+
+            # client_id = scripture_response.client_id
+            await self._send_to_websocket(client_id=result.clientId, data=result)
+
         except asyncio.TimeoutError as e:
             print(f"Async processing timed out: {str(e)}")
         except Exception as e:
             print(f"Error during message processing: {str(e)}")
+
+    async def _send_to_websocket(self, client_id, data):
+        """Send processed result to WebSocket clients."""
+        websocket = connected_clients.get(client_id)
+
+        if websocket:
+            try:
+                await websocket.send_text(f"Result: {data}")
+                print(f"✅ Sent result to client {client_id}: {data}")
+            except Exception as e:
+                print(f"❌ Error sending message to {client_id}: {str(e)}")
+                connected_clients.pop(client_id, None)  # Remove if connection is broken
+        else:
+            print(f"❌ Client {client_id} not connected. Unable to send result.")
