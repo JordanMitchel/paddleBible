@@ -57,7 +57,13 @@ class DataModel(BaseModel):
     location_count: int
 
 
+class ScriptureRequest(BaseModel):
+    clientId: str = None
+    data: Scripture = Field(default_factory=Scripture)
+    warnings: Optional[str] = None
+
 class ScriptureResponse(BaseModel):
+    clientId: str = None
     success: bool
     data: BibleStructure = Field(default_factory=BibleStructure)
     warnings: Optional[str] = None

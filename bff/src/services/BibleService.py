@@ -13,6 +13,7 @@ class BibleService:
         """Initialize BibleService with explicit dependencies."""
         self.producer = producer
 
+
     async def get_all_bible_books(self) -> ResponseModel:
         """Fetch all Bible books."""
         return await get_all_bible_books()
