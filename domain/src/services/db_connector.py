@@ -55,10 +55,14 @@ async def coll_is_populated(collection_name, db):
         return True
 
 
-async def insert_to_mongo(data, coll_name):
+async def insert_to_mongo_if_coll_empty(data, coll_name):
     collection = await get_collection(coll_name)
 
-    # Insert data based on whether it's a list or a single entry
+    count = await collection.count_documents({})
+    if count > 0:
+        print(f"Collection '{coll_name}' is not empty. Skipping insert.")
+        return
+
     if isinstance(data, list):
         # Insert multiple documents asynchronously
         result = await collection.insert_many(data)

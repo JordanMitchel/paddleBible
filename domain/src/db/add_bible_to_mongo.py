@@ -4,7 +4,7 @@ import xml.etree.ElementTree as eT
 
 import aiofiles
 
-from domain.src.db.add_coordinates_to_mongo import insert_to_mongo
+from domain.src.db.add_coordinates_to_mongo import insert_to_mongo_if_coll_empty
 from shared.src.models.FileType import FileTypeEnum
 
 
@@ -17,7 +17,7 @@ async def insert_bible_store(file_path, file_type, collection_name, bible_versio
 
             data = json_data["verses"]
 
-            await insert_to_mongo(data, collection_name)
+            await insert_to_mongo_if_coll_empty(data, collection_name)
     else:
         tree = eT.parse(f'../../Data/xml/{bible_version}.xml')
         bible_xml = tree.findall('BIBLEBOOK')
@@ -50,7 +50,7 @@ async def process_book(book, collection_name):
             book_data.append(bible_dict)
 
     if book_data:
-        await insert_to_mongo(book_data, collection_name)
+        await insert_to_mongo_if_coll_empty(book_data, collection_name)
 
 
 async def insert_into_each_book(bible_xml, collection_name):
