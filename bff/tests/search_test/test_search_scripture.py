@@ -23,10 +23,10 @@ async def test_get_scripture_found(mock_get_collection):
     mock_get_collection.return_value = mock_coll
 
     # Call the function
-    response = await get_scripture_using_book_and_verse("test_version", 1, 1, 1)
+    response = await get_scripture_using_book_and_verse("test-1","test_version", 1, 1, 1)
 
     # Assertions
-    assert response.success is True
+    assert response.warnings is None
     assert (response.data ==
             Scripture(book='Genesis',
                       chapter=1,
@@ -43,11 +43,11 @@ async def test_get_scripture_not_found(mock_get_collection):
     mock_get_collection.return_value = mock_coll
 
     # Call the function
-    response = await get_scripture_using_book_and_verse("test_version", 1, 1, 1)
+    _response = await get_scripture_using_book_and_verse("test_version", "bible_version",1, 1, 1)
 
     # Assertions
-    assert response.success is False
-    assert response.warnings == "No scripture found"
+    assert _response.data == Scripture(book='',chapter=0, verse={})
+    assert _response.warnings == "No scripture found for query."
 
 
 @pytest.mark.asyncio
@@ -57,8 +57,8 @@ async def test_get_scripture_error_handling(mock_get_collection):
     mock_get_collection.side_effect = PyMongoError("An error occurred with MongoDB")
 
     # Call the function
-    _response = await get_scripture_using_book_and_verse("test_version", 1, 1, 1)
+    _response = await get_scripture_using_book_and_verse("test-1","test_version", 1, 1, 1)
 
     # Assertions
-    assert _response.success is False
+    assert _response.data == Scripture(book='',chapter=0, verse={})
     assert "An error occurred with MongoDB" in _response.warnings

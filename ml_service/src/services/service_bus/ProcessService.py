@@ -2,14 +2,15 @@
 
 import spacy
 
-from shared.src.models.scripture_result import BibleStructure, Place, ScriptureResponse
+from shared.src.models.scripture_result import BibleStructure, Place, ScriptureResponse, Scripture, ScriptureRequest
 
 
 # noinspection PyMethodMayBeStatic
 class ProcessService:
 
-    async def process_text(self, verse: str) -> ScriptureResponse:
-        location_list_en_core = self.sentiment_search('en_core_web_sm', verse)
+    async def process_text(self, request: ScriptureRequest) -> ScriptureResponse:
+        verse = list(request.data.verse.values())[0]
+        location_list_en_core = self.sentiment_search('en_core_web_sm',verse)
         location_list_wiki = self.sentiment_search('xx_ent_wiki_sm', verse)
         location_lists = location_list_en_core + location_list_wiki
         stripped_list = self.strip_locations_of_unnecessary_words(location_lists)
@@ -18,9 +19,10 @@ class ProcessService:
             place_obj = Place()
             place_obj.location = spot
             locations_arr.append(place_obj)
-        bible_struct = BibleStructure(locations=locations_arr, location_count=len(locations_arr))
-        print(bible_struct)
-        return ScriptureResponse(success=True, data=bible_struct)
+
+        scripture = request.data
+        bible_struct = BibleStructure(scripture=scripture, locations=locations_arr, location_count=len(locations_arr))
+        return ScriptureResponse(clientId=request.clientId, success=True, data=bible_struct)
 
     def sentiment_search(self, sentiment: str, verse: str) -> List[str]:
         if not sentiment or not verse:
