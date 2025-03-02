@@ -1,29 +1,33 @@
-<div style="display: flex; align-items: center; flex-wrap: wrap;">
-    <h1 style="margin: 0;">PADDLE BIBLE</h1>
-    <img src="paddle-logo-dark.png" width="50%" style="max-width: 150px; margin-left: 20px;">
-
-
-<p align="left">
-	<em><code>❯ Charting Knowledge, One Page at a Time 📚🌊</code></em>
-</p>
-<p align="left">
-	<img src="https://img.shields.io/github/license/JordanMitchel/paddleBible?style=for-the-badge&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
-	<img src="https://img.shields.io/github/last-commit/JordanMitchel/paddleBible?style=for-the-badge&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-	<img src="https://img.shields.io/github/languages/top/JordanMitchel/paddleBible?style=for-the-badge&color=0080ff" alt="repo-top-language">
-	<img src="https://img.shields.io/github/languages/count/JordanMitchel/paddleBible?style=for-the-badge&color=0080ff" alt="repo-language-count">
-</p>
-<p align="left">Built with the tools and technologies:</p>
-<p align="left">
-	<img src="https://img.shields.io/badge/FastAPI-009688.svg?style=for-the-badge&logo=FastAPI&logoColor=white" alt="FastAPI">
-	<img src="https://img.shields.io/badge/spaCy-09A3D5.svg?style=for-the-badge&logo=spaCy&logoColor=white" alt="spaCy">
-	<img src="https://img.shields.io/badge/Pytest-0A9EDC.svg?style=for-the-badge&logo=Pytest&logoColor=white" alt="Pytest">
-	<img src="https://img.shields.io/badge/Docker-2496ED.svg?style=for-the-badge&logo=Docker&logoColor=white" alt="Docker">
-	<img src="https://img.shields.io/badge/Python-3776AB.svg?style=for-the-badge&logo=Python&logoColor=white" alt="Python">
-	<img src="https://img.shields.io/badge/GitHub%20Actions-2088FF.svg?style=for-the-badge&logo=GitHub-Actions&logoColor=white" alt="GitHub%20Actions">
-	<img src="https://img.shields.io/badge/pandas-150458.svg?style=for-the-badge&logo=pandas&logoColor=white" alt="pandas">
-	<img src="https://img.shields.io/badge/Pydantic-E92063.svg?style=for-the-badge&logo=Pydantic&logoColor=white" alt="Pydantic">
-</p>
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; text-align: center;">
+    <h1 style="margin: 0; font-size: 2.5em; white-space: nowrap;">
+        PADDLE<wbr> BIBLE
+    </h1>
+    <img src="paddle-logo-dark.png" style=" width: 30%; flex-shrink: 0;">
 </div>
+
+<p align="center">
+    <em><code>❯ Charting Knowledge, One Page at a Time 📚🌊</code></em>
+</p>
+<p align="center">
+    <img src="https://img.shields.io/github/license/JordanMitchel/paddleBible?style=for-the-badge&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
+    <img src="https://img.shields.io/github/last-commit/JordanMitchel/paddleBible?style=for-the-badge&logo=git&logoColor=white&color=0080ff" alt="last-commit">
+    <img src="https://img.shields.io/github/languages/top/JordanMitchel/paddleBible?style=for-the-badge&color=0080ff" alt="repo-top-language">
+    <img src="https://img.shields.io/github/languages/count/JordanMitchel/paddleBible?style=for-the-badge&color=0080ff" alt="repo-language-count">
+</p>
+<p align="center">Built with the tools and technologies:</p>
+<p align="center">
+    <img src="https://img.shields.io/badge/FastAPI-009688.svg?style=for-the-badge&logo=FastAPI&logoColor=white" alt="FastAPI">
+    <img src="https://img.shields.io/badge/spaCy-09A3D5.svg?style=for-the-badge&logo=spaCy&logoColor=white" alt="spaCy">
+    <img src="https://img.shields.io/badge/Pytest-0A9EDC.svg?style=for-the-badge&logo=Pytest&logoColor=white" alt="Pytest">
+    <img src="https://img.shields.io/badge/Docker-2496ED.svg?style=for-the-badge&logo=Docker&logoColor=white" alt="Docker">
+    <img src="https://img.shields.io/badge/Python-3776AB.svg?style=for-the-badge&logo=Python&logoColor=white" alt="Python">
+    <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF.svg?style=for-the-badge&logo=GitHub-Actions&logoColor=white" alt="GitHub%20Actions">
+    <img src="https://img.shields.io/badge/pandas-150458.svg?style=for-the-badge&logo=pandas&logoColor=white" alt="pandas">
+    <img src="https://img.shields.io/badge/Pydantic-E92063.svg?style=for-the-badge&logo=Pydantic&logoColor=white" alt="Pydantic">
+</p>
+
+
+
 <br clear="right">
 
 ## 🔗 Table of Contents
