@@ -1,26 +1,26 @@
-<div align="left" style="position: relative;">
-<img src="paddle-logo-dark.png" align="right" width="30%" style="margin: -20px 0 0 20px;">
-<h1>PADDLEBIBLE</h1>
-<p align="left">
-	<em><code>❯ Charting Knowledge, One Page at a Time 📚🌊</code></em>
-</p>
-<p align="left">
-	<img src="https://img.shields.io/github/license/JordanMitchel/paddleBible?style=for-the-badge&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
-	<img src="https://img.shields.io/github/last-commit/JordanMitchel/paddleBible?style=for-the-badge&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-	<img src="https://img.shields.io/github/languages/top/JordanMitchel/paddleBible?style=for-the-badge&color=0080ff" alt="repo-top-language">
-	<img src="https://img.shields.io/github/languages/count/JordanMitchel/paddleBible?style=for-the-badge&color=0080ff" alt="repo-language-count">
-</p>
-<p align="left">Built with the tools and technologies:</p>
-<p align="left">
-	<img src="https://img.shields.io/badge/FastAPI-009688.svg?style=for-the-badge&logo=FastAPI&logoColor=white" alt="FastAPI">
-	<img src="https://img.shields.io/badge/spaCy-09A3D5.svg?style=for-the-badge&logo=spaCy&logoColor=white" alt="spaCy">
-	<img src="https://img.shields.io/badge/Pytest-0A9EDC.svg?style=for-the-badge&logo=Pytest&logoColor=white" alt="Pytest">
-	<img src="https://img.shields.io/badge/Docker-2496ED.svg?style=for-the-badge&logo=Docker&logoColor=white" alt="Docker">
-	<img src="https://img.shields.io/badge/Python-3776AB.svg?style=for-the-badge&logo=Python&logoColor=white" alt="Python">
-	<img src="https://img.shields.io/badge/GitHub%20Actions-2088FF.svg?style=for-the-badge&logo=GitHub-Actions&logoColor=white" alt="GitHub%20Actions">
-	<img src="https://img.shields.io/badge/pandas-150458.svg?style=for-the-badge&logo=pandas&logoColor=white" alt="pandas">
-	<img src="https://img.shields.io/badge/Pydantic-E92063.svg?style=for-the-badge&logo=Pydantic&logoColor=white" alt="Pydantic">
-</p>
+<div align="left">
+  <img src="paddle-logo-dark.svg" align="right" width="30%" style="margin: -20px 0 0 20px;">
+  <h1>PADDLEBIBLE</h1>
+  <p align="left">
+    <em><code>❯ Charting Knowledge, One Page at a Time 📚🌊</code></em>
+  </p>
+  <p align="left">
+    <img src="https://img.shields.io/github/license/JordanMitchel/paddleBible?style=for-the-badge&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
+    <img src="https://img.shields.io/github/last-commit/JordanMitchel/paddleBible?style=for-the-badge&logo=git&logoColor=white&color=0080ff" alt="last-commit">
+    <img src="https://img.shields.io/github/languages/top/JordanMitchel/paddleBible?style=for-the-badge&color=0080ff" alt="repo-top-language">
+    <img src="https://img.shields.io/github/languages/count/JordanMitchel/paddleBible?style=for-the-badge&color=0080ff" alt="repo-language-count">
+  </p>
+  <p align="left">Built with the tools and technologies:</p>
+  <p align="left">
+    <img src="https://img.shields.io/badge/FastAPI-009688.svg?style=for-the-badge&logo=FastAPI&logoColor=white" alt="FastAPI">
+    <img src="https://img.shields.io/badge/spaCy-09A3D5.svg?style=for-the-badge&logo=spaCy&logoColor=white" alt="spaCy">
+    <img src="https://img.shields.io/badge/Pytest-0A9EDC.svg?style=for-the-badge&logo=Pytest&logoColor=white" alt="Pytest">
+    <img src="https://img.shields.io/badge/Docker-2496ED.svg?style=for-the-badge&logo=Docker&logoColor=white" alt="Docker">
+    <img src="https://img.shields.io/badge/Python-3776AB.svg?style=for-the-badge&logo=Python&logoColor=white" alt="Python">
+    <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF.svg?style=for-the-badge&logo=GitHub-Actions&logoColor=white" alt="GitHub%20Actions">
+    <img src="https://img.shields.io/badge/pandas-150458.svg?style=for-the-badge&logo=pandas&logoColor=white" alt="pandas">
+    <img src="https://img.shields.io/badge/Pydantic-E92063.svg?style=for-the-badge&logo=Pydantic&logoColor=white" alt="Pydantic">
+  </p>
 </div>
 
 
