@@ -1,6 +1,6 @@
 <div style="display: flex; align-items: center; flex-wrap: wrap;">
-    <h1 style="flex: 1;">PADDLE BIBLE</h1>
-    <img src="paddle-logo-dark.png" width="90%" style="max-width: 150px; margin-left: 20px;">
+    <h1 style="margin: 0;">PADDLE BIBLE</h1>
+    <img src="paddle-logo-dark.png" width="50%" style="max-width: 150px; margin-left: 20px;">
 
 
 <p align="left">
