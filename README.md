@@ -1,5 +1,5 @@
 <div align="left" style="position: relative;">
-<img src="paddle-logo.png" align="right" width="50%" style="margin: -20px 0 0 20px;">
+<img src="paddle-logo-dark.png" align="right" width="50%" style="margin: -20px 0 0 20px;">
 <h1>PADDLE BIBLE</h1>
 <p align="left">
 	<em><code>❯ Charting Knowledge, One Page at a Time 📚🌊</code></em>
