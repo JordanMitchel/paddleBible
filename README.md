@@ -1,9 +1,42 @@
-<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; text-align: center;">
-    <img src="paddle-logo-dark.png" style=" width: 30%; flex-shrink: 0;"> 
-<h1 style="margin: 0; font-size: 2.5em; white-space: nowrap;">
-        PADDLE<wbr> BIBLE
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: nowrap; justify-content: center; text-align: center;">
+    <img src="paddle-logo-dark.png" class="icon"> 
+    <h1 style="margin: 0; font-size: 2.5em; white-space: nowrap;">
+        PADDLE<br class="mobile-break">BIBLE
     </h1>
 </div>
+
+<style>
+    /* Default icon size */
+    .icon {
+        width: 30%;
+        height: auto; /* Maintain aspect ratio */
+        flex-shrink: 0;
+    }
+
+    /* Hide the <br> tag on larger screens */
+    .mobile-break {
+        display: none;
+    }
+
+    /* Adjust layout for smaller screens */
+    @media (max-width: 600px) {
+        .mobile-break {
+            display: block; /* Show the <br> tag to force a line break */
+        }
+        h1 {
+            white-space: normal; /* Allow text to wrap */
+        }
+        div {
+            flex-wrap: wrap; /* Allow items to wrap */
+            justify-content: flex-start; /* Align items to the start */
+        }
+        .icon {
+            width: 40%; /* Adjust width for smaller screens */
+            height: auto; /* Increase height when the text breaks */
+            aspect-ratio: 1 / 1; /* Ensure the icon is square (adjust ratio as needed) */
+        }
+    }
+</style>
 
 <p align="center">
     <em><code>❯ Charting Knowledge, One Page at a Time 📚🌊</code></em>
