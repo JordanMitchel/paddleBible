@@ -1,6 +1,7 @@
+## PADDLE BIBLE
 <div align="left">
-  <img src="paddle-logo-dark.svg" align="right" width="30%" style="margin: -20px 0 0 20px;">
-  <h1>PADDLEBIBLE</h1>
+  <img src="paddle-logo-dark.png" align="right" width="30%" style="margin: -20px 0 0 20px;">
+  
   <p align="left">
     <em><code>❯ Charting Knowledge, One Page at a Time 📚🌊</code></em>
   </p>
