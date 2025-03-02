@@ -1,6 +1,8 @@
-<div align="left" style="position: relative;">
-<img src="paddle-logo-dark.png" align="right" width="50%" style="margin: -20px 0 0 20px;">
-<h1>PADDLE BIBLE</h1>
+<div style="display: flex; align-items: center; flex-wrap: wrap;">
+    <h1 style="flex: 1;">PADDLE BIBLE</h1>
+    <img src="paddle-logo-dark.png" width="90%" style="max-width: 150px; margin-left: 20px;">
+
+
 <p align="left">
 	<em><code>❯ Charting Knowledge, One Page at a Time 📚🌊</code></em>
 </p>
