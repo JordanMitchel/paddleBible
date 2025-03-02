@@ -1,8 +1,8 @@
 <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; text-align: center;">
-    <h1 style="margin: 0; font-size: 2.5em; white-space: nowrap;">
+    <img src="paddle-logo-dark.png" style=" width: 30%; flex-shrink: 0;"> 
+<h1 style="margin: 0; font-size: 2.5em; white-space: nowrap;">
         PADDLE<wbr> BIBLE
     </h1>
-    <img src="paddle-logo-dark.png" style=" width: 30%; flex-shrink: 0;">
 </div>
 
 <p align="center">
