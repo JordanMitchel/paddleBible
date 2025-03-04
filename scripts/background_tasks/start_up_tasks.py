@@ -26,7 +26,7 @@ async def run_kombu_tasks(app):
 async def run_db_tasks():
     try:
         print("Seeding LonLats collection...")
-        await update_coordinates_collection_using_file("domain/data/csv/biblicalLonLat2_formatted.csv", "LonLats")
+        await update_coordinates_collection_using_file("domain/data/csv/biblical_coords.csv", "LonLats")
 
         print("Seeding Bible_ASV collection...")
         await insert_bible_store("domain/data/json/asv.json", FileTypeEnum.JSON, "Bible_ASV")
