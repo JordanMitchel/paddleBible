@@ -145,7 +145,7 @@
     └── shared
         ├── __init__.py
         ├── src
-        │   ├── ServiceBus
+        │   ├── service_bus
         │   ├── __init__.py
         │   └── models
         ├── tests

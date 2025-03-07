@@ -1,12 +1,13 @@
 ﻿import asyncio
-import uuid
 
 import uvicorn
 from fastapi import FastAPI
 from kombu import Connection
 
-from bff.src.routes import router_scripture, router_ws
-from scripts.background_tasks.start_up_tasks import run_tasks, shutdown_tasks, run_kombu_tasks, run_db_tasks
+from bff.src.routes import router_scripture, router_ws, router_logger
+from scripts.background_tasks.start_up_tasks import shutdown_tasks, run_kombu_tasks, run_db_tasks
+from shared.log.send_logs import log_producer
+from shared.src.models.scripture_result import LogLevel
 from shared.utils.config import BROKER_URL
 
 if hasattr(asyncio, "WindowsSelectorEventLoopPolicy"):
@@ -14,6 +15,7 @@ if hasattr(asyncio, "WindowsSelectorEventLoopPolicy"):
 
 app = FastAPI(title="PaddleBible", version="1.0.0", debug=True)
 app.include_router(router_scripture.router, prefix="/scripture")
+app.include_router(router_logger.router, prefix="/logs")
 app.include_router(router_ws.ws_router, prefix="/ws-test")
 
 
@@ -47,10 +49,16 @@ async def check_rabbitmq():
 @app.on_event("startup")
 async def startup_event():
     try:
+        # Ensure the log producer is set up before starting background tasks
+        await log_producer.setup()
+
         print(" Running background tasks...")  # Debug print
+        await log_producer.send_bff_log(LogLevel.INFO,"Running bff tasks")
         await run_kombu_tasks(app)
         await run_db_tasks()
     except Exception as e:
+        await log_producer.send_bff_log(LogLevel.ERROR, "Startup failed in background tasks", e)
+
         print(f"🔥 Error in background tasks: {e}")
 
 @app.on_event("shutdown")

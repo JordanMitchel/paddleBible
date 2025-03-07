@@ -2,6 +2,7 @@ from kombu.exceptions import OperationalError, EncodeError
 
 from shared.src.ServiceBus.producer import KombuProducer
 from shared.src.models.scripture_result import ScriptureRequest
+from shared.utils.config import ML_ROUTING_KEY
 
 
 async def request_locations_using_scripture(request: ScriptureRequest, producer_service: KombuProducer) -> bool:
@@ -10,7 +11,7 @@ async def request_locations_using_scripture(request: ScriptureRequest, producer_
         return False
 
     try:
-        await producer_service.send_message(request.model_dump(), routing_key="ai_consuming.bff.requests")
+        await producer_service.send_message(request.model_dump(), routing_key=ML_ROUTING_KEY)
         print(f"Verse: '{request.model_dump()}' pushed to Channel {producer_service.get_channel()}")
         return True
     except OperationalError as e:  # Broker connection issues

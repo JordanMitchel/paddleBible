@@ -10,6 +10,13 @@ ENV_FILE_CONFIG = f'./env.{env_name}'  # Fixed path
 # env_file2 = os.path.join(BASE_DIR, ".env")
 
 BROKER_URL = "amqp://guest:guest@rabbitmq:5672//"
+LOG_COLLECTION = "logs"
+LOG_DB = "logging_db"
+LOG_SERVICE = "log_service"
+BFF_SERVICE = "bff_service"
+ML_SERVICE = "ml_service"
+LOG_ROUTING_KEY = "log_consuming.all_requests"
+ML_ROUTING_KEY = "ai_consuming.bff.requests"
 # local
 # BROKER_URL = "amqp://guest:guest@localhost:5672//"
 # Define a shared exchange
@@ -38,11 +45,12 @@ def load_mongo_config() -> {}:
         "db_collection": get_env_variable("DATABASE_NAME", "bibleData"),
         "db_username": get_env_variable("USER_NAME", "root"),  # Handled optional values
         "db_password": get_env_variable("DB_PASSWORD", "rootPassword"),
+        "logging_db": get_env_variable("LOGGING_DB", "log")
     }
 
 
 def load_logging_config():
-    """Loads logging configuration from environment variables."""
+    """Loads log configuration from environment variables."""
     return {
         "level": get_env_variable("LOG_LEVEL", "INFO"),
     }

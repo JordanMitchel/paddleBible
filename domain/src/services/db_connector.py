@@ -1,6 +1,7 @@
 ﻿from collections.abc import Mapping
 
 from motor.motor_asyncio import AsyncIOMotorClient
+from pymongo import MongoClient
 
 from shared.utils.config import load_mongo_config
 
@@ -19,28 +20,40 @@ async def get_mongo_client() -> AsyncIOMotorClient[Mapping[str, any]]:
         print(f"Failed to connect to MongoDB: {e}")
         raise
 
+def get_sync_mongo_client():
+    try:
+        config = load_mongo_config()
+        client = MongoClient(
+            config["url"],
+            username=config.get("db_username"),
+            password=config.get("db_password"))
+        print(f"Connected to MongoDB at {config['url']}")
+        return client
+    except Exception as e:
+        print(f"Failed to connect to MongoDB: {e}")
+        raise
 
-async def get_database(client=None):
+async def get_database(db_name="db_collection",client=None):
     try:
         config = load_mongo_config()
         print(f"MongoDB Config: {config}")  # Debugging line
 
         if client is None:
             client = await get_mongo_client()
+        print(db_name)
+        config_db_name = str(config.get(db_name, "default_db"))
+        print(f"Using database: {config_db_name}")  # Debugging line
 
-        db_name = str(config.get("db_collection", "default_db"))
-        print(f"Using database: {db_name}")  # Debugging line
-
-        return client[db_name]
+        return client[config_db_name]
     except Exception as e:
         print(f"Failed to get database: {e}")
         raise
 
 
-async def get_collection(collection_name: str):
+async def get_collection(collection_name: str, db_name="db_collection"):
     try:
 
-        db = await get_database()
+        db = await get_database(db_name)
         return db[collection_name]
     except Exception as e:
         print(f"Failed to get collection: {e}")

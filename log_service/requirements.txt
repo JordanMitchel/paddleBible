@@ -1,0 +1,18 @@
+python-decouple==3.8
+
+numpy==1.23.4  # Adjusted version for compatibility
+aiofiles~=22.1.0
+beautifulsoup4~=4.12.3
+fastapi==0.103.2
+geopy==2.4.0
+motor==3.6.0
+opencage==2.3.0
+pandas==2.2.3
+pydantic==2.3.0
+pymongo~=4.9.2
+requests==2.31.0
+uvicorn==0.23.2
+kombu~=5.4.2
+pytest~=8.3.4
+
+celery~=5.4.0
