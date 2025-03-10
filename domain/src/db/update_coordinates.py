@@ -1,7 +1,8 @@
 import re
+
 from geopy.geocoders import Nominatim
-from pymongo import MongoClient
 from opencage.geocoder import OpenCageGeocode
+from pymongo import MongoClient
 from requests import RequestException
 
 KEY = '0c12b649ffd54558846bde5342c92be4'

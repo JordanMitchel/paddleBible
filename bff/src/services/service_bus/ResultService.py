@@ -11,7 +11,7 @@ class ResultService:
         self.body: ScriptureResponse = ScriptureResponse(success=False)
         self.event = asyncio.Event()  # Create an asyncio event
 
-    async def process_message(self, message:ScriptureResponse)-> ScriptureResponse:
+    async def process_message(self, message: ScriptureResponse) -> ScriptureResponse:
         if message.data.locations:
             list_of_bible_versions = ["ESV Name", "KMZ Name"]
             coordinates = await get_coordinates_by_location(

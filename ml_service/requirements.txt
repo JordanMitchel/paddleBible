@@ -17,3 +17,4 @@ requests==2.31.0
 uvicorn==0.23.2
 kombu~=5.4.2
 pytest~=8.3.4
+loguru

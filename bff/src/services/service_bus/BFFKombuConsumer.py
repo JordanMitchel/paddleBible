@@ -4,9 +4,12 @@ from kombu import Connection, Queue
 from kombu.mixins import ConsumerProducerMixin
 
 from bff.src.routes.router_ws import connected_clients
-from bff.src.services.ServiceBus.ResultService import ResultService
+from bff.src.services.service_bus.ResultService import ResultService
+from shared.log.logger import get_logger
 from shared.src.models.scripture_result import ScriptureResponse
 from shared.utils.config import BROKER_URL, EXCHANGE
+
+logger = get_logger()
 
 
 class BFFKombuConsumer(ConsumerProducerMixin):
@@ -21,12 +24,12 @@ class BFFKombuConsumer(ConsumerProducerMixin):
 
     def get_consumers(self, Consumer, channel):
         """Set up Kombu consumer with the queue and callback."""
-        print("Setting up consumer for queue: bff_consuming.ai.results")
+        logger.info("Setting up consumer for queue: bff_consuming.ai.results")
         return [Consumer(queues=[self.queue], callbacks=[self.custom_message_callback])]
 
     def custom_message_callback(self, body, message):
         """Custom processing logic for messages and storing result_data."""
-        print(f"📩 Custom Consumer Received: {body}")
+        logger.info(f"📩 Custom Consumer Received: {body}")
         asyncio.run(self._async_process_message(ScriptureResponse(**body)))
 
         message.ack()  # Acknowledge the message
@@ -34,9 +37,9 @@ class BFFKombuConsumer(ConsumerProducerMixin):
     def start_consuming(self):
         """Start the consumer and process messages."""
         try:
-            print("Starting to consume messages...")
+            logger.info("Starting to consume messages...")
             self.run()  # This is where the actual consuming happens
-            print("Finished consuming messages.")
+            logger.info("Finished consuming messages.")
         except ValueError as e:
             print(f"Value error: {str(e)}")
         except TimeoutError as e:
@@ -48,15 +51,15 @@ class BFFKombuConsumer(ConsumerProducerMixin):
         """Async wrapper to run the processing service in an event loop."""
         try:
             result = await self.processor.process_message(body)
-            print("✅ Processed message successfully.")
+            logger.info("✅ Processed message successfully.")
 
             # client_id = scripture_response.client_id
             await self._send_to_websocket(client_id=result.clientId, data=result)
 
         except asyncio.TimeoutError as e:
-            print(f"Async processing timed out: {str(e)}")
+            logger.error(f"Async processing timed out: {str(e)}")
         except Exception as e:
-            print(f"Error during message processing: {str(e)}")
+            logger.error(f"Error during message processing: {str(e)}")
 
     async def _send_to_websocket(self, client_id, data):
         """Send processed result to WebSocket clients."""

@@ -1,7 +1,7 @@
 from pymongo.errors import ServerSelectionTimeoutError, OperationFailure, PyMongoError
 
 from domain.src.services.db_connector import get_collection
-from shared.src.models.scripture_result import Scripture, ResponseModel, ScriptureRequest
+from shared.src.models.scripture_result import Scripture, ScriptureRequest
 
 
 async def get_scripture_using_book_and_verse(clientId,
@@ -44,7 +44,7 @@ async def get_scripture_using_book_and_verse(clientId,
         return ScriptureRequest(clientId=clientId, warnings=f"An error occurred with MongoDB: {str(e)}")
 
 
-async def get_scripture_using_verse(clientId, bible_version,verse)->ScriptureRequest:
+async def get_scripture_using_verse(clientId, bible_version, verse) -> ScriptureRequest:
     try:
         coll = await get_collection(bible_version)
 

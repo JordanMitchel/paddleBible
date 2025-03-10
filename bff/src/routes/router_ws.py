@@ -6,9 +6,10 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 ws_router = APIRouter()
 connected_clients: Dict[str, WebSocket] = {}
 
+
 # WebSocket endpoint
 @ws_router.websocket("/ws/{client_id}")
-async def websocket_endpoint(websocket: WebSocket, client_id:str):
+async def websocket_endpoint(websocket: WebSocket, client_id: str):
     # Accept the WebSocket connection
     await websocket.accept()
 
@@ -33,7 +34,6 @@ async def websocket_endpoint(websocket: WebSocket):
     # Accept the WebSocket connection
     await websocket.accept()
 
-
     try:
         while True:
             # Receive messages from the client
@@ -45,5 +45,3 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         # Handle client disconnect
         print("Client disconnected")
-
-

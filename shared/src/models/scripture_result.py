@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Dict, Optional, Any, List
 
@@ -62,11 +63,20 @@ class ScriptureRequest(BaseModel):
     data: Scripture = Field(default_factory=Scripture)
     warnings: Optional[str] = None
 
+
 class ScriptureResponse(BaseModel):
     clientId: str = None
     success: bool
     data: BibleStructure = Field(default_factory=BibleStructure)
     warnings: Optional[str] = None
+
+
+class LogResponse(BaseModel):
+    logLevel: str
+    logTime: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    logService: str
+    logMessage: str
+    error: Optional[str] = None
 
 
 class ResponseModel(BaseModel):
@@ -80,3 +90,9 @@ class VerseRequest(BaseModel):
     book_num: int
     chapter: int
     verse_num: int
+
+
+class LogLevel(str, Enum):
+    ERROR = 'Error'
+    WARNING = 'Warning'
+    INFO = 'info'

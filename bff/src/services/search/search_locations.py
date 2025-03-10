@@ -1,9 +1,10 @@
 from typing import List
 
 from domain.src.db import get_database
+from shared.log.logger import get_logger
 from shared.src.models.scripture_result import Coordinates, Place, SearchResult
 
-
+logger = get_logger()
 async def get_coordinates_by_location(locations: List[Place],
                                       bible_version: str,
                                       extra_bible_versions: List[str],
@@ -23,6 +24,7 @@ async def get_coordinates_by_location(locations: List[Place],
             if deep_search_result.ResultFound:
                 locations[count].coordinates = deep_search_result.Location.coordinates
             else:
+                logger.warning(f"no location found for area: {area}")
                 locations[count].warning = f"No co-ordinates found for {area}"
 
         count += 1
@@ -50,12 +52,14 @@ async def search_across_bible_versions(initial_version, list_of_versions, collec
 async def light_search(place, collection, bible_version) -> SearchResult:
     location_in_bible = await collection.find_one({bible_version: place})
     if location_in_bible is not None:
+        logger.info("Location found in DB")
         coordinates = Coordinates(Lat=location_in_bible['Lat'] or 0,
                                   Lon=location_in_bible['Lon'] or 0)
         location = Place(location=place, coordinates=coordinates,
                          Passages=location_in_bible["Passages"],
                          Comment=location_in_bible["Comment"])
         return SearchResult(ResultFound=True, Location=location)
+    logger.warning("Location not found in DB")
     return SearchResult()
 
 
