@@ -16,11 +16,13 @@ LOG_SERVICE = "log_service"
 BFF_SERVICE = "bff_service"
 ML_SERVICE = "ml_service"
 LOG_ROUTING_KEY = "log_consuming.all_requests"
+LOG_QUEUE = LOG_ROUTING_KEY
 ML_ROUTING_KEY = "ai_consuming.bff.requests"
 # local
 # BROKER_URL = "amqp://guest:guest@localhost:5672//"
 # Define a shared exchange
 EXCHANGE = Exchange("bible_exchange", type="direct")
+LOG_EXCHANGE = Exchange("log_exchange", type="direct")
 
 
 def get_env_variable(key, default=None, cast_type=str, env_file=ENV_FILE_CONFIG):

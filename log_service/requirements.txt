@@ -16,3 +16,4 @@ kombu~=5.4.2
 pytest~=8.3.4
 
 celery~=5.4.0
+loguru

@@ -2,17 +2,21 @@
 
 from bff.src.services.BibleService import BibleService
 from bff.src.services.ProducerServiceContainer import get_bible_service
-from shared.log.send_logs import log_producer
+from shared.log.logger import get_logger
 from shared.src.models.scripture_result import ResponseModel, VerseRequest, LogLevel
 
 # Instantiate router
 router = APIRouter()
+logger = get_logger()
+
 
 
 @router.get("/BibleBooks")
 async def get_bible_books(bible_service: BibleService = Depends(get_bible_service)) -> ResponseModel:
     """Retrieve a list of all Bible books."""
-    await log_producer.send_bff_log(LogLevel.INFO, "querying bible books")
+    logger.info("querying bible books")
+    logger.info("yest")
+    # await log_producer.send_log(service=BFF_SERVICE,level=LogLevel.INFO,message="beeboooop")
     return await bible_service.get_all_bible_books()
 
 

@@ -16,3 +16,4 @@ aio_pika
 kombu
 pytest~=8.3.4
 websockets
+loguru
