@@ -1,8 +1,10 @@
 ﻿import asyncio
+
 from kombu import Connection, Producer
 from kombu.exceptions import KombuError
 
 from shared.utils.config import BROKER_URL, EXCHANGE
+
 
 class KombuProducer:
     def __init__(self):
@@ -44,3 +46,6 @@ class KombuProducer:
         if self.connection:
             await asyncio.to_thread(self.connection.release)  # Release the connection in a thread
             print("🛑 Kombu producer connection closed.")
+
+    def get_channel(self):
+        return self.channel

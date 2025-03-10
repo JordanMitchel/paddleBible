@@ -5,9 +5,8 @@ from fastapi import FastAPI
 from kombu import Connection
 
 from bff.src.routes import router_scripture, router_ws, router_logger
-from scripts.background_tasks.start_up_tasks import shutdown_tasks, run_kombu_tasks, run_db_tasks, run_tasks
+from scripts.background_tasks.start_up_tasks import shutdown_tasks, run_tasks
 from shared.log.logger import get_logger, setup_logger, log_queue, log_thread
-
 from shared.utils.config import BROKER_URL
 
 if hasattr(asyncio, "WindowsSelectorEventLoopPolicy"):
@@ -51,8 +50,7 @@ async def check_rabbitmq():
 @app.on_event("startup")
 async def startup_event():
     await setup_logger()  # ✅ Ensure log_producer is ready at startup
-    await run_tasks(app,logger)
-
+    await run_tasks(app, logger)
 
 
 @app.on_event("shutdown")
@@ -61,7 +59,7 @@ async def shutdown():
     log_queue.put(None)  # Signal the thread to exit
     log_thread.join()
 
-    await shutdown_tasks(app,logger)
+    await shutdown_tasks(app, logger)
 
 
 if __name__ == '__main__':

@@ -1,12 +1,11 @@
-﻿import asyncio
-import json
+﻿import json
 import threading
 
 from bff.src.services.service_bus.BFFKombuConsumer import BFFKombuConsumer
 from domain.src.db.add_bible_to_mongo import insert_bible_store
 from domain.src.db.add_coordinates_to_mongo import update_coordinates_collection_using_file
-from shared.log.logger import get_logger
 from shared.src.models.FileType import FileTypeEnum
+
 
 # logger = get_logger()
 
@@ -29,30 +28,29 @@ async def run_db_tasks(logger):
     try:
 
         logger.info("Seeding LonLats collection...")
-        await update_coordinates_collection_using_file("domain/data/csv/biblical_coords.csv", "LonLats")
+        await update_coordinates_collection_using_file("domain/data/csv/biblical_coordinates.csv", "LonLats")
 
         logger.info("Seeding Bible_ASV collection...")
         await insert_bible_store("domain/data/json/asv.json", FileTypeEnum.JSON, "Bible_ASV")
         logger.info("Seeding successful")
 
     except FileNotFoundError as e:
-        logger.error("File not found",e)
+        logger.error("File not found", e)
     except json.JSONDecodeError as e:
-        logger.error("Error decoding JSON",e)
+        logger.error("Error decoding JSON", e)
 
 
 async def run_tasks(app, logger):
     logger.info("🚀 Running background tasks...")  # Debug print
     try:
-        await run_kombu_tasks(app,logger)
+        await run_kombu_tasks(app, logger)
         await run_db_tasks(logger)
 
     except Exception as e:
-        logger.error("🔥 Error in background tasks",e)
+        logger.error("🔥 Error in background tasks", e)
 
 
-
-async def shutdown_tasks(app,logger):
+async def shutdown_tasks(app, logger):
     logger.info("🔄 Shutting down Kombu consumer...")
     bff_consumer_service = getattr(app.state, "bff_consumer_service", None)
 

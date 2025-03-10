@@ -1,4 +1,5 @@
 ﻿from celery import Celery
+
 from shared.utils.config import BROKER_URL
 
 celery_app = Celery("log_service", broker=BROKER_URL)

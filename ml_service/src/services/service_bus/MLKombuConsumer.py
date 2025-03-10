@@ -4,9 +4,12 @@ from kombu import Connection, Queue
 from kombu.mixins import ConsumerProducerMixin
 
 from ml_service.src.services.service_bus.ProcessService import ProcessService
+from shared.log.logger import get_logger
 from shared.src.ServiceBus.producer import KombuProducer
 from shared.src.models.scripture_result import ScriptureRequest, ScriptureResponse
 from shared.utils.config import BROKER_URL, EXCHANGE
+
+logger = get_logger()
 
 
 class MLKombuConsumer(ConsumerProducerMixin):
@@ -25,7 +28,7 @@ class MLKombuConsumer(ConsumerProducerMixin):
 
     def custom_message_callback(self, body, message):
         """Process messages asynchronously inside Kombu's sync callback."""
-        print(f"📩 Custom Consumer Received: {body}")
+        logger.info(f"📩 Custom Consumer Received: {body}")
 
         # Process the message and produce the result
         result = asyncio.run(self._async_process_message(ScriptureRequest(**body)))
@@ -33,15 +36,15 @@ class MLKombuConsumer(ConsumerProducerMixin):
 
         message.ack()  # Acknowledge the message
 
-    async def _async_process_message(self, body:ScriptureRequest):
+    async def _async_process_message(self, body: ScriptureRequest):
         """Async wrapper to run the processing service in an event loop."""
-        result:ScriptureResponse = await self.process_service.process_text(body)
-        print("✅ Processed message successfully.")
+        result: ScriptureResponse = await self.process_service.process_text(body)
+        logger.info("✅ Processed message successfully.")
         return result  # Return processed result
 
     def publish_result(self, result):
         """Send processed result to another queue."""
         routing_key = "bff_consuming.ai.results"
         output_result = result.model_dump()
-        print(f"🚀 Publishing result: {output_result} to {routing_key}")
+        logger.info(f"🚀 Publishing result: {output_result} to {routing_key}")
         asyncio.run(self.publisher.send_message(output_result, routing_key=routing_key))

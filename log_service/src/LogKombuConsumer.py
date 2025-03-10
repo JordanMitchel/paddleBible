@@ -1,6 +1,8 @@
 ﻿import asyncio
+
 from kombu import Connection, Queue
 from kombu.mixins import ConsumerProducerMixin
+
 from log_service.src.celery_tasks import process_log
 from shared.utils.config import BROKER_URL, LOG_ROUTING_KEY, LOG_QUEUE, LOG_EXCHANGE
 

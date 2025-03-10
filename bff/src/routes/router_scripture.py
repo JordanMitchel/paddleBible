@@ -3,12 +3,11 @@
 from bff.src.services.BibleService import BibleService
 from bff.src.services.ProducerServiceContainer import get_bible_service
 from shared.log.logger import get_logger
-from shared.src.models.scripture_result import ResponseModel, VerseRequest, LogLevel
+from shared.src.models.scripture_result import ResponseModel, VerseRequest
 
 # Instantiate router
 router = APIRouter()
 logger = get_logger()
-
 
 
 @router.get("/BibleBooks")

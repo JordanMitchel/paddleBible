@@ -6,11 +6,11 @@ from kombu import Connection
 
 from ml_service.src.services.service_bus.MLKombuConsumer import MLKombuConsumer
 from shared.log.logger import get_logger
-from shared.src.models.scripture_result import LogLevel
 from shared.utils.config import BROKER_URL
 
 app = FastAPI()
 logger = get_logger()
+
 
 @app.on_event("startup")
 async def startup_event():

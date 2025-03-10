@@ -1,6 +1,5 @@
 ﻿import asyncio
 
-import loguru
 from kombu import Connection, Queue
 from kombu.mixins import ConsumerProducerMixin
 
@@ -11,6 +10,7 @@ from shared.src.models.scripture_result import ScriptureResponse
 from shared.utils.config import BROKER_URL, EXCHANGE
 
 logger = get_logger()
+
 
 class BFFKombuConsumer(ConsumerProducerMixin):
     def __init__(self):

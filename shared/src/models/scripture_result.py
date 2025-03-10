@@ -63,11 +63,13 @@ class ScriptureRequest(BaseModel):
     data: Scripture = Field(default_factory=Scripture)
     warnings: Optional[str] = None
 
+
 class ScriptureResponse(BaseModel):
     clientId: str = None
     success: bool
     data: BibleStructure = Field(default_factory=BibleStructure)
     warnings: Optional[str] = None
+
 
 class LogResponse(BaseModel):
     logLevel: str
@@ -75,6 +77,7 @@ class LogResponse(BaseModel):
     logService: str
     logMessage: str
     error: Optional[str] = None
+
 
 class ResponseModel(BaseModel):
     success: bool
@@ -87,6 +90,7 @@ class VerseRequest(BaseModel):
     book_num: int
     chapter: int
     verse_num: int
+
 
 class LogLevel(str, Enum):
     ERROR = 'Error'

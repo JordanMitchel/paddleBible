@@ -1,16 +1,14 @@
-﻿import os
+﻿import asyncio
+import os
+import queue
 import sys
+import threading
 
 from loguru import logger
-import threading
-import queue
-import asyncio
 
 from shared.log.LogProducer import LogProducer
-from shared.utils.config import BFF_SERVICE
 
 SERVICE_NAME = os.getenv("SERVICE_NAME", "UNKNOWN_SERVICE")
-
 
 # Initialize LogProducer
 log_producer = LogProducer()
@@ -59,6 +57,7 @@ def enqueue_log(message):
 logger.remove()
 logger.add(enqueue_log, format="{time} {level} {message}", level="INFO")  # ✅ No async issue now
 logger.add(sys.stdout, format="{time:YYYY-MM-DD HH:mm:ss.SSS} | {level} | {message}", level="INFO")
+
 
 async def setup_logger():
     """Ensures log producer is initialized before logging"""

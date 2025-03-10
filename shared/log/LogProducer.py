@@ -1,5 +1,4 @@
-﻿from kombu import Connection, Exchange, Queue, Producer
-import asyncio
+﻿from kombu import Connection, Queue, Producer
 from shared.utils.config import BROKER_URL, LOG_QUEUE, LOG_EXCHANGE, LOG_ROUTING_KEY
 
 
