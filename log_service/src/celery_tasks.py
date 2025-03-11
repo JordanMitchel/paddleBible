@@ -1,9 +1,9 @@
 ﻿from domain.src.services.db_connector import get_sync_mongo_client
 from log_service.src.celery_app import celery_app  # Import the centralized Celery instance
 
-
 def get_mongo_client():
     return get_sync_mongo_client()
+
 @celery_app.task
 def process_log(log_entry):
     client = get_mongo_client()
@@ -13,6 +13,3 @@ def process_log(log_entry):
     result = log_collection.insert_one(log_entry)
     client.close()
     return str(result.inserted_id)
-
-
-

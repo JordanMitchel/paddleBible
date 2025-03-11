@@ -23,6 +23,9 @@ ENV PYTHONPATH="/app:/app/log_service:/app/shared:/app/scripts:/app/domain"
 # Change ownership to celery user
 RUN chown -R celery:celery /app
 
+# Expose port for Flower UI
+EXPOSE 5555
+
 # Switch to the non-root user
 USER celery
 

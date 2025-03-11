@@ -23,7 +23,7 @@ ML_ROUTING_KEY = "ai_consuming.bff.requests"
 # Define a shared exchange
 EXCHANGE = Exchange("bible_exchange", type="direct")
 LOG_EXCHANGE = Exchange("log_exchange", type="direct")
-
+CELERY_BACKEND = "mongodb://root:rootPassword@mongodb:27017/celery_results"
 
 def get_env_variable(key, default=None, cast_type=str, env_file=ENV_FILE_CONFIG):
     """Fetches environment variables with optional casting and a default fallback."""

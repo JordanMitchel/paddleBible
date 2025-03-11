@@ -75,9 +75,8 @@ services:
       - ENVIRONMENT=docker
     env_file:
       - ./env.docker
-
-
-
+    ports:
+      - "5555:5555"  # Expose Flower UI port
 
   mongodb_container:
     image: mongo:latest
