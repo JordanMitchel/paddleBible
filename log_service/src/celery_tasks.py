@@ -1,4 +1,9 @@
-﻿from domain.src.services.db_connector import get_sync_mongo_client
+﻿import json
+from datetime import datetime
+
+import requests
+
+from domain.src.services.db_connector import get_sync_mongo_client
 from log_service.src.celery_app import celery_app  # Import the centralized Celery instance
 
 def get_mongo_client():
@@ -13,3 +18,11 @@ def process_log(log_entry):
     result = log_collection.insert_one(log_entry)
     client.close()
     return str(result.inserted_id)
+
+LOKI_URL = "http://localhost:3100/loki/api/v1/push"
+
+@celery_app.task
+def test_task():
+    print("sending hi go jog :)")
+
+

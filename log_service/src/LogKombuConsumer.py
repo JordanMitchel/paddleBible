@@ -2,6 +2,7 @@
 
 from kombu import Connection, Queue
 from kombu.mixins import ConsumerProducerMixin
+from loguru import logger
 
 from log_service.src.celery_tasks import process_log
 from shared.utils.config import BROKER_URL, LOG_ROUTING_KEY, LOG_QUEUE, LOG_EXCHANGE
@@ -22,12 +23,12 @@ class LogKombuConsumer(ConsumerProducerMixin):
 
     def custom_message_callback(self, body, message):
         try:
-            print(f"📩 Received message: {body}")  # Debug print
+            logger.info(f"📩 Received message: {body}")  # Debug print
             process_log(body)
             message.ack()
-            print("✅ Message acknowledged")
+            logger.info("✅ Message acknowledged")
         except Exception as e:
-            print(f"❌ Error processing message: {e}")
+            logger.error(f"❌ Error processing message: {e}")
 
     def start_consuming(self):
         """Start the consumer and process messages."""

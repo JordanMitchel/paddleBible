@@ -18,6 +18,7 @@ ML_SERVICE = "ml_service"
 LOG_ROUTING_KEY = "log_consuming.all_requests"
 LOG_QUEUE = LOG_ROUTING_KEY
 ML_ROUTING_KEY = "ai_consuming.bff.requests"
+TASK_SCHEDULER_ROUTING_KEY = "log_consuming.scheduler_request"
 # local
 # BROKER_URL = "amqp://guest:guest@localhost:5672//"
 # Define a shared exchange
