@@ -17,3 +17,5 @@ beautifulsoup4~=4.12.3
 loguru~=0.7.3
 celery~=5.4.0
 apache-airflow
+pytz~=2023.3.post1
+prometheus-client~=0.21.1

@@ -17,5 +17,6 @@ pytest~=8.3.4
 
 celery~=5.4.0
 loguru
-flower
 apache-airflow
+prometheus_client
+prometheus_fastapi_instrumentator

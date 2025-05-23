@@ -5,6 +5,7 @@ from kombu.mixins import ConsumerProducerMixin
 from loguru import logger
 
 from log_service.src.celery_tasks import process_log
+from log_service.src.metrics import info_counter, warn_counter, error_counter
 from shared.utils.config import BROKER_URL, LOG_ROUTING_KEY, LOG_QUEUE, LOG_EXCHANGE
 
 
@@ -23,8 +24,21 @@ class LogKombuConsumer(ConsumerProducerMixin):
 
     def custom_message_callback(self, body, message):
         try:
-            logger.info(f"📩 Received message: {body}")  # Debug print
+            logger.info(f"📩 Received message: {body}")
             process_log(body)
+
+            # Extract log level, source, and environment
+            level = body.get("level", "").upper()
+            service = body.get("service", "unknown")
+
+            # Update appropriate counter with labels
+            if level == "INFO":
+                info_counter.labels(service=service).inc()
+            elif level == "WARNING":
+                warn_counter.labels(source=service).inc()
+            elif level == "ERROR":
+                error_counter.labels(source=service).inc()
+
             message.ack()
             logger.info("✅ Message acknowledged")
         except Exception as e:

@@ -1,10 +1,12 @@
 ﻿import asyncio
+import datetime
 import os
 import queue
 import sys
 import threading
 
 from loguru import logger
+from pytz import  UTC
 
 from shared.log.LogProducer import LogProducer
 
@@ -49,6 +51,7 @@ def enqueue_log(message):
         "service": SERVICE_NAME,
         "level": record["level"].name,
         "message": record["message"],
+        "timestamp":datetime.datetime.now(UTC).isoformat()
     }
     log_queue.put(log_message)
 

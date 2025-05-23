@@ -1,4 +1,8 @@
-﻿from kombu import Connection, Queue, Producer
+﻿from datetime import datetime
+
+from kombu import Connection, Queue, Producer
+from pytz import  UTC
+
 from shared.utils.config import BROKER_URL, LOG_QUEUE, LOG_EXCHANGE, LOG_ROUTING_KEY
 
 
@@ -27,7 +31,11 @@ class LogProducer:
         if self.kombu_producer is None:
             await self.setup()  # Ensure setup is completed before sending logs
 
-        log_message = {"service": service, "level": level, "message": message}
+        log_message = {"service": service,
+                       "level": level,
+                       "message": message,
+                       "timestamp":datetime.now(UTC).isoformat()
+                       }
         try:
             self.kombu_producer.publish(log_message, exchange=self.exchange.name, routing_key=LOG_ROUTING_KEY,
                                         serializer="json")

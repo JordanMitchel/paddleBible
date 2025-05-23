@@ -1,4 +1,6 @@
 services:
+
+
   bff:
     build:
       context: .
@@ -10,7 +12,8 @@ services:
         condition: service_healthy
       mongodb_container:
         condition: service_started
-
+    networks:
+      - bible_net
     environment:
       - ENVIRONMENT=docker
       - SERVICE_NAME=BFF_Service
@@ -18,7 +21,7 @@ services:
     env_file:
       - ./env.docker
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8002/health" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
       interval: 30s
       retries: 3
 
@@ -33,8 +36,6 @@ services:
         condition: service_healthy
       mongodb_container:
         condition: service_started
-
-
     environment:
       - ENVIRONMENT=docker
       - SERVICE_NAME=ML_Service
@@ -42,9 +43,11 @@ services:
     env_file:
       - ./env.docker
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8001/health" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
       interval: 60s
       retries: 3
+    networks:
+      - bible_net
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -59,12 +62,13 @@ services:
       test: ["CMD", "rabbitmq-diagnostics", "check_running"]
       interval: 10s
       retries: 5
+    networks:
+      - bible_net
 
   log_service:
     build:
       context: .
       dockerfile: log_service/Dockerfile
-    user: "1000:1000"  # Run as non-root user
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -72,10 +76,17 @@ services:
         condition: service_started
     environment:
       - ENVIRONMENT=docker
+    ports:
+      - "5555:5555"
     env_file:
       - ./env.docker
-    ports:
-      - "5555:5555"  # Expose Flower UI port
+    networks:
+      - bible_net
+    healthcheck:
+      test: [ "CMD-SHELL", "echo 'ok'" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   mongodb_container:
     image: mongo:latest
@@ -85,56 +96,40 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: rootPassword
     ports:
       - "27018:27017"
+    networks:
+      - bible_net
 
-#  postgresql:
-#    image: postgres:15
-#    container_name: postgresql
-#    restart: always
-#    ports:
-#      - "5432:5432"
-#    environment:
-#      POSTGRES_USER: airflow
-#      POSTGRES_PASSWORD: airflow
-#      POSTGRES_DB: airflow
-#    healthcheck:
-#      test: ["CMD", "pg_isready", "-U", "airflow"]
-#      interval: 10s
-#      retries: 5
-
-#  airflow:
-#    image: apache/airflow:2.9.1-python3.10
-#    container_name: airflow
-#    restart: always
-#    depends_on:
-#      postgresql:
-#        condition: service_healthy
-#      rabbitmq:
-#        condition: service_healthy
-#    env_file:
-#      - ./env.docker
-#    volumes:
-#      - ./dags:/opt/airflow/dags
-#    ports:
-#      - "8080:8080"
-#    command: >
-#      bash -c "
-#        while ! pg_isready -h postgresql -U airflow; do sleep 1; done;
-#        airflow db upgrade &&
-#        airflow users create --username admin --firstname Admin --lastname User --role Admin --email admin@example.com --password admin &&
-#        airflow scheduler &
-#        exec airflow webserver"
-
-
-
-
-  grafana:
-    image: grafana/grafana:8.4.0
-    container_name: grafana
+  prometheus:
+    image: prom/prometheus:latest
     ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
-      interval: 30s
-      retries: 3
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml  # <- bind mount
+      - prometheus_data:/prometheus                                  # <- keep named volume only for data
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    depends_on:
+      log_service:
+        condition: service_healthy
+    networks:
+      - bible_net
+
+
+
+networks:
+  bible_net:
+
+
+volumes:
+  prometheus_data:
+#  grafana:
+#    image: grafana/grafana:8.4.0
+#    container_name: grafana
+#    ports:
+#      - "3000:3000"
+#    environment:
+#      - GF_SECURITY_ADMIN_PASSWORD=admin
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+#      interval: 30s
+#      retries: 3

@@ -19,23 +19,16 @@ def start_celery_worker():
     )
     process.wait()
 
-def start_airflow_scheduler():
-    """Start Airflow scheduler."""
-    logger.info("🌾 Starting Airflow scheduler...")
+
+def start_fastapi_server():
+    """Start FastAPI server from api.py."""
+    logger.info("🌀 Starting FastAPI server...")
     process = subprocess.Popen(
-        ["dag_service", "scheduler"],
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        ["uvicorn", "log_service.src.api:app", "--host", "0.0.0.0", "--port", "5555"]
     )
+
     process.wait()
 
-def start_airflow_webserver():
-    """Start Airflow web server."""
-    logger.info("🌐 Starting Airflow web server...")
-    process = subprocess.Popen(
-        ["dag_service", "webserver", "--port", "8080"],
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
-    process.wait()
 
 def start_kombu_consumer():
     """Start Kombu consumer for message queue consumption."""
@@ -47,15 +40,11 @@ def start_services():
     """Starts Celery Worker, Airflow Scheduler, Airflow Webserver, and Kombu Consumer in parallel processes."""
     processes = {}
 
+    processes["fastapi_server"] = multiprocessing.Process(target=start_fastapi_server)
+    processes["fastapi_server"].start()
+
     processes["celery_worker"] = multiprocessing.Process(target=start_celery_worker)
     processes["celery_worker"].start()
-
-    # Start Airflow Scheduler and Web Server
-    processes["airflow_scheduler"] = multiprocessing.Process(target=start_airflow_scheduler)
-    processes["airflow_scheduler"].start()
-
-    processes["airflow_webserver"] = multiprocessing.Process(target=start_airflow_webserver)
-    processes["airflow_webserver"].start()
 
     processes["kombu_consumer"] = multiprocessing.Process(target=start_kombu_consumer)
     processes["kombu_consumer"].start()
