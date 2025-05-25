@@ -114,22 +114,24 @@ services:
     networks:
       - bible_net
 
-
+  loki:
+    image: grafana/loki:2.9.2
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./loki-config.yaml:/etc/loki/local-config.yaml:ro
+    tmpfs:
+      - /var/loki
+    networks:
+      - bible_net
 
 networks:
   bible_net:
+    driver: bridge
+
 
 
 volumes:
   prometheus_data:
-#  grafana:
-#    image: grafana/grafana:8.4.0
-#    container_name: grafana
-#    ports:
-#      - "3000:3000"
-#    environment:
-#      - GF_SECURITY_ADMIN_PASSWORD=admin
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost:3000"]
-#      interval: 30s
-#      retries: 3
+
