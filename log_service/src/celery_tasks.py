@@ -1,9 +1,4 @@
-﻿import json
-from datetime import datetime
-
-import requests
-
-from domain.src.services.db_connector import get_sync_mongo_client
+﻿from domain.src.services.db_connector import get_sync_mongo_client
 from log_service.src.celery_app import celery_app  # Import the centralized Celery instance
 
 def get_mongo_client():
