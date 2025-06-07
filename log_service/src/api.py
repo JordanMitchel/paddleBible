@@ -1,6 +1,5 @@
 ﻿from fastapi import FastAPI
 from pymongo import MongoClient
-from datetime import datetime
 from prometheus_fastapi_instrumentator import Instrumentator
 import httpx
 import asyncio

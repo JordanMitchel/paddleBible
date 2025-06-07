@@ -1,6 +1,4 @@
-﻿from prometheus_client import Counter
-
-# Prometheus counters (these should only go up)
+﻿# Prometheus counters (these should only go up)
 from prometheus_client import Counter
 
 # Define labeled counters

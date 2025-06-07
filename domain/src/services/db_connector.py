@@ -44,6 +44,8 @@ async def get_database(db_name="db_collection",client=None):
         config_db_name = str(config.get(db_name, "default_db"))
         return client[config_db_name]
     except Exception as e:
+        logger.error(f"Failed to get db: {e}")
+
         raise
 
 
@@ -53,6 +55,8 @@ async def get_collection(collection_name: str, db_name="db_collection"):
         db = await get_database(db_name)
         return db[collection_name]
     except Exception as e:
+        logger.error(f"Failed to get collection: {e}")
+
         raise
 
 
