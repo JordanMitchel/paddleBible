@@ -34,7 +34,7 @@ class LogProducer:
         log_message = {"service": service,
                        "level": level,
                        "message": message,
-                       "timestamp":datetime.now(UTC).isoformat()
+                       "timestamp":datetime.now(UTC)
                        }
         try:
             self.kombu_producer.publish(log_message, exchange=self.exchange.name, routing_key=LOG_ROUTING_KEY,

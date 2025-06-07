@@ -126,6 +126,18 @@ services:
     networks:
       - bible_net
 
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+      - loki
+    networks:
+      - bible_net
+
 networks:
   bible_net:
     driver: bridge

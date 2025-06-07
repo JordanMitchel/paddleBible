@@ -51,7 +51,7 @@ def enqueue_log(message):
         "service": SERVICE_NAME,
         "level": record["level"].name,
         "message": record["message"],
-        "timestamp":datetime.datetime.now(UTC).isoformat()
+        "timestamp":datetime.datetime.now(UTC)
     }
     log_queue.put(log_message)
 
