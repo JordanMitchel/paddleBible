@@ -19,9 +19,32 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pylint python-decouple opencage geopy spacy pydantic pandas fastapi motor aiofiles pytest \
-        pytest-cov pytest-asyncio uvicorn requests bs4 flake8 kombu
+    
+        pip install \
+          aiofiles \
+          bs4 \
+          celery \
+          fastapi \
+          flake8 \
+          geopy \
+          httpx \
+          kombu \
+          loguru \
+          motor \
+          opencage \
+          pandas \
+          pydantic \
+          python-decouple \
+          pylint \
+          requests \
+          spacy \
+          uvicorn \
+          pytest \
+          pytest-asyncio \
+          pytest-cov
+    
         python -m spacy download xx_ent_wiki_sm
+
 
     - name: Analyzing the code with pylint
       run: |

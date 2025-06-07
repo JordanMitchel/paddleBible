@@ -18,12 +18,13 @@ ML_SERVICE = "ml_service"
 LOG_ROUTING_KEY = "log_consuming.all_requests"
 LOG_QUEUE = LOG_ROUTING_KEY
 ML_ROUTING_KEY = "ai_consuming.bff.requests"
+TASK_SCHEDULER_ROUTING_KEY = "log_consuming.scheduler_request"
 # local
 # BROKER_URL = "amqp://guest:guest@localhost:5672//"
 # Define a shared exchange
 EXCHANGE = Exchange("bible_exchange", type="direct")
 LOG_EXCHANGE = Exchange("log_exchange", type="direct")
-
+CELERY_BACKEND = "mongodb://root:rootPassword@mongodb:27017/celery_results"
 
 def get_env_variable(key, default=None, cast_type=str, env_file=ENV_FILE_CONFIG):
     """Fetches environment variables with optional casting and a default fallback."""
