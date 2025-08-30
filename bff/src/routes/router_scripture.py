@@ -14,8 +14,6 @@ logger = get_logger()
 async def get_bible_books(bible_service: BibleService = Depends(get_bible_service)) -> ResponseModel:
     """Retrieve a list of all Bible books."""
     logger.info("querying bible books")
-    logger.info("yest")
-    # await log_producer.send_log(service=BFF_SERVICE,level=LogLevel.INFO,message="beeboooop")
     return await bible_service.get_all_bible_books()
 
 
@@ -25,6 +23,7 @@ async def get_coordinates_from_verse(
         services: BibleService = Depends(get_bible_service)
 ) -> bool:
     """Retrieve locations based on a scripture verse."""
+    logger.info(f"get coordinattes for verse {verse}")
     verse_result = await services.get_locations_by_scripture(
         verse
     )
@@ -47,6 +46,8 @@ async def get_locations_and_coordinates_from_verse_label(
         request.chapter,
         request.verse_num,
     )
+
     if not result.success:
         raise HTTPException(status_code=404, detail=result.warnings)
+    logger.info("verse returned successful")
     return result
