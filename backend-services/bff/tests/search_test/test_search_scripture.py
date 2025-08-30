@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock, patch
 import pytest
 from pymongo.errors import PyMongoError
 
-from bff.src.services.search.search_scripture import get_scripture_using_book_and_verse
+from backend.bff.src.services.search.search_scripture import get_scripture_using_book_and_verse
 from shared.src.models.scripture_result import Scripture
 
 

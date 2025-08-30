@@ -4,7 +4,8 @@ import uvicorn
 from fastapi import FastAPI
 from kombu import Connection
 
-from bff.src.routes import router_scripture, router_ws, router_logger
+from backend.bff.src.routes import router_ws
+from backend.bff.src.routes import router_logger, router_scripture
 from scripts.background_tasks.start_up_tasks import shutdown_tasks, run_tasks
 from shared.log.logger import get_logger, setup_logger, log_queue, log_thread
 from shared.utils.config import BROKER_URL

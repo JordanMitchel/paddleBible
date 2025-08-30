@@ -1,7 +1,7 @@
 ﻿from fastapi import APIRouter, Depends, HTTPException
 
-from bff.src.services.BibleService import BibleService
-from bff.src.services.ProducerServiceContainer import get_bible_service
+from backend.bff.src.services.BibleService import BibleService
+from backend.bff.src.services.ProducerServiceContainer import get_bible_service
 from shared.log.logger import get_logger
 from shared.src.models.scripture_result import ResponseModel, VerseRequest
 

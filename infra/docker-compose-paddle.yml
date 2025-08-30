@@ -3,8 +3,8 @@ services:
 
   bff:
     build:
-      context: .
-      dockerfile: bff/Dockerfile
+      context: ..
+      dockerfile: ../backend-services/bff/Dockerfile
     ports:
       - "8002:8000"
     depends_on:
@@ -19,7 +19,7 @@ services:
       - SERVICE_NAME=BFF_Service
       - BROKER_URL=amqp://guest:guest@rabbitmq:5672/  # Kombu connection URL
     env_file:
-      - ./env.docker
+      - ../env.docker
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
       interval: 30s
@@ -27,8 +27,8 @@ services:
 
   ml_service:
     build:
-      context: .
-      dockerfile: ml_service/Dockerfile
+      context: ..
+      dockerfile: ../backend-services/ml_service/Dockerfile
     ports:
       - "8001:8000"
     depends_on:
@@ -41,7 +41,7 @@ services:
       - SERVICE_NAME=ML_Service
       - BROKER_URL=amqp://guest:guest@rabbitmq:5672/
     env_file:
-      - ./env.docker
+      - ../env.docker
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
       interval: 60s
@@ -67,8 +67,8 @@ services:
 
   log_service:
     build:
-      context: .
-      dockerfile: log_service/Dockerfile
+      context: ..
+      dockerfile: ../backend-services/log_service/Dockerfile
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -79,7 +79,7 @@ services:
     ports:
       - "5555:5555"
     env_file:
-      - ./env.docker
+      - ../env.docker
     networks:
       - bible_net
     healthcheck:

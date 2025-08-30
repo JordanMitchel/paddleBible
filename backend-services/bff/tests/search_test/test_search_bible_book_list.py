@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock, patch, MagicMock
 import pytest
 from pymongo.errors import PyMongoError
 
-from bff.src.services.search.search_bible_books_list import get_all_bible_books
+from backend.bff.src.services.search.search_bible_books_list import get_all_bible_books
 from shared.tests.test_data.mock_data import mock_bible_books
 
 

@@ -1,7 +1,7 @@
 ﻿import json
 import threading
 
-from bff.src.services.service_bus.BFFKombuConsumer import BFFKombuConsumer
+from backend.bff.src.services.service_bus.BFFKombuConsumer import BFFKombuConsumer
 from domain.src.db.add_bible_to_mongo import insert_bible_store
 from domain.src.db.add_coordinates_to_mongo import update_coordinates_collection_using_file
 from shared.src.models.FileType import FileTypeEnum

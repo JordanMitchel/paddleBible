@@ -1,10 +1,10 @@
-from unittest.mock import MagicMock, AsyncMock, patch
+from unittest.mock import MagicMock, AsyncMock
 
 import pytest
 
-from bff.src.services.search.search_for_location_by_scripture import request_locations_using_scripture
+from backend.bff.src.services.search.search_for_location_by_scripture import request_locations_using_scripture
 from shared.src.ServiceBus.producer import KombuProducer
-from shared.src.models.scripture_result import BibleStructure, ResponseModel, Scripture, Place, ScriptureRequest
+from shared.src.models.scripture_result import Scripture, ScriptureRequest
 
 
 @pytest.mark.asyncio

@@ -1,6 +1,6 @@
 ﻿from fastapi import Depends
 
-from bff.src.services.BibleService import BibleService
+from backend.bff.src.services.BibleService import BibleService
 from shared.src.ServiceBus.producer import KombuProducer
 
 

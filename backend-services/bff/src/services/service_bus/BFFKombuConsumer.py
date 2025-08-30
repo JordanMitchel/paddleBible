@@ -3,8 +3,8 @@
 from kombu import Connection, Queue
 from kombu.mixins import ConsumerProducerMixin
 
-from bff.src.routes.router_ws import connected_clients
-from bff.src.services.service_bus.ResultService import ResultService
+from backend.bff.src.routes.router_ws import connected_clients
+from backend.bff.src.services.service_bus.ResultService import ResultService
 from shared.log.logger import get_logger
 from shared.src.models.scripture_result import ScriptureResponse
 from shared.utils.config import BROKER_URL, EXCHANGE
