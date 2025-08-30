@@ -43,7 +43,7 @@ async def check_rabbitmq():
         return await asyncio.to_thread(sync_check)
 
     except Exception as e:
-        # logger.info(f"❌ RabbitMQ check failed: {e}")
+        logger.info(f"❌ RabbitMQ check failed: {e}")
         return False
 
 
