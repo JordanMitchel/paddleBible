@@ -4,7 +4,7 @@ services:
   bff:
     build:
       context: ..
-      dockerfile: ../backend-services/bff/Dockerfile
+      dockerfile: ../backendServices/bff/Dockerfile
     ports:
       - "8002:8000"
     depends_on:
@@ -28,7 +28,7 @@ services:
   ml_service:
     build:
       context: ..
-      dockerfile: ../backend-services/ml_service/Dockerfile
+      dockerfile: ../backendServices/ml_service/Dockerfile
     ports:
       - "8001:8000"
     depends_on:
@@ -68,7 +68,7 @@ services:
   log_service:
     build:
       context: ..
-      dockerfile: ../backend-services/log_service/Dockerfile
+      dockerfile: ../backendServices/log_service/Dockerfile
     depends_on:
       rabbitmq:
         condition: service_healthy
