@@ -19,5 +19,3 @@ LOKI_URL = "http://localhost:3100/loki/api/v1/push"
 @celery_app.task
 def test_task():
     print("sending hi go jog :)")
-
-

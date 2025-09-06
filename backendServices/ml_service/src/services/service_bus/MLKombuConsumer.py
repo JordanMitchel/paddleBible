@@ -3,11 +3,11 @@
 from kombu import Connection, Queue
 from kombu.mixins import ConsumerProducerMixin
 
-from ml_service.src.services.service_bus.ProcessService import ProcessService
-from shared.log.logger import get_logger
-from shared.src.ServiceBus.producer import KombuProducer
-from shared.src.models.scripture_result import ScriptureRequest, ScriptureResponse
-from shared.utils.config import BROKER_URL, EXCHANGE
+from backendServices.ml_service.src.services.service_bus.ProcessService import ProcessService
+from backendServices.shared.log.logger import get_logger
+from backendServices.shared.src.ServiceBus.producer import KombuProducer
+from backendServices.shared.src.models.scripture_result import ScriptureRequest, ScriptureResponse
+from backendServices.shared.utils.config import BROKER_URL, EXCHANGE
 
 logger = get_logger()
 
