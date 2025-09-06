@@ -2,7 +2,7 @@
 
 import spacy
 
-from shared.src.models.scripture_result import BibleStructure, Place, ScriptureResponse, ScriptureRequest
+from backendServices.shared.src.models.scripture_result import BibleStructure, Place, ScriptureResponse, ScriptureRequest
 
 
 # noinspection PyMethodMayBeStatic

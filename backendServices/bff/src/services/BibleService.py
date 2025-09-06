@@ -33,7 +33,7 @@ class BibleService:
             return ResponseModel(success=False, data={}, warnings="Scripture not found")
 
         scripture = scripture_result.data
-        request = ScriptureRequest(clientId=clientId, data=scripture)
+        request = ScriptureRequest(clientId=query.clientId, data=scripture)
         await request_locations_using_scripture(request, self.producer)
 
         return ResponseModel(success=True, data=request, warnings="")
