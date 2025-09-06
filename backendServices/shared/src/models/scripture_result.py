@@ -21,7 +21,7 @@ class Place(BaseModel):
 class Scripture(BaseModel):
     book: str = ""
     chapter: int = 0
-    verse: Dict[int, str] = Field(default={})
+    verse: Dict[int, str] = Field(default_factory=dict)
 
 
 class BibleStructure(BaseModel):
@@ -32,7 +32,7 @@ class BibleStructure(BaseModel):
 
 class SearchResult(BaseModel):
     ResultFound: bool = False
-    Location: Place = Field(default={})
+    Location: Place = Field(default_factory=Place)
 
 
 class BibleVersion(str, Enum):
@@ -96,3 +96,10 @@ class LogLevel(str, Enum):
     ERROR = 'Error'
     WARNING = 'Warning'
     INFO = 'info'
+
+class ScriptureQuery(BaseModel):
+    clientId: str
+    bible_version: str
+    book_num: int
+    chapter: int
+    verse_num: int

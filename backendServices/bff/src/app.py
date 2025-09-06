@@ -6,9 +6,11 @@ from kombu import Connection
 
 from backendServices.bff.src.routes import router_ws
 from backendServices.bff.src.routes import router_logger, router_scripture
-from scripts.background_tasks.start_up_tasks import shutdown_tasks, run_tasks
 from backendServices.shared.log.logger import get_logger, setup_logger, log_queue, log_thread
 from backendServices.shared.utils.config import BROKER_URL
+
+from scripts.background_tasks.start_up_tasks import shutdown_tasks, run_tasks
+
 
 if hasattr(asyncio, "WindowsSelectorEventLoopPolicy"):
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())

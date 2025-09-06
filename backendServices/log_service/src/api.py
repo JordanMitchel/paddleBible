@@ -74,4 +74,3 @@ async def push_logs_to_loki():
             print("[DEBUG] No new logs to push.")
 
         await asyncio.sleep(10)
-

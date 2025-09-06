@@ -15,13 +15,13 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
     await websocket.accept()
 
     connected_clients[client_id] = websocket
-    logging.info(f"✅ Client {client_id} connected")
+    logging.info("✅ Client %s connected", client_id)
 
     try:
         while True:
             # Receive messages from the client
             message = await websocket.receive_text()
-            logging.info(f"Message received: {message}")
+            logging.info("Message received: %s", message)
             await websocket.send_text(f"Message received: {message}")
     except WebSocketDisconnect:
         # Handle client disconnect
@@ -36,7 +36,7 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             message = await websocket.receive_text()
-            logging.info(f"Message received: {message}")
+            logging.info("Message received: %s", message)
 
             await websocket.send_text(f"Message received: {message}")
     except WebSocketDisconnect:

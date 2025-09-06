@@ -1,9 +1,10 @@
 ﻿from fastapi import APIRouter, Depends, HTTPException
 
-from backend.bff.src.services.BibleService import BibleService
-from backend.bff.src.services.ProducerServiceContainer import get_bible_service
-from shared.log.logger import get_logger
-from shared.src.models.scripture_result import ResponseModel, VerseRequest
+from backendServices.shared.log.logger import get_logger
+
+from backendServices.bff.src.services import BibleService
+from backendServices.bff.src.services.ProducerServiceContainer import get_bible_service
+from backendServices.shared.src.models.scripture_result import VerseRequest, ResponseModel
 
 # Instantiate router
 router = APIRouter()

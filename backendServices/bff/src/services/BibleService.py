@@ -3,7 +3,7 @@ from backendServices.bff.src.services.search.search_for_location_by_scripture im
 from backendServices.bff.src.services.search.search_scripture import get_scripture_using_verse, \
     get_scripture_using_book_and_verse
 from backendServices.shared.src.ServiceBus.producer import KombuProducer
-from backendServices.shared.src.models.scripture_result import ResponseModel, ScriptureRequest
+from backendServices.shared.src.models.scripture_result import ResponseModel, ScriptureRequest, ScriptureQuery
 
 
 class BibleService:
@@ -22,11 +22,11 @@ class BibleService:
         request: ScriptureRequest = await get_scripture_using_verse(clientId, bible_version, verse)
         return await request_locations_using_scripture(request, self.producer)
 
-    async def get_scripture_and_coordinates(self, clientId, bible_version, book_num, chapter, verse_num) \
+    async def get_scripture_and_coordinates(self, query: ScriptureQuery) \
             -> ResponseModel:
         """Fetch scripture data and calculate coordinates."""
         scripture_result: ScriptureRequest = await get_scripture_using_book_and_verse(
-            clientId, bible_version, book_num, chapter, verse_num
+            query.clientId, query.bible_version, query.book_num, query.chapter, query.verse_num
         )
 
         if not scripture_result.data:

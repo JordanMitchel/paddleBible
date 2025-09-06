@@ -14,13 +14,13 @@ async def request_locations_using_scripture(request: ScriptureRequest, producer_
 
     try:
         await producer_service.send_message(request.model_dump(), routing_key=ML_ROUTING_KEY)
-        logging.info(f"Verse: '{request.model_dump()}' pushed to Channel {producer_service.get_channel()}")
+        logging.info(f"Verse: %s' pushed to Channel %s", request.model_dump(), producer_service.get_channel())
         return True
     except OperationalError as e:  # Broker connection issues
-        logging.error(f"Message broker unavailable: {e}")
+        logging.error("Message broker unavailable: %s",e)
     except EncodeError as e:  # Serialization issues
-        logging.error(f"Failed to encode message: {e}")
+        logging.error("Failed to encode message: %s", e)
     except Exception as e:  # Catch-all for unexpected errors
-        logging.error(f"Unexpected error while sending message: {e}")
+        logging.error("Unexpected error while sending message: %s, e")
 
     return False

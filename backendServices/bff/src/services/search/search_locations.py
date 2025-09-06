@@ -24,7 +24,7 @@ async def get_coordinates_by_location(locations: List[Place],
             if deep_search_result.ResultFound:
                 locations[count].coordinates = deep_search_result.Location.coordinates
             else:
-                logger.warning(f"no location found for area: {area}")
+                logger.warning("no location found for area: %s", area)
                 locations[count].warning = f"No co-ordinates found for {area}"
 
         count += 1

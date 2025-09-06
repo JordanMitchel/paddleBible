@@ -1,7 +1,7 @@
 ﻿from fastapi import APIRouter
 
-from backend-services.domain.src.services.db_connector import get_collection
-from shared.utils.config import LOG_DB, LOG_COLLECTION
+from backendServices.domain.src.services.db_connector import get_collection
+from backendServices.shared.utils.config import LOG_COLLECTION, LOG_DB
 
 router = APIRouter()
 

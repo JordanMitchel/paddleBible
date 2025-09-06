@@ -17,7 +17,7 @@ async def get_scripture_using_book_and_verse(clientId,
         query = {"book": book_num, "chapter": chapter, "verse": verse_num}
         doc = await coll.find_one(query)
 
-        logging.info(f"📄 Fetched Document: {doc}")
+        logging.info("📄 Fetched Document: %s", doc)
 
         if doc:
             scripture = Scripture(
@@ -25,7 +25,7 @@ async def get_scripture_using_book_and_verse(clientId,
                 chapter=doc["chapter"],
                 verse={doc["verse"]: doc["text"]}
             )
-            logging.info(f"✅ Found Scripture: {scripture}")
+            logging.info("✅ Found Scripture: %s", scripture)
             return ScriptureRequest(clientId=clientId, data=scripture)
 
         logging.warning("❌ No scripture found for query.")
@@ -36,11 +36,11 @@ async def get_scripture_using_book_and_verse(clientId,
         return ScriptureRequest(clientId=clientId, warnings="An error occurred with MongoDB")
 
     except OperationFailure as e:
-        logging.error(f"Error fetching scripture: {str(e)}")
+        logging.error("Error fetching scripture: %s", str(e))
         return ScriptureRequest(clientId=clientId, warnings=f"Error fetching scripture: {str(e)}")
 
     except PyMongoError as e:
-        logging.error(f"An error occurred with MongoDB: {str(e)}")
+        logging.error("An error occurred with MongoDB: %s", str(e))
         return ScriptureRequest(clientId=clientId, warnings=f"An error occurred with MongoDB: {str(e)}")
 
 
@@ -51,7 +51,7 @@ async def get_scripture_using_verse(clientId, bible_version, verse) -> Scripture
         query = {"text": {"$regex": verse, "$options": "i"}}  # Case-insensitive search
 
         doc = await coll.find_one(query)  # Find the first matching document
-        logging.info(f"📄 Fetched Document: {doc}")
+        logging.info("📄 Fetched Document: %s", doc)
 
         if doc:
             scripture = Scripture(
@@ -59,7 +59,7 @@ async def get_scripture_using_verse(clientId, bible_version, verse) -> Scripture
                 chapter=doc["chapter"],
                 verse={doc["verse"]: doc["text"]}
             )
-            logging.info(f"✅ Found Scripture: {scripture}")
+            logging.info("✅ Found Scripture: %s", scripture)
             return ScriptureRequest(clientId=clientId, data=scripture)
 
         logging.info("❌ No scripture found for query.")
@@ -70,9 +70,9 @@ async def get_scripture_using_verse(clientId, bible_version, verse) -> Scripture
         return ScriptureRequest(clientId=clientId)
 
     except OperationFailure as e:
-        logging.error(f"Error fetching scripture: {str(e)}")
+        logging.error("Error fetching scripture: %s", str(e))
         return ScriptureRequest(clientId=clientId)
 
     except PyMongoError as e:
-        logging.error(f"An error occurred with MongoDB: {str(e)}")
+        logging.error("An error occurred with MongoDB: %s", str(e))
         return ScriptureRequest(clientId=clientId)
