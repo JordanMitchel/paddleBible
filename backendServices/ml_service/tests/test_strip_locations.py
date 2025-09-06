@@ -1,6 +1,6 @@
 import pytest
 
-from ml_service.src.services.service_bus.ProcessService import ProcessService
+from backendServices.ml_service.src.services.service_bus.ProcessService import ProcessService
 
 @pytest.fixture(scope="module")
 def process_service():
