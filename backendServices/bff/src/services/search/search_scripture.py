@@ -1,0 +1,78 @@
+import logging
+
+from pymongo.errors import ServerSelectionTimeoutError, OperationFailure, PyMongoError
+
+from backendServices.domain.src.services.db_connector import get_collection
+from backendServices.shared.src.models.scripture_result import Scripture, ScriptureRequest
+
+
+async def get_scripture_using_book_and_verse(clientId,
+                                             bible_version,
+                                             book_num,
+                                             chapter,
+                                             verse_num) -> ScriptureRequest:
+    try:
+        coll = await get_collection(bible_version)
+
+        query = {"book": book_num, "chapter": chapter, "verse": verse_num}
+        doc = await coll.find_one(query)
+
+        logging.info("📄 Fetched Document: %s", doc)
+
+        if doc:
+            scripture = Scripture(
+                book=doc["book_name"],
+                chapter=doc["chapter"],
+                verse={doc["verse"]: doc["text"]}
+            )
+            logging.info("✅ Found Scripture: %s", scripture)
+            return ScriptureRequest(clientId=clientId, data=scripture)
+
+        logging.warning("❌ No scripture found for query.")
+        return ScriptureRequest(clientId=clientId, warnings="No scripture found for query.")
+
+    except ServerSelectionTimeoutError:
+        logging.error("MongoDB server could not be reached. Please check your connection.")
+        return ScriptureRequest(clientId=clientId, warnings="An error occurred with MongoDB")
+
+    except OperationFailure as e:
+        logging.error("Error fetching scripture: %s", str(e))
+        return ScriptureRequest(clientId=clientId, warnings=f"Error fetching scripture: {str(e)}")
+
+    except PyMongoError as e:
+        logging.error("An error occurred with MongoDB: %s", str(e))
+        return ScriptureRequest(clientId=clientId, warnings=f"An error occurred with MongoDB: {str(e)}")
+
+
+async def get_scripture_using_verse(clientId, bible_version, verse) -> ScriptureRequest:
+    try:
+        coll = await get_collection(bible_version)
+
+        query = {"text": {"$regex": verse, "$options": "i"}}  # Case-insensitive search
+
+        doc = await coll.find_one(query)  # Find the first matching document
+        logging.info("📄 Fetched Document: %s", doc)
+
+        if doc:
+            scripture = Scripture(
+                book=doc["book_name"],
+                chapter=doc["chapter"],
+                verse={doc["verse"]: doc["text"]}
+            )
+            logging.info("✅ Found Scripture: %s", scripture)
+            return ScriptureRequest(clientId=clientId, data=scripture)
+
+        logging.info("❌ No scripture found for query.")
+        return ScriptureRequest(clientId=clientId)
+
+    except ServerSelectionTimeoutError:
+        logging.error("MongoDB server could not be reached. Please check your connection.")
+        return ScriptureRequest(clientId=clientId)
+
+    except OperationFailure as e:
+        logging.error("Error fetching scripture: %s", str(e))
+        return ScriptureRequest(clientId=clientId)
+
+    except PyMongoError as e:
+        logging.error("An error occurred with MongoDB: %s", str(e))
+        return ScriptureRequest(clientId=clientId)
