@@ -8,7 +8,7 @@ from backendServices.shared.src.models.scripture_result import Scripture
 
 
 @pytest.mark.asyncio
-@patch("bff.src.services.search.search_scripture.get_collection")  # Mocking the get_database function
+@patch("backendServices.bff.src.services.search.search_scripture.get_collection")  # Mocking the get_database function
 @pytest.mark.requires_decouple
 async def test_get_scripture_found(mock_get_collection):
     # Mock the database and collection
@@ -34,7 +34,7 @@ async def test_get_scripture_found(mock_get_collection):
 
 
 @pytest.mark.asyncio
-@patch("bff.src.services.search.search_scripture.get_collection")  # Mocking the get_database function
+@patch("backendServices.bff.src.services.search.search_scripture.get_collection")  # Mocking the get_database function
 @pytest.mark.requires_decouple
 async def test_get_scripture_not_found(mock_get_collection):
     # Mock the database and collection
@@ -51,7 +51,7 @@ async def test_get_scripture_not_found(mock_get_collection):
 
 
 @pytest.mark.asyncio
-@patch("bff.src.services.search.search_scripture.get_collection")  # Mocking the get_database function
+@patch("backendServices.bff.src.services.search.search_scripture.get_collection")  # Mocking the get_database function
 async def test_get_scripture_error_handling(mock_get_collection):
     # Simulate an exception in the database call
     mock_get_collection.side_effect = PyMongoError("An error occurred with MongoDB")

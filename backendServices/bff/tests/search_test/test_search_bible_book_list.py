@@ -21,7 +21,7 @@ class AsyncIteratorMock:
 
 
 @pytest.mark.asyncio
-@patch("bff.src.services.search.search_bible_books_list.get_database")
+@patch("backendServices.bff.src.services.search.search_bible_books_list.get_database")
 async def test_get_all_bible_books(mock_get_database):
     # Mock data returned by the aggregate query
     mock_aggregate_data = [
@@ -64,7 +64,8 @@ async def test_get_all_bible_books(mock_get_database):
 
 
 @pytest.mark.asyncio
-@patch("bff.src.services.search.search_bible_books_list.get_database")  # Make sure to patch the correct path
+@patch("backendServices.bff.src.services.search.search_bible_books_list.get_database")  # Make sure to patch the
+# correct path
 async def test_get_all_bible_books_error_handling(mock_get_database):
     mock_get_database.side_effect = PyMongoError("An error occurred with MongoDB")
 

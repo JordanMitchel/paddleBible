@@ -7,8 +7,9 @@ from backendServices.domain.src.db import get_mongo_client, get_database
 
 @pytest.mark.requires_decouple
 @pytest.mark.asyncio
-@patch("domain.src.services.db_connector.load_mongo_config")  # Fully qualified path for `load_mongo_config`
-@patch("domain.src.services.db_connector.AsyncIOMotorClient")
+@patch("backendServices.domain.src.services.db_connector.load_mongo_config")  # Fully qualified path for
+# `load_mongo_config`
+@patch("backendServices.domain.src.services.db_connector.AsyncIOMotorClient")
 async def test_get_mongo_client_success_using_decouple(mock_motor_client, mock_load_config):
     # Mock the configuration
     mock_load_config.return_value = {
@@ -33,8 +34,9 @@ async def test_get_mongo_client_success_using_decouple(mock_motor_client, mock_l
 
 @pytest.mark.requires_decouple
 @pytest.mark.asyncio
-@patch("domain.src.services.db_connector.load_mongo_config")  # Fully qualified path for `load_mongo_config`
-@patch("domain.src.services.db_connector.AsyncIOMotorClient")
+@patch("backendServices.domain.src.services.db_connector.load_mongo_config")  # Fully qualified path for
+# `load_mongo_config`
+@patch("backendServices.domain.src.services.db_connector.AsyncIOMotorClient")
 async def test_get_mongo_client_failure_using_decouple(mock_motor_client, mock_load_config):
     # Mock the configuration
     mock_load_config.return_value = {
@@ -53,8 +55,9 @@ async def test_get_mongo_client_failure_using_decouple(mock_motor_client, mock_l
 
 @pytest.mark.requires_decouple
 @pytest.mark.asyncio
-@patch("domain.src.services.db_connector.load_mongo_config")  # Fully qualified path for `load_mongo_config`
-@patch("domain.src.services.db_connector.get_mongo_client")
+@patch("backendServices.domain.src.services.db_connector.load_mongo_config")  # Fully qualified path for
+# `load_mongo_config`
+@patch("backendServices.domain.src.services.db_connector.get_mongo_client")
 async def test_get_database_success_using_decouple(mock_get_mongo_client, mock_load_config):
     # Mock the configuration returned by load_mongo_config
     mock_load_config.return_value = {
@@ -79,8 +82,9 @@ async def test_get_database_success_using_decouple(mock_get_mongo_client, mock_l
 
 @pytest.mark.requires_decouple
 @pytest.mark.asyncio
-@patch("domain.src.services.db_connector.load_mongo_config")  # Fully qualified path for `load_mongo_config`
-@patch("domain.src.services.db_connector.get_mongo_client")
+@patch("backendServices.domain.src.services.db_connector.load_mongo_config")  # Fully qualified path for
+# `load_mongo_config`
+@patch("backendServices.domain.src.services.db_connector.get_mongo_client")
 async def test_get_database_failure_using_decouple(mock_get_mongo_client, mock_load_config):
     # Mock the configuration
     mock_load_config.return_value = {
