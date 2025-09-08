@@ -560,11 +560,11 @@ Run the test suite using the following command:
 - [X] **`Task 2`**: <strike>Implement microservice architecture to speed up development time and imrpove work at 
   scale.</strike>
 - [X] **`Task 3`**: <strike>Implement websocket communication to allow for real time development.</strike>
-- [ ] **`Task 4`**: Implement logging and monitoring for the application.
+- [X] **`Task 4`**: Implement logging and monitoring for the application.
 - [ ] **`Task 5`**: Implement UI to connect to app
 - [ ] **`Task 6`**: Implement login feature
 - [ ] **`Task 7`**: Implement gunicorn instead of unicorn for scale and speed
-
+- [ ] **`Task 8`**: Migration ML_Service from python to C++ for speed f
 
 ---
 
