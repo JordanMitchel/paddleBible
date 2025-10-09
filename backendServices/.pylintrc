@@ -1,0 +1,2 @@
+﻿[tool.pylint.design]
+min-public-methods = 1
