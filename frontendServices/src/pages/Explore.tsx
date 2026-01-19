@@ -7,8 +7,8 @@ const Explore: React.FC = () => {
   const trending = [1, 2, 3];
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-16">
-      <div className="text-center mb-12">
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
+      <div className="text-center mb-8 sm:mb-12">
         <Compass size={64} className="mx-auto text-blue-600 mb-6" />
         <h1 className="text-4xl font-bold text-gray-900 mb-4">Explore</h1>
         <p className="text-lg text-gray-600 leading-relaxed">
@@ -16,7 +16,7 @@ const Explore: React.FC = () => {
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         <div className="lg:col-span-2">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
             <TrendingUp className="mr-2 text-blue-600" size={24} />

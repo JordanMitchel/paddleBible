@@ -1,8 +1,10 @@
 import React from "react";
 import  Card  from "@/components/ui/Card";
 import { BookOpenCheckIcon, Church, Heart, Plus, Sun } from 'lucide-react';
+import { apiRequest } from "@/services/api";
 
 const About: React.FC = () => {
+
     const features = [
         {
             title: "Our Mission",
@@ -39,8 +41,8 @@ const About: React.FC = () => {
     ];
 
     return (
-        <div className="max-w-4xl mx-auto px-6 py-16">
-            <div className="text-center mb-12">
+        <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
+            <div className="text-center mb-8 sm:mb-12">
                 <Church size={64} className="mx-auto text-blue-600 mb-6" />
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">About Us</h1>
                 <p className="text-lg text-gray-600 leading-relaxed">
@@ -48,7 +50,7 @@ const About: React.FC = () => {
                 </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                 {features.map((feature, index) => (
                     <Card key={index} hover padding="md">
                         <div className="flex items-center space-x-4 mb-4">

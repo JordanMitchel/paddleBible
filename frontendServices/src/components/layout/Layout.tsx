@@ -1,15 +1,31 @@
-import React from 'react';
-import Header from '@/components/ui/Header';
-import Hero from './Hero';
+import { Routes, Route } from 'react-router-dom';
+import { Box } from '@mui/material';
 
-const Layout: React.FC = () => {
+import Header from '@/components/ui/Header';
+import Home from '@/pages/Home';
+import Read from '@/pages/Read';
+import Paddle from '@/pages/Paddle';
+import Explore from '@/pages/Explore';
+import About from '@/pages/About';
+import Footer from '../ui/Footer';
+
+const Layout = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <Box minHeight="100vh" display="flex" flexDirection="column">
       <Header />
-      <main className="flex-1">
-        <Hero />
-      </main>
-    </div>
+
+      {/* Main page content */}
+      <Box component="main" flex={1}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/read" element={<Read />} />
+          <Route path="/paddle" element={<Paddle />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </Box>
+      <Footer/>
+    </Box>
   );
 };
 

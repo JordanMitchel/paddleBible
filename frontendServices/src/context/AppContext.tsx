@@ -1,5 +1,5 @@
+import { TabType } from '@/utils/constants';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { TabType } from '@/types';
 
 interface AppContextType {
   activeTab: TabType;

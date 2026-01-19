@@ -1,65 +1,88 @@
 import React from 'react';
 import Button from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
 import { useApp } from '@/context/AppContext';
+import HomeCard from '@/components/ui/HomeCard';
+import { Grid, Stack, Typography } from '@mui/material';
+
+import PageSection from '@/components/ui/PageSection';
+import features from '@/utils/features';
 
 const Home: React.FC = () => {
   const { setActiveTab } = useApp(); // Get setActiveTab from context
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-16">
-      <div className="text-center">
-        <h1 className="text-5xl font-bold text-gray-900 mb-6">
-          Welcome to Your
-          <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-            {" "}Adventure
-          </span>
-        </h1>
-        <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-          Discover amazing content, paddle through experiences, and explore new horizons. 
-          Your journey starts here with our innovative platform.
-        </p>
-        
-        <div className="flex items-center justify-center space-x-4 mb-16">
-          <Button size="lg">Get Started</Button>
-          <Button variant="outline"
-            size="lg"
-            onClick={() => setActiveTab('about')} // Add click handler
->Learn More</Button>
-        </div>
-        
-        <div className="grid md:grid-cols-3 gap-8">
-          <Card hover padding="md">
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
-              <span className="text-blue-600 text-xl">📚</span>
-            </div>
-            <h3 className="text-lg font-semibold mb-2 text-gray-900">Rich Content</h3>
-            <p className="text-gray-600 leading-relaxed">
-              Access the bible in different languages with all of its context.
-            </p>
-          </Card>
-          
-          <Card hover padding="md">
-            <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
-              <span className="text-indigo-600 text-xl">🚣</span>
-            </div>
-            <h3 className="text-lg font-semibold mb-2 text-gray-900">Interactive Experiences</h3>
-            <p className="text-gray-600 leading-relaxed">
-              Paddle through immersive text that maps to earth at your pace.
-            </p>
-          </Card>
-          
-          <Card hover padding="md">
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
-              <span className="text-purple-600 text-xl">🧭</span>
-            </div>
-            <h3 className="text-lg font-semibold mb-2 text-gray-900">Discover & Explore</h3>
-            <p className="text-gray-600 leading-relaxed">
-              Take a different perspective on the bible through maps and then stories.
-            </p>
-          </Card>
-        </div>
-      </div>
+    <div>
+
+
+      
+        <PageSection bgcolor="transparent">
+          <Stack spacing={0} textAlign={'left'} mb={4} maxWidth={400}>
+              <Typography variant='h2' fontWeight={400}
+                sx={{
+                  background: (theme) => theme.palette.gradient.title,
+                  WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: "transparent",
+}}
+                  >
+                  Paddle.
+              </Typography>
+              <Typography variant='h4' fontWeight={700}>
+                Read. Explore.
+              </Typography>
+              <Typography variant='h4' color='Blue' fontWeight={700}>
+                Connect.
+              </Typography>
+              <Typography variant='overline' color='primary'>
+                Paddle is your digital reading companion designed to enhance your reading experience.
+                For thougghtful exploration, colloboration, and deep engagement with texts.
+              </Typography>
+              <Stack direction="row" spacing={2} mt={2}>
+                <Button size="lg" >Start Reading</Button>
+                <Button variant="outline"
+                  size="lg"
+                  onClick={() => setActiveTab('about')} // Add click handler
+                >
+                  Learn More
+                </Button>
+              </Stack>
+
+            </Stack>
+        </PageSection>
+        <PageSection bgcolor="transparent">
+          <Stack spacing={6}>
+            <Stack spacing={1} textAlign={'center'}>
+
+              <Typography variant='h4' fontWeight={700}>
+                Built for deep reading & study
+              </Typography>
+              <Typography variant='overline' color='primary'>
+                Everything you need for meaningful engagement with texts
+              </Typography>
+            </Stack>
+            <Grid container spacing={0}>
+              {features.map((feature) => (
+                <Grid 
+                key={feature.title as string}
+                size={{ xs: 12, sm: 6, md: 4 }}
+                >
+                  <HomeCard {...feature} />
+                </Grid>
+              ))}
+            </Grid>
+          </Stack>
+        </PageSection>
+        <PageSection bgcolor="transparent">
+          <Stack spacing={2} textAlign={'center'} alignItems={'center'}>
+            <Typography variant='h6' fontWeight={500} color='primary'>
+              Join thousands of readers enhancing their reading experience with Paddle.
+            </Typography>
+            <Button size="lg" style={{maxWidth:400}}  >Get Started</Button>
+            <Typography variant='caption' color='primary' fontWeight={300}>
+              Free forever for the Bible • no credit card required.
+            </Typography>
+          </Stack>
+        </PageSection>
+
     </div>
   );
 };

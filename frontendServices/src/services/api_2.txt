@@ -1,23 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8002"; // your backend port
-
-
-export const  apiRequest2: any = (url:string)=>{
-  const[apiData,setApiData] = useState([]);
-
-  useEffect(()=>{
-        fetch(url)
-        .then((response)=> response.json())
-        .then((json)=>{
-          setApiData(json);
-        });
-      },[])
-
-  return apiData;
-}
 
 // Generic API fetcher for GET/POST/etc.
 export const apiRequest = async <T>(

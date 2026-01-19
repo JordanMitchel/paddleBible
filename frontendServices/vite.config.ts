@@ -9,8 +9,14 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  server: {
-    port: 3000,
-    open: true,
-  },
+server: {
+  host: true, // allow external connections
+  port: 5173, // optional, but keeps ngrok consistent
+  allowedHosts: [
+    'localhost',
+    '127.0.0.1',
+    'overdiligent-liberatory-agatha.ngrok-free.dev', // your current tunnel
+  ],
+},
+
 })
