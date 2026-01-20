@@ -1,10 +1,25 @@
-import { apiGet } from "./api";
 
+
+export interface Bible {
+  books: BibleBook[];
+  book_count: number;
+  book_names: string[];
+}
 export interface BibleBook {
-  book: number;
+  [x: string]: any;
+  book_ids: number;
   book_name: string;
+  chapter_count: number;
+  chapters: chapter[];
+}
+export interface chapter {
+  chapter_id: number;
+  verse_count: number;
+  verses: verse[];
+  
+}
+export interface verse {
+  verse_id: number;
+  verse_text: string;
 }
 
-export const getBibleBooks = async (): Promise<BibleBook[]> => {
-  return apiGet<BibleBook[]>("/scripture/BibleBooks");
-};

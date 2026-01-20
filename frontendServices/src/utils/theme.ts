@@ -13,6 +13,12 @@ export const getTheme = (mode: "light" | "dark") =>
             ? "rgba(10, 20, 30, 0.65)"
             : "rgba(255, 255, 255, 0.75)",
       },
+      primary: {
+        main: mode === "dark" ? "#90caf9" : "#000000",
+      },
+      secondary: {
+        main: mode === "dark" ? "#3d97e0" : "#5a5a5a",
+      },
         gradient: {
     title:
       mode === "dark"

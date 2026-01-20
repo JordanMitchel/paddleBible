@@ -1,62 +1,85 @@
 import React, { useEffect, useState } from "react";
-import { QRCodeCanvas } from "qrcode.react";
-import { BibleBook, getBibleBooks } from "@/services/scripture";
-import SelectCustom from "@/components/ui/Select";
-
+import { Bible } from "@/services/scripture";
+import SelectDropDown from "@/components/ui/SelectDropDown";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { apiGetRequest } from "@/services/api";
+import CardChapter from "@/components/ui/CardChapter";
+import BibleModal from "@/components/ui/BibleModal";
 const Read: React.FC = () => {
-  const [books, setBooks] = useState<BibleBook[]>([]);
-  const [book, setBook] = useState<string>("");
-  // const [chapters, setChapters] = useState<number[]>([]);
-  // const [chapter, setChapter] = useState<number>(1);
-  // const [verses, setVerses] = useState<number[]>([]);
-  // const [verseCounts, setVerseCounts] = useState<Record<number, number>>({});
-  // const [verse, setVerse] = useState<number>(1);
-  // const [chapterText, setChapterText] = useState<{ verse: number; text: string }[]>([]);
-  const [showModal, setShowModal] = useState(false);
-  const [code, setCode] = useState("");
-
-  // const verseRefs = useRef<Record<number, HTMLParagraphElement | null>>({});
-
+  const [openModal, setOpenModal] = React.useState(false);
+  const [shareData, setShareData] = useState<{title: string; text: string; url: string} | undefined>(undefined);
+  const handleCloseModal = () => setOpenModal(false);
+  const [bible, setBible] = useState<Bible>({books: [], book_names: [], book_count: 0});
+  const [selectedBookId, setSelectedBookId] = useState<number >(1);
+  const [selectedChapterId, setSelectedChapterId] = useState<number>(1);
+  const [selectedVerseId, setSelectedVerseId] = useState<number>(1);
+  const  chapterArray  : number[] = bible.books.length > 0 ?
+    [...Array(bible.books[selectedBookId].chapter_count).keys()].map(i => i + 1) : [];
+  const  verseArray  : number[] = (bible.books.length > 0 && bible.books[selectedBookId].chapters.length > 0) ?
+    [...Array(bible.books[selectedBookId].chapters[selectedChapterId].verse_count).keys()].map(i => i + 1) : [];
   // Load initial books
   useEffect(() => {
-    getBibleBooks().then(setBooks).catch(console.error);
+    apiGetRequest("/scripture/BibleBooks").then((data) => {
+      setBible(data);
+    }).catch((error) => {
+      console.error("Error fetching Bible books:", error);
+    });
     },[]);
 
-
-  const handleGoClick = () => {
-    const newCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-    setCode(newCode);
-    setShowModal(true);
-  };
-  const handleClose = () => setShowModal(false);
+    const handleOnShareClick = () => {
+      const data = {
+        title: 'Paddle Reading',
+        text: `Check out this reading from Paddle: ${bible.book_names[selectedBookId]} Chapter ${selectedChapterId} Verse ${selectedVerseId}`,
+        url: window.location.href,
+      };
+      setShareData(data);
+      console.log("Share Data:", shareData);
+      setOpenModal(true);
+    }
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
-      {/* Selectors */}
-      <div className="flex flex-col sm:flex-row mb-6 gap-4">
-        <div className="flex  gap-4 flex-grow">
-          {/* Book */}
-          <SelectCustom/>
-          <SelectCustom/>
-          <SelectCustom/>
+    <>
+    <Stack direction='row' alignItems='center' mt={2}>
 
-        </div>
+      <Stack direction="row" spacing={4} ml={2} >
+        <SelectDropDown dropDownType="Book"  valuesList={chapterArray}/>
+        <SelectDropDown dropDownType="Chapter" valuesList={bible.book_names}/>
+        <SelectDropDown dropDownType="Verse" valuesList={verseArray}/>
+      </Stack>
+      <Box sx={{ ml: 'auto', display: 'flex', gap: 2  }} mr={2}>
+        <Button variant="contained" color="secondary">Go</Button>
+        <Button variant="contained" onClick={handleOnShareClick}>Share</Button>
+      </Box>
+    </Stack>
+    <Grid>
+      <Typography variant="h3" mt={4} textAlign='left' ml={10}>
+        {bible.books.length > 0 &&
+          bible.book_names[selectedBookId]
+        } G
+      </Typography>
+      <Box mt={4} mx={10} p={4} boxShadow={3} borderRadius={2} bgcolor="background.paper">
+        <Stack spacing={2}>
+          {bible.books.length > 0 &&
+            bible.books[selectedBookId].chapters.length > 0 &&
+            bible.books[selectedBookId].chapters.map((chapter_id) => (
+              <CardChapter
+                key={chapter_id.chapter_id}
+                bookName={bible.book_names[selectedBookId]}
+                chapterNumber={chapter_id.chapter_id} />
+              ))}
+        </Stack>
+        <Box mt={4} textAlign="center">
 
-        <div className="flex items-end justify-end flex-grow mt-4 ">
-          <button
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg ml-4"
-            onClick={handleGoClick}
-          >
-            Share
-          </button>
-          <button className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg ml-2">
-            Go
-          </button>
-        </div>
-      </div>
+        </Box>
+      </Box>  
 
-    </div>
+    </Grid>
+    <BibleModal open={openModal} onClose={handleCloseModal} shareData ={shareData} />;
+
+    </>
   );
+
+  
 };
 
 export default Read;

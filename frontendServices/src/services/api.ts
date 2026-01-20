@@ -5,66 +5,19 @@ const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8002"; // your backend port
 
 
-export const  apiRequest2: any = (url:string)=>{
-  const[apiData,setApiData] = useState([]);
-
-  useEffect(()=>{
-        fetch(url)
-        .then((response)=> response.json())
-        .then((json)=>{
-          setApiData(json);
-        });
-      },[])
-
-  return apiData;
+export const apiGetRequest= (route : string) =>{
+  try {
+    return axios.get(`${API_BASE_URL}${route}`)
+    .then((response: AxiosResponse) => response.data)
+    .catch((error) => {
+      console.error("API GET request error:", error);
+      throw error;
+    });
+  } catch (error) {
+    console.error("API GET request exception:", error);
+    throw error;
+  }
 }
 
-// Generic API fetcher for GET/POST/etc.
-export const apiRequest = async <T>(
-  method: "get" | "post" | "put" | "delete",
-  endpoint: string,
-  data?: any,
-  config: AxiosRequestConfig = {}
-): Promise<T> => {
-  const token = localStorage.getItem("authToken");
 
-  const headers = {
-    "Content-Type": "application/json",
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    ...config.headers,
-  };
 
-  const url = endpoint.startsWith("http")
-    ? endpoint
-    : `${API_BASE_URL}${endpoint}`;
-
-  try {
-    const response: AxiosResponse<T> = await axios({
-      method,
-      url,
-      data,
-      headers,
-      ...config,
-    });
-
-    // Return either nested `data.data` or plain `data`
-    const result: any = response.data;
-    return result?.data ?? result;
-  } catch (error: any) {
-    console.error("❌ API request failed:", error);
-    throw new Error(error.response?.data?.message || "API request failed");
-  }
-};
-
-// Convenience wrappers
-export const apiGet = <T>(url: string, config?: AxiosRequestConfig) =>
-  apiRequest<T>("get", url, undefined, config);
-
-export const apiPost = <T>(url: string, data?: any, config?: AxiosRequestConfig) =>
-  apiRequest<T>("post", url, data, config);
-
-export const apiPut = <T>(url: string, data?: any, config?: AxiosRequestConfig) =>
-  apiRequest<T>("put", url, data, config);
-
-export const apiDelete = <T>(url: string, config?: AxiosRequestConfig) =>
-  apiRequest<T>("delete", url, undefined, config);

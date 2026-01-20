@@ -32,7 +32,7 @@ const Home: React.FC = () => {
               <Typography variant='h4' color='Blue' fontWeight={700}>
                 Connect.
               </Typography>
-              <Typography variant='overline' color='primary'>
+              <Typography variant='h6' color='primary' fontWeight={300} mt={2}>
                 Paddle is your digital reading companion designed to enhance your reading experience.
                 For thougghtful exploration, colloboration, and deep engagement with texts.
               </Typography>
@@ -49,13 +49,13 @@ const Home: React.FC = () => {
             </Stack>
         </PageSection>
         <PageSection bgcolor="transparent">
-          <Stack spacing={6}>
+          <Stack spacing={5}>
             <Stack spacing={1} textAlign={'center'}>
 
               <Typography variant='h4' fontWeight={700}>
                 Built for deep reading & study
               </Typography>
-              <Typography variant='overline' color='primary'>
+              <Typography variant='h6' color='primary' fontWeight={500}>
                 Everything you need for meaningful engagement with texts
               </Typography>
             </Stack>
@@ -72,7 +72,12 @@ const Home: React.FC = () => {
           </Stack>
         </PageSection>
         <PageSection bgcolor="transparent">
-          <Stack spacing={2} textAlign={'center'} alignItems={'center'}>
+          <Stack spacing={2} textAlign={'center'} alignItems={'center'}
+  sx={{
+    backdropFilter: "blur(10px)",
+    backgroundColor: "#a88e8e33",
+    borderRadius: 3,
+  }}>
             <Typography variant='h6' fontWeight={500} color='primary'>
               Join thousands of readers enhancing their reading experience with Paddle.
             </Typography>
