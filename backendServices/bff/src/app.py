@@ -2,20 +2,29 @@
 
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from kombu import Connection
 
 from backendServices.bff.src.routes import router_ws
 from backendServices.bff.src.routes import router_logger, router_scripture
+from backendServices.scripts.background_tasks.shutdown_tasks import shutdown_consumer
+from backendServices.scripts.background_tasks.startup_tasks import run_tasks
+
 from backendServices.shared.log.logger import get_logger, setup_logger, log_queue, log_thread
 from backendServices.shared.utils.config import BROKER_URL
 
-from scripts.background_tasks.start_up_tasks import shutdown_tasks, run_tasks
 
 
 if hasattr(asyncio, "WindowsSelectorEventLoopPolicy"):
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 app = FastAPI(title="PaddleBible", version="1.0.0", debug=True)
+app.add_middleware(CORSMiddleware,
+                   allow_origins=["http://localhost:5173"],
+                   allow_credentials=True,
+                   allow_methods=["*"],
+                   allow_headers=["*"])
 app.include_router(router_scripture.router, prefix="/scripture")
 app.include_router(router_logger.router, prefix="/logs")
 app.include_router(router_ws.ws_router, prefix="/ws-test")
@@ -62,7 +71,7 @@ async def shutdown():
     log_queue.put(None)  # Signal the thread to exit
     log_thread.join()
 
-    await shutdown_tasks(app, logger)
+    await shutdown_consumer(app, logger)
 
 
 if __name__ == '__main__':

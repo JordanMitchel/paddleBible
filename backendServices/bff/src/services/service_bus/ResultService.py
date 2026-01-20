@@ -1,6 +1,6 @@
 ﻿import asyncio
 
-from backendServices.bff.src.services.search.search_locations import get_coordinates_by_location
+from backendServices.bff.src.services.queries.search_locations import get_coordinates_by_location
 from backendServices.shared.src.models.scripture_result import ScriptureResponse
 
 

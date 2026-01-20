@@ -2,7 +2,7 @@ from unittest.mock import MagicMock, AsyncMock
 
 import pytest
 
-from backendServices.bff.src.services.search.search_for_location_by_scripture import request_locations_using_scripture
+from backendServices.bff.src.services.queries.search_for_location_by_scripture import request_locations_using_scripture
 from backendServices.shared.src.ServiceBus.producer import KombuProducer
 from backendServices.shared.src.models.scripture_result import ScriptureRequest, Scripture
 
