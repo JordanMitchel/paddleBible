@@ -48,7 +48,7 @@ async def get_scripture_using_verse(clientId, bible_version, verse) -> Scripture
     try:
         coll = await get_collection(bible_version)
 
-        query = {"text": {"$regex": verse, "$options": "i"}}  # Case-insensitive search
+        query = {"text": {"$regex": verse, "$options": "i"}}  # Case-insensitive queries
 
         doc = await coll.find_one(query)  # Find the first matching document
         logging.info("📄 Fetched Document: %s", doc)

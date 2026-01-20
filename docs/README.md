@@ -141,7 +141,7 @@
     ├── scripts
     │   └── background_tasks
     │       ├── __init__.py
-    │       └── start_up_tasks.py
+    │       └── startup_tasks.py
     └── shared
         ├── __init__.py
         ├── src

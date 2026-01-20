@@ -1,25 +1,17 @@
-# Use a Python image with PyTorch and other AI dependencies
 FROM python:3.11
-
-
-# Set the working directory
 WORKDIR /app
 
-# Copy the requirements and install dependencies
+RUN addgroup --system celery && adduser --system --ingroup celery celery
+
 COPY ml_service/requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the source code and shared utilities
-COPY ml_service/ /app/ml_service
-COPY ./scripts /app/scripts
-COPY ./shared /app/shared
+COPY . /app/backendServices
 
-# Set the Python path to include shared modules
-ENV PYTHONPATH="/app:/app/ml_service:/app/shared:/app/scripts"
-# Expose the service port
+ENV PYTHONPATH="/app"
+RUN chown -R celery:celery /app
+
 EXPOSE 8000
+USER celery
 
-# Start the AI service
-
-# Command to run the FastAPI app with Uvicorn
-CMD ["python", "-u", "ml_service/src/app.py"]
+CMD ["python", "-u", "backendServices/ml_service/src/app.py"]

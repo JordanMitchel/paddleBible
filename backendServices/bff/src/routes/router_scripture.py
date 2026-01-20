@@ -1,4 +1,4 @@
-﻿from fastapi import APIRouter, Depends, HTTPException
+﻿from fastapi import APIRouter, Depends, HTTPException, Query
 
 from backendServices.shared.log.logger import get_logger
 
@@ -16,6 +16,22 @@ async def get_bible_books(bible_service: BibleService = Depends(get_bible_servic
     """Retrieve a list of all Bible books."""
     logger.info("querying bible books")
     return await bible_service.get_all_bible_books()
+
+@router.get("/Chapters", response_model=ResponseModel)
+async def get_chapters_by_book(
+        book: int = Query(..., description="Book number to fetch chapter for"),
+        bible_service: BibleService = Depends(get_bible_service)) -> ResponseModel:
+    logger.info(f"querying chapters for book: {book}")
+    return await bible_service.get_chapters_by_book(book)
+
+@router.get("/VersesForChapter", response_model=ResponseModel)
+async def get_all_verses_for_chapter_and_book(
+        book: int = Query(..., description="Book number to fetch chapter for"),
+        chapter: int = Query(..., description="Chapter number to fetch verses for"),
+        bible_serivce: BibleService = Depends(get_bible_service)) -> ResponseModel:
+    logger.info(f"querying verse by chapter and book {book}:{chapter}")
+    return await bible_serivce.get_verses_by_chapter_and_book(book,chapter)
+
 
 
 @router.get("/GetCoordinates/{verse}")
