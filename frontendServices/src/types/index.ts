@@ -11,11 +11,3 @@ export interface AuthState {
   isLoading: boolean;
 }
 
-export type TabType = 'home' | 'read' | 'paddle' | 'explore' | 'about';
-
-export interface NavigationTab {
-  id: TabType;
-  label: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
-  description?: string;
-}

@@ -4,6 +4,7 @@ from backendServices.domain.src.services.db_connector import get_database
 from backendServices.shared.src.models.scripture_result import ResponseModel
 
 
+
 async def get_all_bible_books(collection="Bible_ASV") -> ResponseModel:
     try:
         db = await get_database()

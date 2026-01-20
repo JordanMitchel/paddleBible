@@ -58,4 +58,3 @@ async def shutdown_tasks(app, logger):
         bff_consumer_service.should_stop = True
         bff_consumer_service.connection.close()
         logger.info("✅ Kombu consumer stopped cleanly.")
-        logger.info("✅ Kombu consumer stopped cleanly.")

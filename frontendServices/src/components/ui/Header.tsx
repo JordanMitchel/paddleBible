@@ -1,64 +1,145 @@
-import React from 'react';
-import { Home } from 'lucide-react';
-import Logo from './Logo';
-import Navigation from './Navigation';
-import Button from './Button';
-import { useApp } from '@/context/AppContext';
-import { useAuth } from '@/components/auth/AuthProvider';
+import {
+  AppBar,
+  Toolbar,
+  Box,
+  Typography,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { BsFillPersonFill } from "react-icons/bs";
+import { GiPaddles } from "react-icons/gi";
+import { useState } from "react";
+import { useThemeMode } from "@/context/theme-context";
+import { NAVIGATION_TABS } from "@/utils/constants";
+import { NavLink } from 'react-router-dom';
 
-const Header: React.FC = () => {
-  const { activeTab, setActiveTab, setIsLoginModalOpen } = useApp();
-  const { isAuthenticated, user, logout } = useAuth();
+
+
+interface HeaderProps {
+  user?: boolean; // or a more complex user object
+}
+
+export function Header({
+  user,
+}:HeaderProps) {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const menuOpen = Boolean(anchorEl);
+  const { toggleMode } = useThemeMode(); // <--- get the real toggle function
+
+  const openMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const closeMenu = () => {
+    setAnchorEl(null);
+  };
 
   return (
-    <header className="w-full bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-8">
-            <Logo />
-            
-            <button
-              onClick={() => setActiveTab('home')}
-              className={`
-                flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200
-                ${activeTab === 'home' 
-                  ? 'bg-blue-100 text-blue-700 shadow-sm' 
-                  : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
-                }
-              `}
-            >
-              <Home size={20} />
-              <span className="font-medium">Home</span>
-            </button>
-          </div>
+    <AppBar position="sticky" elevation={2} sx={{bgcolor:'background.paper'}} >
+      <Toolbar sx={{ justifyContent: "space-between", px: 3 }}>
+        {/* Logo */}
+        <Box display="flex" alignItems="center" gap={1}>
+          <IconButton
+            onClick={toggleMode}
+            aria-label="Toggle theme mode"
+            sx={{color:"text.primary"}}
+          >
+            <GiPaddles size={26} />
+          </IconButton>
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            color="text.primary"
+          >
+            Paddle - Bible
+          </Typography>
+        </Box>
 
-          <div className="flex items-center space-x-6">
-            <Navigation />
-            
-            {isAuthenticated ? (
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center">
-                    <span className="text-white text-sm font-medium">
-                      {user?.name?.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                  <span className="text-sm text-gray-600">{user?.name}</span>
-                </div>
-                <Button variant="outline" size="sm" onClick={logout}>
-                  Logout
-                </Button>
-              </div>
-            ) : (
-              <Button variant="primary" size="sm" onClick={() => setIsLoginModalOpen(true)}>
-                Log In
-              </Button>
-            )}
-          </div>
-        </div>
-      </div>
-    </header>
+        {/* Desktop menu */}
+        <Box
+          sx={{
+            display: { xs: "none", md: "flex" },
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          {user && <BsFillPersonFill  color="primary" />}
+
+          {NAVIGATION_TABS.map((item: any) => (
+          <Button
+            component={NavLink}
+            to={item.path}
+            sx={{color: "text.primary"}}
+          >
+            {item.label}
+          </Button>
+          ))}
+
+          <Button
+            sx={{ color:"text.primary", fontWeight: 600}}
+            onClick={() => console.log("login")}
+          >
+            Login
+          </Button>
+
+
+        </Box>
+
+        {/* Mobile controls */}
+        <Box sx={{ display: { xs: "flex", md: "none" }, gap: 1 }}>
+          {user && <BsFillPersonFill  color="primary" />}
+
+          <IconButton
+            aria-label="Open menu"
+            onClick={openMenu}
+            color="inherit"
+          >
+            <GiHamburgerMenu />
+          </IconButton>
+
+          <Menu
+            anchorEl={anchorEl}
+            open={menuOpen}
+            onClose={closeMenu}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            {NAVIGATION_TABS.map((item:any) => (
+            <Button
+              component={NavLink}
+              to={item.path}
+            >
+              <item.icon />
+              {item.label}
+            </Button>
+            ))}
+
+            <MenuItem
+              onClick={() => {
+                console.log("login");
+                closeMenu();
+              }}
+            >
+              Login
+            </MenuItem>
+
+            <MenuItem
+              onClick={() => {
+                toggleMode();
+                closeMenu();
+              }}
+            >
+              Toggle theme
+            </MenuItem>
+          </Menu>
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
-};
+}
+
 
 export default Header;

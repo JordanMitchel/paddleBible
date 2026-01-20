@@ -1,123 +1,85 @@
-import React, { useState } from "react";
-import { QRCodeCanvas } from "qrcode.react";
-import { bibleBooks } from "@/utils/bibleBooks";
-
-
-const chapters = Array.from({ length: 50 }, (_, i) => i + 1); // Example: 50 chapters
-const verses = Array.from({ length: 40 }, (_, i) => i + 1);   // Example: 40 verses
-
+import React, { useEffect, useState } from "react";
+import { Bible } from "@/services/scripture";
+import SelectDropDown from "@/components/ui/SelectDropDown";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { apiGetRequest } from "@/services/api";
+import CardChapter from "@/components/ui/CardChapter";
+import BibleModal from "@/components/ui/BibleModal";
 const Read: React.FC = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [code, setCode] = useState("");
-  const [book, setBook] = useState(bibleBooks[0]);
-  const [chapter, setChapter] = useState(chapters[0]);
-  const [verse, setVerse] = useState(verses[0]);
+  const [openModal, setOpenModal] = React.useState(false);
+  const [shareData, setShareData] = useState<{title: string; text: string; url: string} | undefined>(undefined);
+  const handleCloseModal = () => setOpenModal(false);
+  const [bible, setBible] = useState<Bible>({books: [], book_names: [], book_count: 0});
+  const [selectedBookId, setSelectedBookId] = useState<number >(1);
+  const [selectedChapterId, setSelectedChapterId] = useState<number>(1);
+  const [selectedVerseId, setSelectedVerseId] = useState<number>(1);
+  const  chapterArray  : number[] = bible.books.length > 0 ?
+    [...Array(bible.books[selectedBookId].chapter_count).keys()].map(i => i + 1) : [];
+  const  verseArray  : number[] = (bible.books.length > 0 && bible.books[selectedBookId].chapters.length > 0) ?
+    [...Array(bible.books[selectedBookId].chapters[selectedChapterId].verse_count).keys()].map(i => i + 1) : [];
+  // Load initial books
+  useEffect(() => {
+    apiGetRequest("/scripture/BibleBooks").then((data) => {
+      setBible(data);
+    }).catch((error) => {
+      console.error("Error fetching Bible books:", error);
+    });
+    },[]);
 
-  const handleGoClick = () => {
-    // Generate a random code (you can customize this)
-    const newCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-    setCode(newCode);
-    setShowModal(true);
-  };
-
-  const handleClose = () => setShowModal(false);
+    const handleOnShareClick = () => {
+      const data = {
+        title: 'Paddle Reading',
+        text: `Check out this reading from Paddle: ${bible.book_names[selectedBookId]} Chapter ${selectedChapterId} Verse ${selectedVerseId}`,
+        url: window.location.href,
+      };
+      setShareData(data);
+      console.log("Share Data:", shareData);
+      setOpenModal(true);
+    }
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-16">
-      <div className="flex mb-6">
-        <div className="flex space-x-4 flex-grow">
-          <div>
-            <label htmlFor="language" className="block text-sm font-medium text-gray-700 mb-1">Language</label>
-            <select id="language" className="border rounded px-3 py-2 w-40">
-              <option value="en">English</option>
-              <option value="es">Spanish</option>
-              <option value="fr">French</option>
-              <option value="de">German</option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="version" className="block text-sm font-medium text-gray-700 mb-1">Bible Version</label>
-            <select id="version" className="border rounded px-3 py-2 w-40">
-              <option value="niv">NIV</option>
-              <option value="kjv">KJV</option>
-              <option value="esv">ESV</option>
-              <option value="nasb">NASB</option>
-           </select>
-          </div>
-          <div>
-            <label htmlFor="book" className="block text-sm font-medium text-gray-700 mb-1">Book</label>
-            <select
-              id="book"
-              className="border rounded px-3 py-2 w-40"
-              value={book}
-              onChange={e => setBook(e.target.value)}
-            >
-              {bibleBooks.map(bk => (
-                <option key={bk} value={bk}>{bk}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="chapter" className="block text-sm font-medium text-gray-700 mb-1">Chapter</label>
-            <select
-              id="chapter"
-              className="border rounded px-3 py-2 w-28"
-              value={chapter}
-              onChange={e => setChapter(Number(e.target.value))}
-            >
-              {chapters.map(ch => (
-                <option key={ch} value={ch}>{ch}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="verse" className="block text-sm font-medium text-gray-700 mb-1">Verse</label>
-            <select
-              id="verse"
-              className="border rounded px-3 py-2 w-28"
-              value={verse}
-              onChange={e => setVerse(Number(e.target.value))}
-            >
-              {verses.map(vs => (
-                <option key={vs} value={vs}>{vs}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className="flex items-end justify-end flex-grow">
-          <button
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg ml-4"
-            onClick={handleGoClick}
-          >
-            Share
-          </button>
-          <button
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg ml-2"
-            // Add your Go button logic here if needed
-          >
-            Go
-          </button>
-        </div>
-      </div>
+    <>
+    <Stack direction='row' alignItems='center' mt={2}>
 
-      {/* Modal */}
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-8 flex flex-col items-center">
-            <h2 className="text-xl font-bold mb-4">Your Code</h2>
-            <div className="text-2xl font-mono mb-4">{code}</div>
-            <QRCodeCanvas value={code} size={128} />
-            <button
-              className="mt-6 bg-gray-700 text-white px-4 py-2 rounded"
-              onClick={handleClose}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+      <Stack direction="row" spacing={4} ml={2} >
+        <SelectDropDown dropDownType="Book"  valuesList={chapterArray}/>
+        <SelectDropDown dropDownType="Chapter" valuesList={bible.book_names}/>
+        <SelectDropDown dropDownType="Verse" valuesList={verseArray}/>
+      </Stack>
+      <Box sx={{ ml: 'auto', display: 'flex', gap: 2  }} mr={2}>
+        <Button variant="contained" color="secondary">Go</Button>
+        <Button variant="contained" onClick={handleOnShareClick}>Share</Button>
+      </Box>
+    </Stack>
+    <Grid>
+      <Typography variant="h3" mt={4} textAlign='left' ml={10}>
+        {bible.books.length > 0 &&
+          bible.book_names[selectedBookId]
+        } G
+      </Typography>
+      <Box mt={4} mx={10} p={4} boxShadow={3} borderRadius={2} bgcolor="background.paper">
+        <Stack spacing={2}>
+          {bible.books.length > 0 &&
+            bible.books[selectedBookId].chapters.length > 0 &&
+            bible.books[selectedBookId].chapters.map((chapter_id) => (
+              <CardChapter
+                key={chapter_id.chapter_id}
+                bookName={bible.book_names[selectedBookId]}
+                chapterNumber={chapter_id.chapter_id} />
+              ))}
+        </Stack>
+        <Box mt={4} textAlign="center">
+
+        </Box>
+      </Box>  
+
+    </Grid>
+    <BibleModal open={openModal} onClose={handleCloseModal} shareData ={shareData} />;
+
+    </>
   );
+
+  
 };
 
 export default Read;
