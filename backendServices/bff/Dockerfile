@@ -1,20 +1,23 @@
 # Use an official lightweight Python image
-FROM python:3.11
+FROM python:3.12-slim
+
+# Install uv (single binary, very fast)
+RUN pip install "uv>=0.9.21"
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy only requirements first (for caching)
-COPY bff/requirements.txt requirements.txt
+# Copy only dependency files first (for caching)
+COPY pyproject.toml uv.lock ./
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install dependencies (system-wide, no venv in Docker)
+RUN UV_NO_VENV=1 uv sync --frozen --no-dev
 
 # Copy the rest of the application code
-COPY bff/ /app/bff
-COPY shared /app/shared
-COPY scripts /app/scripts
-COPY domain /app/domain
+COPY ../backendServices/bff/ /app/bff
+COPY ../backendServices/shared /app/shared
+COPY ../backendServices/scripts /app/scripts
+COPY ../backendServices/domain /app/domain
 
 # Set the Python path to include shared modules
 ENV PYTHONPATH="/app:/app/bff:/app/shared:/app/scripts:/app/domain"

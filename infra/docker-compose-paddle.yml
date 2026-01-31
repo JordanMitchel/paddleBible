@@ -4,7 +4,7 @@ services:
   bff:
     build:
       context: ..
-      dockerfile: ../backendServices/bff/Dockerfile
+      dockerfile: ./backendServices/bff/Dockerfile
     ports:
       - "8002:8000"
     depends_on:
@@ -18,6 +18,7 @@ services:
       - ENVIRONMENT=docker
       - SERVICE_NAME=BFF_Service
       - BROKER_URL=amqp://guest:guest@rabbitmq:5672/  # Kombu connection URL
+      - DATABASE_URL=postgresql+psycopg2://user:password@db:5432/mydatabase
     env_file:
       - ../env.docker
     healthcheck:
@@ -28,7 +29,7 @@ services:
   ml_service:
     build:
       context: ..
-      dockerfile: ../backendServices/ml_service/Dockerfile
+      dockerfile: ./backendServices/ml_service/Dockerfile
     ports:
       - "8001:8000"
     depends_on:
@@ -68,7 +69,7 @@ services:
   log_service:
     build:
       context: ..
-      dockerfile: ../backendServices/log_service/Dockerfile
+      dockerfile: ./backendServices/log_service/Dockerfile
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -98,6 +99,19 @@ services:
       - "27018:27017"
     networks:
       - bible_net
+
+  sql_db:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
 
   prometheus:
     image: prom/prometheus:latest
@@ -146,4 +160,4 @@ networks:
 
 volumes:
   prometheus_data:
-
+  postgres_data:

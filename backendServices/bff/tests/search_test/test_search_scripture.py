@@ -3,12 +3,12 @@ from unittest.mock import AsyncMock, patch
 import pytest
 from pymongo.errors import PyMongoError
 
-from backendServices.bff.src.services.search.search_scripture import get_scripture_using_book_and_verse
+from backendServices.bff.src.services.queries.search_scripture import get_scripture_using_book_and_verse
 from backendServices.shared.src.models.scripture_result import Scripture
 
 
 @pytest.mark.asyncio
-@patch("backendServices.bff.src.services.search.search_scripture.get_collection")  # Mocking the get_database function
+@patch("backendServices.bff.src.services.queries.search_scripture.get_collection")  # Mocking the get_database function
 @pytest.mark.requires_decouple
 async def test_get_scripture_found(mock_get_collection):
     # Mock the database and collection
@@ -34,7 +34,7 @@ async def test_get_scripture_found(mock_get_collection):
 
 
 @pytest.mark.asyncio
-@patch("backendServices.bff.src.services.search.search_scripture.get_collection")  # Mocking the get_database function
+@patch("backendServices.bff.src.services.queries.search_scripture.get_collection")  # Mocking the get_database function
 @pytest.mark.requires_decouple
 async def test_get_scripture_not_found(mock_get_collection):
     # Mock the database and collection
@@ -51,7 +51,7 @@ async def test_get_scripture_not_found(mock_get_collection):
 
 
 @pytest.mark.asyncio
-@patch("backendServices.bff.src.services.search.search_scripture.get_collection")  # Mocking the get_database function
+@patch("backendServices.bff.src.services.queries.search_scripture.get_collection")  # Mocking the get_database function
 async def test_get_scripture_error_handling(mock_get_collection):
     # Simulate an exception in the database call
     mock_get_collection.side_effect = PyMongoError("An error occurred with MongoDB")

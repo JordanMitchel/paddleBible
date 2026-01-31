@@ -9,7 +9,7 @@ from backendServices.bff.src.routes import router_logger, router_scripture
 from backendServices.shared.log.logger import get_logger, setup_logger, log_queue, log_thread
 from backendServices.shared.utils.config import BROKER_URL
 
-from scripts.background_tasks.start_up_tasks import shutdown_tasks, run_tasks
+from backendServices.scripts.background_tasks.startup_tasks import shutdown_tasks, run_tasks
 
 
 if hasattr(asyncio, "WindowsSelectorEventLoopPolicy"):

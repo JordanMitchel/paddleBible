@@ -1,25 +1,24 @@
-# Use a Python image with PyTorch and other AI dependencies
-FROM python:3.11
+FROM python:3.12-slim
+
+# Install uv
+RUN pip install "uv>=0.9.21"
 
 
-# Set the working directory
 WORKDIR /app
 
-# Copy the requirements and install dependencies
-COPY ml_service/requirements.txt requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy dependency metadata
+COPY pyproject.toml uv.lock ./
 
-# Copy the source code and shared utilities
-COPY ml_service/ /app/ml_service
-COPY ./scripts /app/scripts
-COPY ./shared /app/shared
+# ✅ INSTALL deps (this was missing)
+RUN UV_NO_VENV=1 uv sync --frozen --no-dev
 
-# Set the Python path to include shared modules
+# Copy application code
+COPY ../backendServices/ml_service/ /app/ml_service
+COPY ../backendServices/scripts /app/scripts
+COPY ../backendServices/shared /app/shared
+
 ENV PYTHONPATH="/app:/app/ml_service:/app/shared:/app/scripts"
-# Expose the service port
+
 EXPOSE 8000
 
-# Start the AI service
-
-# Command to run the FastAPI app with Uvicorn
 CMD ["python", "-u", "ml_service/src/app.py"]

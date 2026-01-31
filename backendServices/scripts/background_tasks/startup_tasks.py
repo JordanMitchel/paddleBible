@@ -3,6 +3,7 @@ import threading
 
 from backendServices.bff.src.services.service_bus.BFFKombuConsumer import BFFKombuConsumer
 from backendServices.domain.src.db.add_bible_to_mongo import insert_bible_store
+from backendServices.domain.src.db.add_bible_to_postgres import load_xml_bible
 from backendServices.domain.src.db.add_coordinates_to_mongo import update_coordinates_collection_using_file
 from backendServices.shared.src.models.FileType import FileTypeEnum
 
@@ -26,7 +27,8 @@ async def run_kombu_tasks(app, logger):
 
 async def run_db_tasks(logger):
     try:
-
+        logger.info("seeding bible into DB")
+        load_xml_bible("backendServices/domain/data/xml/Bible_English_NLT.xml")
         logger.info("Seeding LonLats collection...")
         await update_coordinates_collection_using_file("domain/data/csv/biblical_coordinates.csv", "LonLats")
 

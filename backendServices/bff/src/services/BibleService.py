@@ -1,6 +1,6 @@
-﻿from backendServices.bff.src.services.search.search_bible_books_list import get_all_bible_books
-from backendServices.bff.src.services.search.search_for_location_by_scripture import request_locations_using_scripture
-from backendServices.bff.src.services.search.search_scripture import get_scripture_using_verse, \
+﻿from backendServices.bff.src.services.queries.search_bible_books_list import get_all_bible_books
+from backendServices.bff.src.services.queries.search_for_location_by_scripture import request_locations_using_scripture
+from backendServices.bff.src.services.queries.search_scripture import get_scripture_using_verse, \
     get_scripture_using_book_and_verse
 from backendServices.shared.src.ServiceBus.producer import KombuProducer
 from backendServices.shared.src.models.scripture_result import ResponseModel, ScriptureRequest, ScriptureQuery

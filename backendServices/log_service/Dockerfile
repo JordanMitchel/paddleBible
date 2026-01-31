@@ -1,21 +1,26 @@
 ﻿# Use an official Python image
-FROM python:3.11
+FROM python:3.12-slim
 
-# Set the working directory
+# Install uv (single binary, very fast)
+RUN pip install "uv>=0.9.21"
+
+# Set the working directory inside the container
 WORKDIR /app
 
 # Create a non-root user before doing anything
 RUN addgroup --system celery && adduser --system --ingroup celery celery
 
-# Copy the requirements and install dependencies as non-root
-COPY log_service/requirements.txt requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy only dependency files first (for caching)
+COPY pyproject.toml uv.lock ./
+
+# Install dependencies (system-wide, no venv in Docker)
+RUN UV_NO_VENV=1 uv sync --frozen --no-dev
 
 # Copy the source code and shared utilities
-COPY log_service/ /app/log_service
-COPY ./scripts /app/scripts
-COPY ./shared /app/shared
-COPY domain /app/domain
+COPY ../backendServices/log_service/ /app/log_service
+COPY ../backendServices/scripts /app/scripts
+COPY ../backendServices/shared /app/shared
+COPY ../backendServices/domain /app/domain
 
 # Set the Python path to include shared modules
 ENV PYTHONPATH="/app:/app/log_service:/app/shared:/app/scripts:/app/domain"
